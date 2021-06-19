@@ -1,0 +1,42 @@
+<div class="relative" style="margin: 20px 0">
+	<div
+		class="day absolute"
+		fxLayoutAlign="center center"
+		matRipple
+		[matTooltip]="(meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'"
+	>
+		{{ meal.date | date: 'EEEE' }}
+	</div>
+	<mat-card class="meal">
+		<mat-card-header
+			class="header"
+			fxLayoutAlign="space-between center"
+			(click)="toggleEdit()"
+			matRipple
+		>
+			<mat-card-title>
+				<ng-container *ngIf="meal?.name; else noMealTpl">
+					{{ meal?.name }}
+				</ng-container>
+				<ng-template #noMealTpl>
+					<div class="no-meal">Aucun plat</div>
+				</ng-template>
+			</mat-card-title>
+			<div>
+				<button
+					mat-icon-button
+					aria-label="Example icon button with a vertical three dot icon"
+				>
+					<mat-icon>edit</mat-icon>
+				</button>
+			</div>
+		</mat-card-header>
+		<mat-card-content>
+			<div *ngIf="editMode" [@expandOnEnter] [@collapseOnLeave]>
+				<div class="form-container">
+					<cb-meal-form [meal]="meal" (onSave)="afterSave()"></cb-meal-form>
+				</div>
+			</div>
+		</mat-card-content>
+	</mat-card>
+</div>

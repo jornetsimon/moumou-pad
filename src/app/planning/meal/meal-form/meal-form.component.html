@@ -1,0 +1,13 @@
+<form [formGroup]="form" (ngSubmit)="saveMeal()">
+	<mat-form-field appearance="fill" class="width-100">
+		<mat-label>Nom du plat</mat-label>
+		<input matInput placeholder="Poulet poivrons, huevos rotos..." formControlName="name" />
+		<mat-icon matSuffix class="clear-icon" (click)="form.get('name')?.reset()">clear</mat-icon>
+	</mat-form-field>
+
+	<div fxLayoutAlign="center">
+		<button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">
+			{{ meal?.name ? 'Modifier' : 'Enregistrer' }}
+		</button>
+	</div>
+</form>

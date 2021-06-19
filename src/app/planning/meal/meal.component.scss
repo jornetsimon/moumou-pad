@@ -1,0 +1,49 @@
+$meal-color: #4c90d3;
+.meal {
+	background-color: $meal-color;
+	position: relative;
+	padding: 10px 25px;
+	border-radius: 0;
+	@media (min-width: 600px) {
+		border-radius: 7px;
+	}
+
+	.header {
+		color: white;
+		padding: 0 5px;
+		border-radius: 5px;
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		::ng-deep .mat-card-title {
+			margin: 0;
+		}
+	}
+
+	.form-container {
+		border-radius: 5px;
+		padding: 30px;
+		margin: 10px 0 15px;
+		background-color: lighten($meal-color, 40%);
+	}
+}
+
+.day {
+	$width: 110px;
+	z-index: 1;
+	width: $width;
+	background-color: #6edea2;
+	color: white;
+	border-radius: 5px;
+	top: -18px;
+	left: calc(50% - (#{$width} / 2));
+	padding: 0.25em 0.5em;
+	letter-spacing: 0.15em;
+}
+
+.no-meal {
+	font-style: italic;
+	opacity: 0.5;
+}

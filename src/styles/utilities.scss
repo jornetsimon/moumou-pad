@@ -1,0 +1,65 @@
+.light {
+	font-weight: 200;
+}
+.semi-light {
+	font-weight: 300;
+}
+.normal {
+	font-weight: normal;
+}
+.semi-bold {
+	font-weight: 500;
+}
+.bold {
+	font-weight: bold;
+}
+.regular-case {
+	text-transform: none !important;
+}
+.small {
+	font-size: small;
+}
+.smaller {
+	font-size: smaller;
+}
+.large {
+	font-size: large;
+}
+.larger {
+	font-size: larger;
+}
+.float-right {
+	float: right;
+}
+.text-ellipsis {
+	$overflow: hidden;
+	text-overflow: ellipsis;
+}
+.cursor-pointer:hover {
+	cursor: pointer;
+}
+.eyes-only {
+	cursor: default;
+	user-select: none;
+}
+.strikethrough {
+	text-decoration: line-through;
+}
+.italic {
+	font-style: italic;
+}
+.width-100 {
+	width: 100%;
+}
+.hidden-opacity {
+	opacity: 0;
+}
+.visible-opacity {
+	opacity: 1;
+}
+.relative {
+	position: relative;
+}
+.absolute {
+	position: absolute;
+}
