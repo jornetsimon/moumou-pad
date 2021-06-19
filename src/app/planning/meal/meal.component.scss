@@ -1,6 +1,16 @@
-$meal-color: #4c90d3;
+@import '../../../styles/colors';
+
+$meal-color: $primary;
+
+.container {
+	margin: min(20px, 1.5vh) 0;
+}
+
 .meal {
 	background-color: $meal-color;
+	&.empty {
+		background-color: lighten($meal-color, 30%);
+	}
 	position: relative;
 	padding: 10px 25px;
 	border-radius: 0;
@@ -26,24 +36,21 @@ $meal-color: #4c90d3;
 		border-radius: 5px;
 		padding: 30px;
 		margin: 10px 0 15px;
-		background-color: lighten($meal-color, 40%);
+		background-color: lighten($meal-color, 50%);
 	}
 }
 
 .day {
-	$width: 110px;
-	z-index: 1;
-	width: $width;
+	width: fit-content;
+	align-self: center;
 	background-color: #6edea2;
 	color: white;
-	border-radius: 5px;
-	top: -18px;
-	left: calc(50% - (#{$width} / 2));
+	border-radius: 5px 5px 0 0;
 	padding: 0.25em 0.5em;
 	letter-spacing: 0.15em;
 }
 
-.no-meal {
+.no-meal-title {
 	font-style: italic;
 	opacity: 0.5;
 }

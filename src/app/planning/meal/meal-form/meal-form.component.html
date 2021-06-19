@@ -10,4 +10,20 @@
 			{{ meal?.name ? 'Modifier' : 'Enregistrer' }}
 		</button>
 	</div>
+
+	<mat-divider style="margin: 20px 0; position: initial"></mat-divider>
+
+	<div fxLayout="column" fxLayoutAlign="center center">
+		<div style="font-size: large">Quelques idées de recettes Jow</div>
+		<div
+			class="suggestions"
+			fxLayout="row wrap"
+			fxLayoutAlign="center center"
+			fxLayoutGap="10px"
+		>
+			<div *ngFor="let recipe of recipeIdeas$ | async">
+				{{ recipe.description }}
+			</div>
+		</div>
+	</div>
 </form>

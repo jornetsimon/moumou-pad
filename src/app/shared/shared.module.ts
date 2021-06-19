@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDividerModule } from '@angular/material/divider';
 
 const components: Array<any> = [];
 
@@ -32,6 +33,7 @@ const modules = [
 	MatFormFieldModule,
 	MatInputModule,
 	MatSnackBarModule,
+	MatDividerModule,
 ];
 
 @NgModule({

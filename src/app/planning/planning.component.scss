@@ -1,10 +1,21 @@
 .title {
-	font-size: 24px;
+	font-size: 37px;
 	font-weight: 300;
 	text-align: center;
-	margin: 1.2em 0;
+	margin: 30px 0;
+	font-family: 'Dancing Script', cursive;
 }
 
 .meals-container {
 	height: 80vh;
+}
+
+::ng-deep cb-meal.meal {
+	margin: 0 20px;
+	flex: 40%;
+
+	@media (max-width: 599px) {
+		margin: 0;
+		flex: 100%;
+	}
 }

@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "cooking-board"
+  },
+  "targets": {
+    "cooking-board": {
+      "hosting": {
+        "cooking-board": [
+          "cooking-board"
+        ]
+      }
+    }
+  }
+}

@@ -15,7 +15,9 @@ export class PlanningComponent implements OnInit {
 	trackByFn: TrackByFunction<Meal> = (index, item) => item.date.getTime();
 
 	constructor(private mealService: MealService, private mealQuery: MealQuery) {
-		this.mealService.get().subscribe();
+		// Subscribe to the collection
+		this.mealService.syncCollection().subscribe();
+		// Get the list from the store
 		this.meals$ = this.mealQuery.getMealDays();
 	}
 

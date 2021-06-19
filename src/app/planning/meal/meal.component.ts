@@ -22,7 +22,7 @@ export class MealComponent {
 	}
 
 	afterSave() {
-		this.snackBar.open(`Repas enregistré`, undefined, {});
+		this.snackBar.open(`Repas enregistré`, undefined, { duration: 4000 });
 		this.editMode = false;
 	}
 }

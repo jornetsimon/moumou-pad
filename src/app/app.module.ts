@@ -8,6 +8,9 @@ import { SharedModule } from './shared/shared.module';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { AngularFireFunctionsModule } from '@angular/fire/functions';
 
 registerLocaleData(fr);
 
@@ -16,6 +19,9 @@ registerLocaleData(fr);
 	imports: [
 		BrowserModule,
 		environment.production ? [] : AkitaNgDevtools.forRoot(),
+		AngularFireModule.initializeApp(environment.firebaseConfig),
+		AngularFirestoreModule,
+		AngularFireFunctionsModule,
 		PlanningModule,
 		BrowserAnimationsModule,
 		SharedModule,

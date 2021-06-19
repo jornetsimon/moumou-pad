@@ -8,7 +8,11 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MealService } from '../state/meal.service';
-import { Meal } from '../state/meal.model';
+import { createMeal, Meal } from '../state/meal.model';
+import { JowService } from '../../../shared/jow.service';
+import { map } from 'rxjs/operators';
+import { shuffle } from 'lodash-es';
+import { Recipe } from '../../../model/receipe';
 
 @Component({
 	selector: 'cb-meal-form',
@@ -19,11 +23,12 @@ import { Meal } from '../state/meal.model';
 export class MealFormComponent implements OnChanges {
 	@Input() meal: Meal | undefined;
 	@Output() onSave = new EventEmitter<void>();
+	recipeIdeas$ = this.jowService.getFeatured().pipe(map((recipes): Recipe[] => shuffle(recipes)));
 	form = new FormGroup({
 		name: new FormControl(undefined),
 	});
 
-	constructor(private mealService: MealService) {}
+	constructor(private mealService: MealService, private jowService: JowService) {}
 
 	ngOnChanges() {
 		this.initializeForm();
@@ -35,14 +40,12 @@ export class MealFormComponent implements OnChanges {
 
 	saveMeal() {
 		const date = this.meal!.date;
-		const newData: Meal = {
-			date,
-			name: this.form.value.name,
-		};
+		const type = this.meal!.type;
 		if (this.meal?.name) {
-			this.mealService.update(date, { name: newData.name });
+			this.mealService.update(this.meal.id, { name: this.form.value.name });
 		} else {
-			this.mealService.add(newData);
+			const newMeal = createMeal({ date, type, name: this.form.value.name });
+			this.mealService.add(newMeal);
 		}
 		this.onSave.emit();
 	}

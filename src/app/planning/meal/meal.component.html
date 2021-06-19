@@ -1,13 +1,17 @@
-<div class="relative" style="margin: 20px 0">
+<div fxLayout="column nowrap" fxLayoutAlign="start" class="container">
 	<div
-		class="day absolute"
+		class="day"
 		fxLayoutAlign="center center"
 		matRipple
 		[matTooltip]="(meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'"
 	>
-		{{ meal.date | date: 'EEEE' }}
+		<div>
+			{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;{{
+				meal.type === 'lunch' ? '🔆' : '🌙'
+			}}
+		</div>
 	</div>
-	<mat-card class="meal">
+	<mat-card class="meal" [class.empty]="!meal.name">
 		<mat-card-header
 			class="header"
 			fxLayoutAlign="space-between center"
@@ -19,7 +23,7 @@
 					{{ meal?.name }}
 				</ng-container>
 				<ng-template #noMealTpl>
-					<div class="no-meal">Aucun plat</div>
+					<div class="no-meal-title">Aucun plat</div>
 				</ng-template>
 			</mat-card-title>
 			<div>
@@ -27,7 +31,7 @@
 					mat-icon-button
 					aria-label="Example icon button with a vertical three dot icon"
 				>
-					<mat-icon>edit</mat-icon>
+					<mat-icon>{{ !!meal.name ? 'edit' : 'add_circle' }}</mat-icon>
 				</button>
 			</div>
 		</mat-card-header>
