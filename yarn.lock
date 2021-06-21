@@ -7744,6 +7744,13 @@ next-tick@~1.0.0:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
+ng-for-repeat@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/ng-for-repeat/-/ng-for-repeat-1.0.1.tgz#d95418b340e385b91fb74f6d7280100080fb9635"
+  integrity sha512-GqqbRSVLos8CiM+ROk9E7u9OMf+eEnxSoHI9jGGhU20zN0Dtwfr+TZalH+VXfMW7JYj8rPHc1bFV4cbLJNJSXg==
+  dependencies:
+    tslib "^2.0.0"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz"

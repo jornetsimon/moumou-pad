@@ -6,14 +6,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
-import { MatRippleModule } from '@angular/material/core';
+import { MatOptionModule, MatRippleModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { NgForRepeatModule } from 'ng-for-repeat';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { DomSanitizer } from '@angular/platform-browser';
 
 const components: Array<any> = [];
 
@@ -25,6 +31,7 @@ const modules = [
 	AppRoutingModule,
 	HttpClientModule,
 	FlexLayoutModule,
+	NgForRepeatModule,
 	MatTooltipModule,
 	MatCardModule,
 	MatRippleModule,
@@ -34,6 +41,11 @@ const modules = [
 	MatInputModule,
 	MatSnackBarModule,
 	MatDividerModule,
+	MatChipsModule,
+	MatDialogModule,
+	MatAutocompleteModule,
+	MatOptionModule,
+	MatProgressSpinnerModule,
 ];
 
 @NgModule({
@@ -41,4 +53,11 @@ const modules = [
 	imports: [...modules],
 	exports: [...components, ...modules],
 })
-export class SharedModule {}
+export class SharedModule {
+	constructor(private matIconRegistry: MatIconRegistry, private domSanitizer: DomSanitizer) {
+		this.matIconRegistry.addSvgIcon(
+			`jow`,
+			this.domSanitizer.bypassSecurityTrustResourceUrl(`assets/jow-logo.svg`)
+		);
+	}
+}

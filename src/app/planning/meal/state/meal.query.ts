@@ -40,7 +40,13 @@ export class MealQuery extends QueryEntity<MealState> {
 							meal.type === slot.type &&
 							isSameDay(fromUnixTime(meal.timestamp), slot.date)
 					);
-					return createMeal({ ...matchedMeal, date: slot.date, type: slot.type });
+					return createMeal({
+						...matchedMeal,
+						jowRecipeId: matchedMeal?.jowRecipeId || null,
+						jowRecipe: matchedMeal?.jowRecipe || null,
+						date: slot.date,
+						type: slot.type,
+					});
 				});
 			})
 		);

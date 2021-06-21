@@ -9,8 +9,11 @@
     "ng": "ng",
     "start": "ng serve",
     "start-hmr": "ng serve --hmr",
+    "emulators:start": "firebase emulators:start",
     "build": "ng build",
     "build:stats": "ng build --stats-json",
+    "deploy-prod": "npm run build && firebase deploy",
+    "deploy-prod-only-hosting": "npm run build && firebase deploy --only hosting",
     "analyze": "webpack-bundle-analyzer -p 9999 dist/cooking-board/stats.json",
     "lint": "ng lint"
   },
@@ -36,6 +39,7 @@
     "date-fns": "^2.22.1",
     "firebase": "^7.0 || ^8.0",
     "lodash-es": "^4.17.21",
+    "ng-for-repeat": "^1.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.4"

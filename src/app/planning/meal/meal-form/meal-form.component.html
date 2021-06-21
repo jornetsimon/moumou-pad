@@ -5,25 +5,144 @@
 		<mat-icon matSuffix class="clear-icon" (click)="form.get('name')?.reset()">clear</mat-icon>
 	</mat-form-field>
 
-	<div fxLayoutAlign="center">
-		<button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">
-			{{ meal?.name ? 'Modifier' : 'Enregistrer' }}
-		</button>
+	<mat-form-field appearance="standard" class="width-100">
+		<mat-label>Rechercher une recette sur Jow</mat-label>
+		<input
+			matInput
+			aria-label="State"
+			[matAutocomplete]="auto"
+			formControlName="searchTerm"
+			placeholder="Mot-clé"
+		/>
+		<mat-icon matSuffix>
+			<ng-container *ngIf="loadingSearchResults">
+				<mat-spinner [diameter]="20"></mat-spinner>
+			</ng-container>
+			<ng-container *ngIf="!loadingSearchResults"> search </ng-container>
+		</mat-icon>
+		<mat-autocomplete
+			#auto="matAutocomplete"
+			[displayWith]="displayWithFn"
+			(optionSelected)="onRecipeSelected($event.option.value)"
+		>
+			<mat-option *ngFor="let recipe of recipeSearchResults$ | async" [value]="recipe">
+				<img
+					class="recipe-option-image"
+					[src]="jowService.constructAssetUrl(recipe.imageUrl)"
+					height="25"
+				/>
+				<span>{{ recipe.title }}</span>
+				<small *ngIf="recipe.difficulty >= 2">
+					| Difficulté :
+					<ng-container *ngForRepeat="recipe.difficulty">💪️</ng-container>
+				</small>
+			</mat-option>
+		</mat-autocomplete>
+	</mat-form-field>
+
+	<ng-container *ngIf="jowRecipe">
+		<div class="selected-recipe-intro" [style.background-color]="jowRecipe.backgroundColor">
+			Recette sélectionnée
+		</div>
+		<mat-card class="selected-recipe">
+			<div
+				fxLayout="column"
+				fxLayoutAlign="start center"
+				[style.color]="jowRecipe.backgroundColor"
+			>
+				<img
+					class="preview"
+					[src]="jowService.constructAssetUrl(jowRecipe.imageUrl)"
+					[alt]="jowRecipe.title"
+					mat-ripple
+					(click)="openRecipeModal(jowRecipe)"
+				/>
+				<div class="title">{{ jowRecipe.title }}</div>
+				<div class="description">{{ jowRecipe.description }}</div>
+			</div>
+			<mat-card-actions class="actions">
+				<button
+					mat-raised-button
+					type="button"
+					(click)="openRecipeModal(jowRecipe)"
+					[style.color]="jowRecipe.backgroundColor"
+				>
+					Voir plus
+				</button>
+				<button
+					mat-icon-button
+					type="button"
+					title="Retirer la recette"
+					[style.color]="jowRecipe.backgroundColor"
+					(click)="onRecipeRemoved()"
+				>
+					<mat-icon>delete</mat-icon>
+				</button>
+			</mat-card-actions>
+		</mat-card>
+	</ng-container>
+
+	<ng-container *ngIf="!jowRecipe">
+		<mat-card>
+			<mat-card-title style="font-size: medium">
+				<div fxLayoutAlign="space-between center">
+					<div style="color: #737373">Quelques idées de recettes</div>
+					<mat-icon svgIcon="jow" style="height: 32px; width: 32px"></mat-icon>
+				</div>
+			</mat-card-title>
+			<mat-card-content>
+				<div
+					class="suggestions"
+					fxLayout="row wrap"
+					fxLayoutAlign="center center"
+					fxLayoutGap="10px"
+				>
+					<mat-chip-list *ngIf="recipeIdeas$ | async as recipeIdeas; else spinnerTpl">
+						<mat-chip
+							*ngFor="let recipe of recipeIdeas"
+							color="accent"
+							selected
+							(click)="openRecipeModal(recipe)"
+							[style.background-image]="
+								'url(\'' + jowService.constructAssetUrl(recipe.imageUrl) + '\')'
+							"
+							[style.background-color]="recipe.backgroundColor"
+						>
+							<div class="title">{{ recipe.title }}</div>
+						</mat-chip>
+					</mat-chip-list>
+					<ng-template #spinnerTpl>
+						<mat-spinner [diameter]="30"></mat-spinner>
+					</ng-template>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</ng-container>
+
+	<div class="extras" fxLayout="column" fxLayoutAlign="start center" formGroupName="extras">
+		<div>
+			<mat-chip-list multiple>
+				<mat-chip
+					color="accent"
+					(click)="toggleExtra('croquettes')"
+					[selected]="extrasFg.get('croquettes')!.value"
+				>
+					Croquettes 🐱
+				</mat-chip>
+				<mat-chip
+					color="accent"
+					(click)="toggleExtra('freezer')"
+					[selected]="extrasFg.get('freezer')!.value"
+				>
+					Congel ❄️
+				</mat-chip>
+			</mat-chip-list>
+		</div>
 	</div>
 
-	<mat-divider style="margin: 20px 0; position: initial"></mat-divider>
-
-	<div fxLayout="column" fxLayoutAlign="center center">
-		<div style="font-size: large">Quelques idées de recettes Jow</div>
-		<div
-			class="suggestions"
-			fxLayout="row wrap"
-			fxLayoutAlign="center center"
-			fxLayoutGap="10px"
-		>
-			<div *ngFor="let recipe of recipeIdeas$ | async">
-				{{ recipe.description }}
-			</div>
-		</div>
+	<div fxLayoutAlign="center" style="margin-top: 30px">
+		<button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">
+			Enregistrer mon menu
+		</button>
 	</div>
 </form>

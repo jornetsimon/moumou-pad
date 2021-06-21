@@ -1,0 +1,25 @@
+::ng-deep .mat-dialog-container {
+	padding: 0;
+}
+.card {
+	max-width: 400px;
+	padding-bottom: 30px;
+
+	::ng-deep mat-card-actions {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin: 0;
+	}
+}
+
+.title {
+	font-weight: bold;
+	font-size: x-large;
+	margin-bottom: 0.75em;
+}
+.description {
+	font-size: 16px;
+}
+.header-image {
+}

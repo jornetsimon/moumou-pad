@@ -33,3 +33,11 @@ body {
 .mat-tooltip-handset {
 	margin: 12px 24px !important;
 }
+
+.mat-card-actions .mat-button,
+.mat-card-actions .mat-raised-button,
+.mat-card-actions .mat-stroked-button {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}

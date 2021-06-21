@@ -42,7 +42,6 @@ export interface Recipe {
 	notTrivialRequiredToolsIds: string[];
 	tagsEdito: any[];
 	nutritionalFacts: RecipeNutritionalFact[];
-	id: string;
 	keywords: string[];
 	likes: number;
 	positiveFeedbacks: number;
@@ -110,7 +109,7 @@ export interface Abbreviation {
 }
 
 export enum Comments {
-	TailleFR = "taille FR",
+	TailleFR = 'taille FR',
 }
 
 export interface MeasurementSystemCompatibility {
@@ -143,11 +142,11 @@ export interface EditorialDataNutritionalFact {
 }
 
 export enum ID {
-	Choavl = "CHOAVL",
-	Enerc = "ENERC",
-	Fat = "FAT",
-	Pro = "PRO",
-	Salteq = "SALTEQ",
+	Choavl = 'CHOAVL',
+	Enerc = 'ENERC',
+	Fat = 'FAT',
+	Pro = 'PRO',
+	Salteq = 'SALTEQ',
 }
 
 export interface Constituent {
