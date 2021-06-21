@@ -1,14 +1,22 @@
-<div fxLayout="column nowrap" fxLayoutAlign="start" class="container">
-	<div
-		class="day"
-		fxLayoutAlign="center center"
-		matRipple
-		[matTooltip]="(meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'"
-	>
-		<div>
-			{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;{{
-				meal.type === 'lunch' ? '🔆' : '🌙'
-			}}
+<div fxLayout="column nowrap" fxLayoutAlign="start" class="container" #container>
+	<div class="topper" fxLayoutAlign="center center">
+		<div fxFlex="33%"></div>
+		<div fxFlex="1 0 33%" fxLayoutAlign="center">
+			<div class="day" matRipple [matTooltip]="(meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'">
+				{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;{{
+					meal.type === 'lunch' ? '🔆' : '🌙'
+				}}
+			</div>
+		</div>
+		<div fxFlex="33%" fxLayoutAlign="end center" fxLayoutGap="10px" class="icons">
+			<!--<div
+				*ngIf="meal.jowRecipeId"
+				fxLayoutAlign="center center"
+				style="filter: brightness(1.3)"
+			>
+				<mat-icon svgIcon="jow"></mat-icon>
+			</div>-->
+			<div *ngIf="meal.extras?.croquettes">🐱</div>
 		</div>
 	</div>
 	<mat-card
@@ -26,27 +34,27 @@
 		<div class="overlay"></div>
 		<mat-card-header
 			class="header"
+			[class.has-jow-recipe]="meal?.jowRecipe"
 			fxLayoutAlign="space-between center"
 			(click)="toggleEdit()"
 			matRipple
 		>
 			<mat-card-title>
-				<ng-container *ngIf="meal?.name; else noMealTpl">
-					{{ meal?.name }}
-				</ng-container>
-				<ng-template #noMealTpl>
-					<div class="no-meal-title">Aucun plat</div>
-				</ng-template>
+				<div fxLayout="column">
+					<div>
+						<ng-container *ngIf="meal?.name; else noMealTpl">
+							{{ meal?.name }}
+						</ng-container>
+						<ng-template #noMealTpl>
+							<div class="no-meal-title">Aucun plat</div>
+						</ng-template>
+					</div>
+					<div class="description" *ngIf="meal?.jowRecipe">
+						{{ meal.jowRecipe!.description }}
+					</div>
+				</div>
 			</mat-card-title>
 			<div fxLayoutAlign="end center" fxLayoutGap="10px" fxFlex="noshrink" class="icons">
-				<!--<div
-					*ngIf="meal.jowRecipeId"
-					fxLayoutAlign="center center"
-					style="filter: brightness(1.3)"
-				>
-					<mat-icon svgIcon="jow"></mat-icon>
-				</div>-->
-				<div *ngIf="meal.extras?.croquettes">🐱</div>
 				<div *ngIf="meal.extras?.freezer">❄️</div>
 				<button mat-icon-button *ngIf="!meal.name">
 					<mat-icon>add_circle</mat-icon>

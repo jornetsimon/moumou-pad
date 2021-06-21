@@ -29,11 +29,10 @@
 				<img
 					class="recipe-option-image"
 					[src]="jowService.constructAssetUrl(recipe.imageUrl)"
-					height="25"
 				/>
-				<span>{{ recipe.title }}</span>
+				<span style="font-size: 14px">{{ recipe.title }}</span>
 				<small *ngIf="recipe.difficulty >= 2">
-					| Difficulté :
+					|
 					<ng-container *ngForRepeat="recipe.difficulty">💪️</ng-container>
 				</small>
 			</mat-option>

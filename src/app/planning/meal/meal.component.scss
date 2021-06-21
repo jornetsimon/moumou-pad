@@ -6,6 +6,12 @@ $meal-color: $primary;
 	margin: min(20px, 1.5vh) 0;
 }
 
+.topper {
+	.icons {
+		font-size: 18px;
+	}
+}
+
 .meal {
 	background-color: $meal-color;
 	&.empty {
@@ -45,9 +51,15 @@ $meal-color: $primary;
 		min-height: 40px;
 		padding: 0 5px;
 		border-radius: 5px;
+		transition: min-height 0.3s ease-out;
 
 		&:hover {
 			cursor: pointer;
+		}
+		.description {
+			font-weight: normal;
+			font-size: 13px;
+			transition: height 0.75s ease-out 0.5s, opacity 0.5s ease-out, margin-top 0.2s linear;
 		}
 
 		::ng-deep .mat-card-title {
@@ -71,15 +83,52 @@ $meal-color: $primary;
 	}
 }
 
+.meal.open {
+	.header {
+		.description {
+			height: 0;
+			opacity: 0;
+			margin-top: 0;
+			transition: height 0.25s ease-out 0.25s, opacity 0.25s ease-out, margin-top 0.1s linear;
+		}
+	}
+}
+.meal:not(.open) {
+	.header {
+		.description {
+			height: 0;
+			opacity: 0;
+			margin-top: 0;
+		}
+
+		@media (hover: hover) and (pointer: fine) {
+			&.has-jow-recipe:hover {
+				min-height: 80px;
+
+				.description {
+					height: auto;
+					opacity: 1;
+					display: inherit;
+					margin-top: 0.75em;
+				}
+			}
+		}
+	}
+}
 .day {
 	width: fit-content;
 	align-self: center;
 	background-color: #6edea2;
 	color: white;
-	border-radius: 5px 5px 0 0;
+	border-radius: 5px;
 	padding: 0.25em 0.5em;
 	letter-spacing: 0.15em;
 	user-select: none;
+
+	transform: rotate(358deg);
+	z-index: 1;
+	position: relative;
+	top: 5px;
 }
 
 .no-meal-title {

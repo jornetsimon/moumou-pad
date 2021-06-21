@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	ChangeDetectorRef,
+	Component,
+	ElementRef,
+	Input,
+	ViewChild,
+} from '@angular/core';
 import { Meal } from './state/meal.model';
 import { MealQuery } from './state/meal.query';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,10 +17,18 @@ import { JowService } from '../../jow/state/jow.service';
 	templateUrl: './meal.component.html',
 	styleUrls: ['./meal.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
-	animations: [collapseOnLeaveAnimation(), expandOnEnterAnimation()],
+	animations: [
+		collapseOnLeaveAnimation({
+			duration: 250,
+		}),
+		expandOnEnterAnimation({
+			duration: 500,
+		}),
+	],
 })
 export class MealComponent {
 	@Input() meal!: Meal;
+	@ViewChild('container') containerRef: ElementRef | undefined;
 	editMode = false;
 
 	constructor(
@@ -26,6 +41,11 @@ export class MealComponent {
 	toggleEdit() {
 		this.editMode = !this.editMode;
 		this.cd.detectChanges();
+		if (this.containerRef) {
+			setTimeout(() => {
+				this.containerRef!.nativeElement.scrollIntoView({ behavior: 'smooth' });
+			}, 250);
+		}
 	}
 
 	afterSave() {
