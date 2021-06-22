@@ -56,11 +56,6 @@ $meal-color: $primary;
 		&:hover {
 			cursor: pointer;
 		}
-		.description {
-			font-weight: normal;
-			font-size: 13px;
-			transition: height 0.75s ease-out 0.5s, opacity 0.5s ease-out, margin-top 0.2s linear;
-		}
 
 		::ng-deep .mat-card-title {
 			margin: 0;
@@ -83,38 +78,6 @@ $meal-color: $primary;
 	}
 }
 
-.meal.open {
-	.header {
-		.description {
-			height: 0;
-			opacity: 0;
-			margin-top: 0;
-			transition: height 0.25s ease-out 0.25s, opacity 0.25s ease-out, margin-top 0.1s linear;
-		}
-	}
-}
-.meal:not(.open) {
-	.header {
-		.description {
-			height: 0;
-			opacity: 0;
-			margin-top: 0;
-		}
-
-		@media (hover: hover) and (pointer: fine) {
-			&.has-jow-recipe:hover {
-				min-height: 80px;
-
-				.description {
-					height: auto;
-					opacity: 1;
-					display: inherit;
-					margin-top: 0.75em;
-				}
-			}
-		}
-	}
-}
 .day {
 	width: fit-content;
 	align-self: center;
