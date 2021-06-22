@@ -37,6 +37,7 @@ export class MealFormComponent implements OnChanges {
 	extrasFg = new FormGroup({
 		croquettes: new FormControl(false),
 		freezer: new FormControl(false),
+		outOfHome: new FormControl(false),
 	});
 	form = new FormGroup({
 		name: new FormControl(undefined),
@@ -92,25 +93,24 @@ export class MealFormComponent implements OnChanges {
 	saveMeal() {
 		const date = this.meal!.date;
 		const type = this.meal!.type;
+		const meal = {
+			name: this.form.value.name,
+			jowRecipe: this.jowRecipe,
+			extras: this.extrasFg.value,
+		};
+		console.log(meal);
 		if (this.meal?.name) {
-			const meal: Partial<Meal> = {
-				name: this.form.value.name,
-				jowRecipe: this.jowRecipe,
-				extras: this.extrasFg.value,
-			};
 			this.mealService.update(
 				this.meal.id,
 				pickBy(meal, (p) => p !== undefined)
 			);
 		} else {
-			const meal = createMeal({
+			const freshMeal = createMeal({
+				...meal,
 				date,
 				type,
-				name: this.form.value.name,
-				jowRecipe: this.jowRecipe,
-				extras: this.extrasFg.value,
 			});
-			this.mealService.add(pickBy(meal, (p) => p !== undefined));
+			this.mealService.add(pickBy(freshMeal, (p) => p !== undefined));
 		}
 		this.mealSaved.emit();
 	}

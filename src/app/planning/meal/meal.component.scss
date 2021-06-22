@@ -34,8 +34,12 @@ $meal-color: $primary;
 
 .meal {
 	background-color: $meal-color;
+	transition: background-color 0.5s;
 	&.empty {
 		background-color: lighten($meal-color, 30%);
+	}
+	&.out-of-home {
+		background-color: $accent;
 	}
 	&.has-jow-recipe {
 		background-repeat: no-repeat, no-repeat !important;

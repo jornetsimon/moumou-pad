@@ -20,6 +20,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { NgForRepeatModule } from 'ng-for-repeat';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 const components: Array<any> = [];
 
@@ -46,6 +47,7 @@ const modules = [
 	MatAutocompleteModule,
 	MatOptionModule,
 	MatProgressSpinnerModule,
+	MatCheckboxModule,
 ];
 
 @NgModule({

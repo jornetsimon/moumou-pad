@@ -4,8 +4,11 @@
 		<input matInput placeholder="Poulet poivrons, huevos rotos..." formControlName="name" />
 		<mat-icon matSuffix class="clear-icon" (click)="form.get('name')?.reset()">clear</mat-icon>
 	</mat-form-field>
+	<ng-container formGroupName="extras">
+		<mat-checkbox formControlName="outOfHome">En dehors de la maison</mat-checkbox>
+	</ng-container>
 
-	<div class="separator" *ngIf="!jowRecipe">Ou</div>
+	<div class="separator" *ngIf="!jowRecipe" style="margin-top: 15px">Ou</div>
 
 	<mat-form-field appearance="standard" class="width-100">
 		<mat-label>

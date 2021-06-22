@@ -15,6 +15,7 @@ export interface Meal {
 export interface MealExtras {
 	croquettes: boolean;
 	freezer: boolean;
+	outOfHome: boolean;
 }
 
 export function createMeal(input: {
