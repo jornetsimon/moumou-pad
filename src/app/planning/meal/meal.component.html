@@ -5,9 +5,9 @@
 		</div>
 		<div fxFlex="1 0 33%" fxLayoutAlign="center">
 			<div class="day" matRipple [matTooltip]="(meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'">
-				{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;{{
-					meal.type === 'lunch' ? '🔆' : '🌙'
-				}}
+				{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;
+				<mat-icon *ngIf="meal.type === 'lunch'" style="color: yellow">light_mode</mat-icon>
+				<mat-icon *ngIf="meal.type === 'dinner'" style="color: #6777d0">dark_mode</mat-icon>
 			</div>
 		</div>
 		<div fxFlex="33%" fxLayoutAlign="end center" fxLayoutGap="10px" class="icons">

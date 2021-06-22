@@ -4,6 +4,10 @@
 	text-align: center;
 	margin: 30px 0;
 	font-family: 'Dancing Script', cursive;
+
+	@media (max-width: 599px) {
+		margin: 15px 0 5px 0;
+	}
 }
 
 .meals-container {
