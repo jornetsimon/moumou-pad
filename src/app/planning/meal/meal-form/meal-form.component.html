@@ -81,7 +81,7 @@
 		</mat-card>
 	</ng-container>
 
-	<ng-container *ngIf="!jowRecipe">
+	<ng-container *ngIf="!jowRecipe && !form.get('name')!.value">
 		<mat-card>
 			<mat-card-title style="font-size: medium">
 				<div fxLayoutAlign="space-between center">
