@@ -1,6 +1,10 @@
 ::ng-deep .mat-dialog-container {
 	padding: 0;
 }
+::ng-deep .mat-dialog-content {
+	max-height: 85vh;
+	overflow: scroll;
+}
 .card {
 	max-width: 400px;
 	padding-bottom: 30px;
@@ -9,7 +13,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		margin: 0;
+		margin: 15px 0;
 	}
 }
 
@@ -21,5 +25,52 @@
 .description {
 	font-size: 16px;
 }
-.header-image {
+.ingredients {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	align-items: center;
+
+	color: grey;
+	font-size: 12px;
+	margin-top: 10px;
+
+	& > div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		img {
+			max-height: 75px;
+		}
+
+		&:not(:last-child) {
+			margin: 3px 6px;
+		}
+	}
+}
+
+.properties {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 30px;
+	font-size: 14px;
+
+	& > div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+
+		mat-icon {
+			font-size: 32px;
+			height: 32px;
+			width: 32px;
+			margin-bottom: 3px;
+		}
+
+		&:not(:last-child) {
+			margin-right: 15px;
+		}
+	}
 }

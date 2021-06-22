@@ -5,8 +5,13 @@
 		<mat-icon matSuffix class="clear-icon" (click)="form.get('name')?.reset()">clear</mat-icon>
 	</mat-form-field>
 
+	<div class="separator" *ngIf="!jowRecipe">Ou</div>
+
 	<mat-form-field appearance="standard" class="width-100">
-		<mat-label>Rechercher une recette sur Jow</mat-label>
+		<mat-label>
+			<ng-container *ngIf="!jowRecipe"> Rechercher une recette sur Jow </ng-container>
+			<ng-container *ngIf="jowRecipe"> Trouver une autre recette Jow </ng-container>
+		</mat-label>
 		<input
 			matInput
 			aria-label="State"
@@ -58,6 +63,22 @@
 				/>
 				<div class="title">{{ jowRecipe.title }}</div>
 				<div class="description">{{ jowRecipe.description }}</div>
+				<div class="properties">
+					<div matTooltip="Préparation">
+						<mat-icon>blender</mat-icon>
+						<div>
+							{{
+								jowRecipe.preparationTime +
+									jowRecipe.preparationExtraTimePerCover * 2
+							}}
+							min
+						</div>
+					</div>
+					<div matTooltip="Cuisson">
+						<mat-icon>microwave</mat-icon>
+						<div>{{ jowRecipe.cookingTime }} min</div>
+					</div>
+				</div>
 			</div>
 			<mat-card-actions class="actions">
 				<button
@@ -139,7 +160,7 @@
 		</div>
 	</div>
 
-	<div fxLayoutAlign="center" style="margin-top: 30px">
+	<div fxLayoutAlign="center" class="actions">
 		<button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">
 			Enregistrer mon menu
 		</button>

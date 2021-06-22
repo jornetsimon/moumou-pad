@@ -121,6 +121,7 @@ export class MealFormComponent implements OnChanges {
 				recipe,
 				isSelected: this.jowRecipe && this.jowRecipe._id === recipe._id,
 			},
+			autoFocus: false,
 		});
 
 		dialogRef.afterClosed().subscribe((result: Recipe | undefined) => {

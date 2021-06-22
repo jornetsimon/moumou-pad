@@ -31,7 +31,7 @@ export interface Recipe {
 	additionalConstituents: AdditionalConstituent[];
 	partners: any[];
 	family: Family;
-	origin: Family;
+	origin?: Family;
 	seasons: string[];
 	tags: Family[];
 	passiveCookingTime: number;

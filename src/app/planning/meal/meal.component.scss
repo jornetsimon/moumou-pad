@@ -24,7 +24,7 @@ $meal-color: $primary;
 			left: -10px;
 			z-index: 1;
 			transform: rotate(349deg);
-			box-shadow: 1px 2px 2px 0 rgb(0 0 0 / 33%);
+			box-shadow: 1px 2px 2px 0 rgb(0 0 0 / 7%);
 		}
 	}
 	.icons {
@@ -93,7 +93,7 @@ $meal-color: $primary;
 	.form-container {
 		border-radius: 5px;
 		padding: 30px;
-		margin: 10px 0 15px;
+		margin: 10px 0 0 0;
 		background-color: lighten($meal-color, 50%);
 	}
 }

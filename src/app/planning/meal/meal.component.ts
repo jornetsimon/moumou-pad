@@ -25,7 +25,7 @@ import { getHours, isSameDay } from 'date-fns';
 			duration: 250,
 		}),
 		expandOnEnterAnimation({
-			duration: 500,
+			duration: 400,
 		}),
 	],
 })
