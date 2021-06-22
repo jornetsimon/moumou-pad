@@ -7,6 +7,18 @@ $meal-color: $primary;
 }
 
 .topper {
+	.is-next {
+		background-color: #ff4052;
+		color: white;
+		border-radius: 3px;
+		padding: 1px 8px;
+		font-size: 12px;
+		position: absolute;
+		top: 15px;
+		left: -10px;
+		z-index: 1;
+		transform: rotate(349deg);
+	}
 	.icons {
 		font-size: 18px;
 	}

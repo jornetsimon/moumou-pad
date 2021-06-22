@@ -4,6 +4,8 @@ import {
 	Component,
 	ElementRef,
 	Input,
+	OnChanges,
+	SimpleChanges,
 	ViewChild,
 } from '@angular/core';
 import { Meal } from './state/meal.model';
@@ -11,6 +13,7 @@ import { MealQuery } from './state/meal.query';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { collapseOnLeaveAnimation, expandOnEnterAnimation } from 'angular-animations';
 import { JowService } from '../../jow/state/jow.service';
+import { getHours, isSameDay } from 'date-fns';
 
 @Component({
 	selector: 'cb-meal',
@@ -26,10 +29,11 @@ import { JowService } from '../../jow/state/jow.service';
 		}),
 	],
 })
-export class MealComponent {
+export class MealComponent implements OnChanges {
 	@Input() meal!: Meal;
 	@ViewChild('container') containerRef: ElementRef | undefined;
 	editMode = false;
+	isNext = false;
 
 	constructor(
 		private mealQuery: MealQuery,
@@ -37,6 +41,19 @@ export class MealComponent {
 		public jowService: JowService,
 		private cd: ChangeDetectorRef
 	) {}
+
+	ngOnChanges(changes: SimpleChanges) {
+		if (changes.meal) {
+			const now = Date.now();
+			const isToday = isSameDay(this.meal.date, now);
+			const currentHour = getHours(now);
+			if (isToday) {
+				const matchesLunch = currentHour < 14 && this.meal.type === 'lunch';
+				const matchesDinner = currentHour >= 14 && this.meal.type === 'dinner';
+				this.isNext = matchesLunch || matchesDinner;
+			}
+		}
+	}
 
 	toggleEdit() {
 		this.editMode = !this.editMode;

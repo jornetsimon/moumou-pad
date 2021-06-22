@@ -1,6 +1,8 @@
 <div fxLayout="column nowrap" fxLayoutAlign="start" class="container" #container>
 	<div class="topper" fxLayoutAlign="center center">
-		<div fxFlex="33%"></div>
+		<div fxFlex="33%" class="relative">
+			<span class="is-next" *ngIf="isNext">prochain</span>
+		</div>
 		<div fxFlex="1 0 33%" fxLayoutAlign="center">
 			<div class="day" matRipple [matTooltip]="(meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'">
 				{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;{{
