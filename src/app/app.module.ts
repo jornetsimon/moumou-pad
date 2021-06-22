@@ -19,6 +19,7 @@ import {
 	USE_EMULATOR as USE_FUNCTIONS_EMULATOR,
 } from '@angular/fire/functions';
 import { RecipeModalComponent } from './jow/recipe-modal/recipe-modal.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 registerLocaleData(fr);
 
@@ -33,6 +34,12 @@ registerLocaleData(fr);
 		PlanningModule,
 		BrowserAnimationsModule,
 		SharedModule,
+		ServiceWorkerModule.register('ngsw-worker.js', {
+			enabled: environment.production,
+			// Register the ServiceWorker as soon as the app is stable
+			// or after 30 seconds (whichever comes first).
+			registrationStrategy: 'registerWhenStable:30000',
+		}),
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'fr' },
