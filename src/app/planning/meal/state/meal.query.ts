@@ -42,7 +42,6 @@ export class MealQuery extends QueryEntity<MealState> {
 					);
 					return createMeal({
 						...matchedMeal,
-						jowRecipeId: matchedMeal?.jowRecipeId || null,
 						jowRecipe: matchedMeal?.jowRecipe || null,
 						date: slot.date,
 						type: slot.type,

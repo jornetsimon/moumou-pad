@@ -73,10 +73,10 @@ export class MealFormComponent implements OnChanges {
 
 		if (
 			changes.meal &&
-			this.meal?.jowRecipeId &&
-			this.meal.jowRecipeId !== this.jowRecipe?._id
+			this.meal?.jowRecipe?._id &&
+			this.meal.jowRecipe._id !== this.jowRecipe?._id
 		) {
-			this.jowService.getRecipe(this.meal.jowRecipeId).subscribe((recipe) => {
+			this.jowService.getRecipe(this.meal.jowRecipe._id).subscribe((recipe) => {
 				this.jowRecipe = recipe;
 				this.cd.detectChanges();
 			});
@@ -97,7 +97,6 @@ export class MealFormComponent implements OnChanges {
 		if (this.meal?.name) {
 			const meal: Partial<Meal> = {
 				name: this.form.value.name,
-				jowRecipeId: this.jowRecipe?._id || null,
 				jowRecipe: this.jowRecipe,
 				extras: this.extrasFg.value,
 			};
@@ -110,7 +109,6 @@ export class MealFormComponent implements OnChanges {
 				date,
 				type,
 				name: this.form.value.name,
-				jowRecipeId: this.jowRecipe?._id || null,
 				jowRecipe: this.jowRecipe,
 				extras: this.extrasFg.value,
 			});

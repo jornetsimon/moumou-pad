@@ -9,7 +9,6 @@ export interface Meal {
 	type: MealType;
 	timestamp: number;
 	name?: string;
-	jowRecipeId: string | null;
 	jowRecipe: Recipe | null;
 	extras?: MealExtras;
 }
@@ -22,7 +21,6 @@ export function createMeal(input: {
 	date: Date;
 	type: MealType;
 	name?: string;
-	jowRecipeId: string | null;
 	jowRecipe: Recipe | null;
 	extras?: MealExtras;
 }): Meal {
