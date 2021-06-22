@@ -16,13 +16,15 @@ $meal-color: $primary;
 		border-radius: 3px;
 		padding: 1px 8px;
 		font-size: 12px;
+		font-weight: 500;
 
 		@media (min-width: 600px) {
 			position: absolute;
-			top: 15px;
+			top: 10px;
 			left: -10px;
 			z-index: 1;
 			transform: rotate(349deg);
+			box-shadow: 1px 2px 2px 0 rgb(0 0 0 / 33%);
 		}
 	}
 	.icons {
@@ -106,7 +108,7 @@ $meal-color: $primary;
 	letter-spacing: 0.15em;
 	user-select: none;
 
-	transform: rotate(358deg);
+	/*transform: rotate(358deg);*/
 	z-index: 1;
 	position: relative;
 	top: 5px;

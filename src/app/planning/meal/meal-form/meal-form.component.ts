@@ -73,13 +73,11 @@ export class MealFormComponent implements OnChanges {
 
 		if (
 			changes.meal &&
-			this.meal?.jowRecipe?._id &&
+			this.meal?.jowRecipe &&
 			this.meal.jowRecipe._id !== this.jowRecipe?._id
 		) {
-			this.jowService.getRecipe(this.meal.jowRecipe._id).subscribe((recipe) => {
-				this.jowRecipe = recipe;
-				this.cd.detectChanges();
-			});
+			this.jowRecipe = this.meal.jowRecipe;
+			this.cd.detectChanges();
 		}
 	}
 
