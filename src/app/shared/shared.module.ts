@@ -21,6 +21,7 @@ import { NgForRepeatModule } from 'ng-for-repeat';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatMenuModule } from '@angular/material/menu';
 
 const components: Array<any> = [];
 
@@ -48,6 +49,7 @@ const modules = [
 	MatOptionModule,
 	MatProgressSpinnerModule,
 	MatCheckboxModule,
+	MatMenuModule,
 ];
 
 @NgModule({

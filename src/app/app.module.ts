@@ -20,6 +20,9 @@ import {
 } from '@angular/fire/functions';
 import { RecipeModalComponent } from './jow/recipe-modal/recipe-modal.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/auth';
+import { AuthModule } from './auth/auth.module';
+import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 
 registerLocaleData(fr);
 
@@ -31,6 +34,9 @@ registerLocaleData(fr);
 		AngularFireModule.initializeApp(environment.firebaseConfig),
 		AngularFirestoreModule,
 		AngularFireFunctionsModule,
+		AngularFireAuthModule,
+		AngularFireAuthGuardModule,
+		AuthModule,
 		PlanningModule,
 		BrowserAnimationsModule,
 		SharedModule,
@@ -50,6 +56,10 @@ registerLocaleData(fr);
 		{
 			provide: USE_FUNCTIONS_EMULATOR,
 			useValue: environment.useEmulators ? ['localhost', 5001] : undefined,
+		},
+		{
+			provide: USE_AUTH_EMULATOR,
+			useValue: environment.useEmulators ? ['localhost', 9099] : undefined,
 		},
 		{ provide: REGION, useValue: 'europe-west1' },
 	],

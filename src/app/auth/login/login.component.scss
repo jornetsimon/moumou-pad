@@ -1,0 +1,54 @@
+$white: #fff;
+$google-blue: #4285f4;
+$button-active-blue: #1669f2;
+
+.app-name {
+	margin: 1em 15px;
+	font-family: 'Dancing Script', cursive;
+	font-size: 72px;
+	text-decoration: underline;
+	text-underline-offset: 12px;
+	text-decoration-thickness: 4px;
+	text-align: center;
+}
+
+.google-btn {
+	cursor: pointer;
+	background-color: $google-blue;
+	border-radius: 2px;
+	box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
+
+	display: flex;
+	justify-content: start;
+	align-items: center;
+
+	.google-icon-wrapper {
+		flex: none;
+		margin: 1px;
+		width: 50px;
+		height: 50px;
+		border-radius: 2px;
+		background-color: $white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.google-icon {
+	}
+	.btn-text {
+		color: $white;
+		font-size: large;
+		letter-spacing: 0.2px;
+		font-family: 'Roboto', serif;
+		font-weight: bold;
+		margin-left: 0.75em;
+		margin-right: 1.5em;
+	}
+	transition: box-shadow 0.25s;
+	&:hover {
+		box-shadow: 0 0 6px $google-blue;
+	}
+	&:active {
+		background: $button-active-blue;
+	}
+}

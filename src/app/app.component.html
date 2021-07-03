@@ -1,1 +1,16 @@
-<router-outlet></router-outlet>
+<div class="user" *ngIf="angularFireAuth.user | async as user">
+	<img
+		class="avatar"
+		[class.has-photo]="user.photoURL"
+		[src]="user.photoURL || 'assets/user-icon-placeholder.png'"
+		alt="User photo"
+		[matMenuTriggerFor]="userMenu"
+	/>
+	<mat-menu #userMenu="matMenu">
+		<button mat-menu-item disabled>
+			<span>{{ user.displayName }}</span>
+		</button>
+		<button mat-menu-item (click)="logout()">Déconnexion</button>
+	</mat-menu>
+</div>
+<div><router-outlet></router-outlet></div>

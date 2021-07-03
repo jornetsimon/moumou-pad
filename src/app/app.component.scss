@@ -1,0 +1,21 @@
+.avatar {
+	$avatar-size: 35px;
+	height: $avatar-size;
+	width: $avatar-size;
+	border-radius: 50%;
+	object-fit: cover;
+
+	cursor: pointer;
+	border: 1px solid white;
+	float: right;
+	margin: 5px;
+
+	&:not(.has-photo) {
+		border: 1px solid #9b9a93;
+	}
+
+	transition: box-shadow 0.25s;
+	&:hover {
+		box-shadow: 0 0 7px 0 rgb(0 0 0 / 25%);
+	}
+}

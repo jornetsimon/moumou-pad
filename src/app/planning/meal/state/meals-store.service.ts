@@ -6,7 +6,7 @@ import { fromUnixTime } from 'date-fns';
 export interface MealState extends EntityState<Meal> {}
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'meals', idKey: 'id' })
+@StoreConfig({ name: 'meals', resettable: true })
 export class MealsStore extends EntityStore<MealState> {
 	constructor() {
 		super();
