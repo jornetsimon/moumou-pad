@@ -23,6 +23,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/auth';
 import { AuthModule } from './auth/auth.module';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
+import { AppRoutingModule } from './app-routing.module';
 
 registerLocaleData(fr);
 
@@ -40,6 +41,7 @@ registerLocaleData(fr);
 		PlanningModule,
 		BrowserAnimationsModule,
 		SharedModule,
+		AppRoutingModule,
 		ServiceWorkerModule.register('ngsw-worker.js', {
 			enabled: environment.production,
 			// Register the ServiceWorker as soon as the app is stable

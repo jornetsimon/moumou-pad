@@ -39,6 +39,7 @@ export class AppComponent {
 			});
 		});
 
+		console.log('fetching config');
 		user$
 			.pipe(
 				filter((user) => !!user),

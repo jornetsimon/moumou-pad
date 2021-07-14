@@ -18,6 +18,11 @@ const routes: Routes = [
 				path: '',
 				component: PlanningComponent,
 			},
+			{
+				path: 'settings',
+				loadChildren: () =>
+					import('./settings/settings.module').then((m) => m.SettingsModule),
+			},
 		],
 	},
 	{
