@@ -8,13 +8,15 @@
 			fxLayout="row-reverse"
 			fxLayoutAlign="center"
 			cdkDropList
+			#dropListRef="cdkDropList"
 			[cdkDropListData]="meal"
 			[cdkDropListEnterPredicate]="canEnter"
 			(cdkDropListDropped)="onDrop($event)"
 		>
 			<div
 				class="day"
-				[class.grey]="dragDropService.dragging$ | async"
+				[class.waiting-for-swap]="dragDropService.dragging$ | async"
+				[class.cannot-drop]="cannotDropHere$ | async"
 				[matTooltip]="(meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'"
 				cdkDrag
 				[cdkDragData]="meal"

@@ -130,8 +130,11 @@ $meal-color: $primary;
 
 	transition: background-color 0.25s ease-out;
 
-	&.grey {
-		background-color: #9b9a93;
+	&.waiting-for-swap {
+	}
+	&.cannot-drop {
+		filter: saturate(0) opacity(0.5);
+		z-index: 0;
 	}
 	.cdk-drop-list-dragging &:not(.cdk-drag-placeholder):not(.dragging) {
 		background-color: orangered;

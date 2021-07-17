@@ -3,7 +3,6 @@ import {
 	ChangeDetectorRef,
 	Component,
 	ElementRef,
-	EventEmitter,
 	Input,
 	OnChanges,
 	SimpleChanges,
@@ -21,6 +20,8 @@ import { CdkDrag } from '@angular/cdk/drag-drop/directives/drag';
 import { DragDropService } from './drag-drop.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'cb-meal',
@@ -39,10 +40,17 @@ import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.com
 export class MealComponent implements OnChanges {
 	@Input() meal!: Meal;
 	@ViewChild('container') containerRef: ElementRef | undefined;
-	private showIsBeingDragged = new EventEmitter<boolean>();
-	showIsBeingDragged$ = this.showIsBeingDragged.asObservable();
+	@ViewChild('dropListRef') dropListRef: CdkDropList<Meal> | undefined;
 	editMode = false;
 	isNext = false;
+	cannotDropHere$: Observable<boolean> = this.dragDropService.dragging$.pipe(
+		map((dragging) => {
+			if (!dragging || !this.dropListRef) {
+				return false;
+			}
+			return !this.canEnter({ data: dragging } as CdkDrag<Meal>, this.dropListRef);
+		})
+	);
 
 	canEnter = (drag: CdkDrag<Meal>, drop: CdkDropList<Meal>): boolean => {
 		const origin = drag.data;
@@ -123,12 +131,10 @@ export class MealComponent implements OnChanges {
 	}
 
 	onDragStart() {
-		this.showIsBeingDragged.emit(true);
-		this.dragDropService.dragStart();
+		this.dragDropService.dragStart(this.meal);
 	}
 
 	onDragEnd() {
-		this.showIsBeingDragged.emit(false);
 		this.dragDropService.dragStop();
 	}
 }
