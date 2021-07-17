@@ -21,3 +21,9 @@
 	</mat-menu>
 </div>
 <div><router-outlet></router-outlet></div>
+
+<ng-template #swUpdateTpl>
+	<div (click)="reloadApp()" class="cursor-pointer" matTooltip="Mettre à jour">
+		Une mise à jour est disponible !
+	</div>
+</ng-template>

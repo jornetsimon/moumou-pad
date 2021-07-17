@@ -1,10 +1,9 @@
 <div class="title">Planning de la semaine</div>
 
-<div class="meals-container" fxLayout="row wrap">
+<div class="meals-container" fxLayout="row wrap" cdkDropListGroup>
 	<cb-meal
 		[meal]="meal"
 		*ngFor="let meal of meals$ | async; trackBy: trackByFn"
 		class="meal"
-		style=""
 	></cb-meal>
 </div>

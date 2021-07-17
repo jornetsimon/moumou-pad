@@ -1683,6 +1683,20 @@
   resolved "https://registry.yarnpkg.com/@jsdevtools/ono/-/ono-7.1.3.tgz#9df03bbd7c696a5c58885c34aa06da41c8543796"
   integrity sha512-4JQNk+3mVzK3xh2rqd6RB4J46qUR19azEHBneZyTZM+c456qOrbbM/5xcR8huNCCcbVt7+UmizG6GuUvPvKUYg==
 
+"@ngneat/hot-toast@3.3.0":
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/hot-toast/-/hot-toast-3.3.0.tgz#91612ac907b1568985d996ba3865a4bf4c84d04d"
+  integrity sha512-M6+UqIWOhnjOpquxw4HF+AacZtKa6uPyqrHetb1omqkh0UY5aIy5t8f2gvvWpkOkOgA/oD6D0Tz5BZbtRLgP8A==
+  dependencies:
+    tslib "^2.0.0"
+
+"@ngneat/overview@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@ngneat/overview/-/overview-2.0.2.tgz#557dbb801e8b3e42d3cda57f5feb79319ef2f120"
+  integrity sha512-BARS4lUrWW5BidZS6jKtZc3okV7ro+3QKxJKs1FgeDDSomNdNACEjB0BMITeulEQ+agE4n9U+sbGpF2guOXDQA==
+  dependencies:
+    tslib "^2.0.0"
+
 "@ngneat/until-destroy@^8.0.4":
   version "8.0.4"
   resolved "https://registry.yarnpkg.com/@ngneat/until-destroy/-/until-destroy-8.0.4.tgz#08c61fc791012d38fcb3310ec03de4f4df9f29d1"

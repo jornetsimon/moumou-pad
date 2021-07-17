@@ -1,12 +1,18 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+	AfterViewInit,
+	ChangeDetectionStrategy,
+	Component,
+	TemplateRef,
+	ViewChild,
+} from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AppStore } from '../state/app.store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { filter, switchMap } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @UntilDestroy()
 @Component({
@@ -15,23 +21,16 @@ import { AppService } from '../state/app.service';
 	styleUrls: ['./app.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
+	@ViewChild('swUpdateTpl') swUpdateTpl: TemplateRef<any> | undefined;
 	constructor(
-		update: SwUpdate,
-		private snackbar: MatSnackBar,
+		private update: SwUpdate,
+		private toastService: HotToastService,
 		public angularFireAuth: AngularFireAuth,
 		private router: Router,
 		private appStore: AppStore,
 		private appService: AppService
 	) {
-		update.available.subscribe((upd: any) => {
-			const snack = snackbar.open('Une mise à jour est disponible', `C'est parti !`, {
-				horizontalPosition: 'center',
-				panelClass: 'updateSnack',
-			});
-			snack.onAction().subscribe(() => window.location.reload());
-		});
-
 		const user$ = this.angularFireAuth.user.pipe(untilDestroyed(this));
 		user$.subscribe((user) => {
 			this.appStore.update({
@@ -48,12 +47,24 @@ export class AppComponent {
 			.subscribe();
 	}
 
+	ngAfterViewInit() {
+		this.update.available.subscribe(() => {
+			this.toastService.info(this.swUpdateTpl, {
+				icon: '🔄',
+			});
+		});
+	}
+
 	logout() {
 		this.angularFireAuth.signOut().then(() => {
-			this.snackbar.open('Déconnecté', undefined, {
+			this.toastService.show('Déconnecté', {
 				duration: 3000,
 			});
 			this.router.navigateByUrl('/login');
 		});
+	}
+
+	reloadApp() {
+		window.location.reload();
 	}
 }

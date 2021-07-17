@@ -11,7 +11,6 @@ import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { HttpClientModule } from '@angular/common/http';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -21,6 +20,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 const components: Array<any> = [];
 
@@ -39,7 +39,6 @@ const modules = [
 	MatIconModule,
 	MatFormFieldModule,
 	MatInputModule,
-	MatSnackBarModule,
 	MatDividerModule,
 	MatChipsModule,
 	MatDialogModule,
@@ -48,6 +47,7 @@ const modules = [
 	MatProgressSpinnerModule,
 	MatCheckboxModule,
 	MatMenuModule,
+	DragDropModule,
 ];
 
 @NgModule({

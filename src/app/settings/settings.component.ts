@@ -7,7 +7,7 @@ import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
 import { distinctUntilChanged } from 'rxjs/operators';
 import * as _ from 'lodash';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @UntilDestroy()
 @Component({
@@ -25,7 +25,7 @@ export class SettingsComponent {
 		private title: Title,
 		private appService: AppService,
 		private appQuery: AppQuery,
-		private snackbar: MatSnackBar
+		private toastService: HotToastService
 	) {
 		this.appQuery
 			.select('userData')
@@ -42,6 +42,6 @@ export class SettingsComponent {
 	save() {
 		this.appService
 			.setConfig(this.form.value)
-			.then(() => this.snackbar.open('Préférences enregistrées'));
+			.then(() => this.toastService.success('Préférences enregistrées'));
 	}
 }

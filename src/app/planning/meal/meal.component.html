@@ -3,11 +3,33 @@
 		<div fxFlex="33%" class="relative">
 			<span class="is-next" *ngIf="isNext">prochain</span>
 		</div>
-		<div fxFlex="1 0 33%" fxLayoutAlign="center">
-			<div class="day" matRipple [matTooltip]="(meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'">
+		<div
+			fxFlex="1 0 33%"
+			fxLayout="row-reverse"
+			fxLayoutAlign="center"
+			cdkDropList
+			[cdkDropListData]="meal"
+			[cdkDropListEnterPredicate]="canEnter"
+			(cdkDropListDropped)="onDrop($event)"
+		>
+			<div
+				class="day"
+				[class.grey]="dragDropService.dragging$ | async"
+				[matTooltip]="(meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'"
+				cdkDrag
+				[cdkDragData]="meal"
+				(cdkDragStarted)="onDragStart()"
+				(cdkDragEnded)="onDragEnd()"
+				cdkDragPreviewClass="dragging"
+				cdkDragPreviewContainer="parent"
+			>
 				{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;
-				<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900">light_mode</mat-icon>
-				<mat-icon *ngIf="meal.type === 'dinner'" style="color: #41658a">dark_mode</mat-icon>
+				<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900">
+					light_mode
+				</mat-icon>
+				<mat-icon *ngIf="meal.type === 'dinner'" style="color: #41658a">
+					dark_mode
+				</mat-icon>
 			</div>
 		</div>
 		<div fxFlex="33%" fxLayoutAlign="end center" fxLayoutGap="10px" class="icons">

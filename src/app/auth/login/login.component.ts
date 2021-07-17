@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase/app';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
 	selector: 'cb-login',
@@ -13,7 +13,7 @@ export class LoginComponent {
 	constructor(
 		private router: Router,
 		private angularFireAuth: AngularFireAuth,
-		private snackbar: MatSnackBar
+		private toastService: HotToastService
 	) {}
 
 	login() {
@@ -21,9 +21,8 @@ export class LoginComponent {
 			.signInWithPopup(new firebase.auth.GoogleAuthProvider())
 			.then((credential) => {
 				if (credential.user) {
-					this.snackbar.open(
+					this.toastService.success(
 						`Connecté en tant que ${credential.user.displayName}`,
-						undefined,
 						{
 							duration: 3000,
 						}

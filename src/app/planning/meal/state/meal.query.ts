@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
-import { MealsStore, MealState } from './meals-store.service';
+import { MealsStore, MealState } from './meals.store';
 import { now$ } from '../../../model/weekday';
 import { map } from 'rxjs/operators';
 import { eachDayOfInterval, endOfWeek, fromUnixTime, isSameDay, startOfWeek } from 'date-fns';

@@ -24,6 +24,7 @@ import { AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from '@angul
 import { AuthModule } from './auth/auth.module';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 import { AppRoutingModule } from './app-routing.module';
+import { HotToastModule } from '@ngneat/hot-toast';
 
 registerLocaleData(fr);
 
@@ -42,6 +43,9 @@ registerLocaleData(fr);
 		BrowserAnimationsModule,
 		SharedModule,
 		AppRoutingModule,
+		HotToastModule.forRoot({
+			position: 'bottom-center',
+		}),
 		ServiceWorkerModule.register('ngsw-worker.js', {
 			enabled: environment.production,
 			// Register the ServiceWorker as soon as the app is stable

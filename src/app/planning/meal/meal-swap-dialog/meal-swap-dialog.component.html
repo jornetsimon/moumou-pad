@@ -1,0 +1,52 @@
+<div mat-dialog-title>Échanger ces menus ?</div>
+
+<div mat-dialog-content>
+	<div fxLayout="row wrap" fxLayoutAlign="center center">
+		<ng-container *ngTemplateOutlet="mealPreview; context: { meal: data.from }"></ng-container>
+		<div class="arrow">
+			<mat-icon>compare_arrows</mat-icon>
+		</div>
+		<ng-container *ngTemplateOutlet="mealPreview; context: { meal: data.to }"></ng-container>
+	</div>
+</div>
+<div mat-dialog-actions align="end">
+	<button mat-button (click)="cancel()">Annuler</button>
+	<button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>
+		Échanger les menus
+	</button>
+</div>
+
+<ng-template #mealDateLabel let-meal="meal">
+	{{ meal.date | date: 'EEEE d MMMM' | titlecase }}&nbsp;
+	<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900"> light_mode </mat-icon>
+	<mat-icon *ngIf="meal.type === 'dinner'" style="color: #41658a"> dark_mode </mat-icon>
+</ng-template>
+
+<ng-template #mealPreview let-meal="meal">
+	<div class="meal">
+		<div class="day">
+			<ng-container *ngTemplateOutlet="mealDateLabel; context: { meal: meal }"></ng-container>
+		</div>
+		<div class="name" *ngIf="meal.name; else noNameTpl">
+			{{ meal.name }}
+		</div>
+		<ng-template #noNameTpl>
+			<div class="no-name">Rien de prévu</div>
+		</ng-template>
+		<mat-card class="selected-recipe" *ngIf="meal.jowRecipe as jowRecipe">
+			<div
+				fxLayout="column"
+				fxLayoutAlign="start center"
+				[style.color]="jowRecipe.backgroundColor"
+			>
+				<img
+					class="preview"
+					[src]="jowService.constructAssetUrl(jowRecipe.imageUrl)"
+					[alt]="jowRecipe.title"
+					mat-ripple
+				/>
+				<div class="title">{{ jowRecipe.title }}</div>
+			</div>
+		</mat-card>
+	</div>
+</ng-template>
