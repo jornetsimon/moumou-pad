@@ -12,6 +12,14 @@
 
 .meals-container {
 	height: 80vh;
+
+	@media (max-width: 599px) {
+		margin-top: 15px;
+
+		& > *:nth-child(2n) {
+			margin-bottom: min(40px, 5vh);
+		}
+	}
 }
 
 ::ng-deep cb-meal.meal {

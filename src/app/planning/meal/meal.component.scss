@@ -3,7 +3,9 @@
 $meal-color: $primary;
 
 .container {
-	margin: min(20px, 1.5vh) 0;
+	@media (min-width: 600px) {
+		margin: min(20px, 1.5vh) 0;
+	}
 }
 
 .topper {
@@ -128,7 +130,7 @@ $meal-color: $primary;
 		width: $size;
 	}
 
-	transition: background-color 0.25s ease-out;
+	transition: background-color 0.25s ease-out, filter 0.25s ease-out;
 
 	&.waiting-for-swap {
 	}
