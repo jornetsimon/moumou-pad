@@ -141,9 +141,6 @@ export class MealFormComponent implements OnChanges {
 		this.jowRecipe = null;
 		this.form.get('searchTerm')!.reset();
 		this.form.get('name')?.setValue('');
-		if (this.meal) {
-			this.meal.name = '';
-		}
 	}
 
 	toggleExtra(formControlName: string) {
