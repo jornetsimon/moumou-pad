@@ -1,9 +1,26 @@
 <div class="title">Planning de la semaine</div>
 
-<div class="meals-container" fxLayout="row wrap" cdkDropListGroup>
-	<cb-meal
-		[meal]="meal"
-		*ngFor="let meal of meals$ | async; trackBy: trackByFn"
-		class="meal"
-	></cb-meal>
-</div>
+<ng-container cdkDropListGroup>
+	<div
+		class="meals-container"
+		fxLayout="row wrap"
+		[class.drag-cancel-margin]="showDragCancelButton$ | async"
+	>
+		<cb-meal
+			[meal]="meal"
+			*ngFor="let meal of meals$ | async; trackBy: trackByFn"
+			class="meal"
+		></cb-meal>
+	</div>
+
+	<div
+		class="drag-cancel"
+		cdkDropList
+		[cdkDropListData]="{ id: 'cancel' }"
+		[class.show]="showDragCancelButton$ | async"
+	>
+		<button mat-fab matTooltip="Annuler" matTooltipShowDelay="1000">
+			<mat-icon>cancel</mat-icon>
+		</button>
+	</div>
+</ng-container>

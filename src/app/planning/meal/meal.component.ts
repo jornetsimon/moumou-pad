@@ -55,6 +55,9 @@ export class MealComponent implements OnChanges {
 	canEnter = (drag: CdkDrag<Meal>, drop: CdkDropList<Meal>): boolean => {
 		const origin = drag.data;
 		const destination = drop.data;
+		if (drop.data.id === 'cancel') {
+			return true;
+		}
 		return !!origin.name || !!destination.name;
 	};
 
