@@ -22,6 +22,8 @@
 	padding: 12px 24px;
 
 	.day {
+		font-size: 13px;
+		white-space: nowrap;
 		width: fit-content;
 		align-self: center;
 		background-color: #6edea2;
@@ -48,7 +50,7 @@
 	}
 
 	.name {
-		font-size: 22px;
+		font-size: 18px;
 		margin: 1em 0 0.5em 0;
 	}
 	.no-name {
@@ -64,6 +66,7 @@ $selected-recipe-border-radius: 16px;
 	color: black;
 	text-align: center;
 	margin-bottom: 12px;
+	max-width: 175px;
 
 	.preview {
 		max-width: 110px;
@@ -80,11 +83,11 @@ $selected-recipe-border-radius: 16px;
 
 .arrow {
 	flex: none;
-	margin: 0 20px;
+	margin: 0 5px;
 	color: $primary;
 	.mat-icon {
-		height: 62px;
-		width: 62px;
-		font-size: 62px;
+		height: 52px;
+		width: 52px;
+		font-size: 52px;
 	}
 }

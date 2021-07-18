@@ -1,7 +1,7 @@
 <div mat-dialog-title>Échanger ces menus ?</div>
 
 <div mat-dialog-content>
-	<div fxLayout="row wrap" fxLayoutAlign="center center">
+	<div fxLayout="row nowrap" fxLayout.xs="column" fxLayoutAlign="center center">
 		<ng-container *ngTemplateOutlet="mealPreview; context: { meal: data.from }"></ng-container>
 		<div class="arrow">
 			<mat-icon>compare_arrows</mat-icon>
@@ -17,7 +17,7 @@
 </div>
 
 <ng-template #mealDateLabel let-meal="meal">
-	{{ meal.date | date: 'EEEE d MMMM' | titlecase }}&nbsp;
+	{{ meal.date | date: 'EEEE d MMM' | titlecase }}&nbsp;
 	<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900"> light_mode </mat-icon>
 	<mat-icon *ngIf="meal.type === 'dinner'" style="color: #41658a"> dark_mode </mat-icon>
 </ng-template>
