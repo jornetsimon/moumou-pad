@@ -1,4 +1,9 @@
-<h1>Mes préférences</h1>
+<div class="page-title">
+	Mes préférences
+	<button mat-icon-button color="primary" routerLink="/">
+		<mat-icon fontSet="material-icons-round">home</mat-icon>
+	</button>
+</div>
 <form [formGroup]="form" (ngSubmit)="save()">
 	<mat-form-field appearance="fill" class="width-100">
 		<mat-label>Jour de début de semaine</mat-label>

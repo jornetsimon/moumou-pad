@@ -32,6 +32,17 @@ body {
 	}
 }
 
+.page-title {
+	font-size: 2em;
+	margin: 0.67em 0;
+
+	display: flex;
+
+	button {
+		margin-left: 2em;
+	}
+}
+
 .hot-toast-checkmark-icon:after {
 	border-color: white !important;
 }

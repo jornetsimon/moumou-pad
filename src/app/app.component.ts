@@ -10,9 +10,11 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AppStore } from '../state/app.store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, first, switchMap } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { MealService } from './planning/meal/state/meal.service';
+import { JowService } from './jow/state/jow.service';
 
 @UntilDestroy()
 @Component({
@@ -29,7 +31,9 @@ export class AppComponent implements AfterViewInit {
 		public angularFireAuth: AngularFireAuth,
 		private router: Router,
 		private appStore: AppStore,
-		private appService: AppService
+		private appService: AppService,
+		private mealService: MealService,
+		private jowService: JowService
 	) {
 		const user$ = this.angularFireAuth.user.pipe(untilDestroyed(this));
 		user$.subscribe((user) => {
@@ -38,13 +42,28 @@ export class AppComponent implements AfterViewInit {
 			});
 		});
 
-		console.log('fetching config');
+		// Fetch user config
 		user$
 			.pipe(
 				filter((user) => !!user),
 				switchMap((user) => this.appService.fetchConfig(user!.uid))
 			)
 			.subscribe();
+
+		// Subscribe to the Firestore collection
+		user$
+			.pipe(
+				first((user) => !!user),
+				switchMap(() =>
+					this.mealService.syncCollection({
+						reset: true,
+					})
+				),
+				untilDestroyed(this)
+			)
+			.subscribe();
+
+		this.jowService.fetchFeatured();
 	}
 
 	ngAfterViewInit() {
