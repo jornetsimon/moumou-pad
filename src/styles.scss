@@ -32,6 +32,10 @@ body {
 	}
 }
 
+.hot-toast-checkmark-icon:after {
+	border-color: white !important;
+}
+
 .firebase-emulator-warning {
 	display: none;
 }

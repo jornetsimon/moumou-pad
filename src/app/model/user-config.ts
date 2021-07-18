@@ -1,3 +1,3 @@
 export interface UserConfig {
-	startWeekOn: string;
+	startWeekOn: number;
 }

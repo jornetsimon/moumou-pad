@@ -2,7 +2,7 @@
 <form [formGroup]="form" (ngSubmit)="save()">
 	<mat-form-field appearance="fill" class="width-100">
 		<mat-label>Jour de début de semaine</mat-label>
-		<select matNativeControl required formControlName="startWeekOn">
+		<select matNativeControl formControlName="startWeekOn">
 			<option [value]="weekday.value" *ngFor="let weekday of weekdays">
 				{{ weekday.label | titlecase }}
 			</option>

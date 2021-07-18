@@ -18,6 +18,7 @@ export class AppService {
 
 	setConfig(config: UserConfig) {
 		const uid = this.appStore.getValue().user!.uid;
-		return this.angularFirestore.doc<UserData>(`/users/${uid}`).update({ config });
+		const userDoc = this.angularFirestore.doc<UserData>(`/users/${uid}`);
+		return userDoc.update({ config });
 	}
 }

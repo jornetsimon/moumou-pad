@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { weekdays } from '../model/weekday';
 import { Title } from '@angular/platform-browser';
 import { UntilDestroy } from '@ngneat/until-destroy';
@@ -18,7 +18,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 export class SettingsComponent {
 	weekdays = Object.entries(weekdays).map(([key, value]) => ({ label: key, value }));
 	form = new FormGroup({
-		startWeekOn: new FormControl(),
+		startWeekOn: new FormControl(undefined, Validators.required),
 	});
 
 	constructor(
@@ -31,11 +31,12 @@ export class SettingsComponent {
 			.select('userData')
 			.pipe(distinctUntilChanged((a, b) => _.isEqual(a, b)))
 			.subscribe((userData) => {
-				const config = userData?.config;
-				console.log(config);
-				this.form.setValue({
-					startWeekOn: config?.startWeekOn ?? null,
-				});
+				if (userData) {
+					const config = userData.config;
+					this.form.setValue({
+						startWeekOn: config.startWeekOn,
+					});
+				}
 			});
 	}
 
