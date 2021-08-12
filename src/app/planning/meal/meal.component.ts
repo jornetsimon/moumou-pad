@@ -3,8 +3,10 @@ import {
 	ChangeDetectorRef,
 	Component,
 	ElementRef,
+	EventEmitter,
 	Input,
 	OnChanges,
+	Output,
 	SimpleChanges,
 	ViewChild,
 } from '@angular/core';
@@ -42,6 +44,7 @@ export class MealComponent implements OnChanges {
 	@Input() meal!: Meal;
 	@ViewChild('container') containerRef: ElementRef | undefined;
 	@ViewChild('dropListRef') dropListRef: CdkDropList<Meal> | undefined;
+	@Output() mealSaved = new EventEmitter<HTMLDivElement>();
 	editMode = false;
 	isNext = false;
 	cannotDropHere$: Observable<boolean> = this.dragDropService.dragging$.pipe(
@@ -100,6 +103,7 @@ export class MealComponent implements OnChanges {
 		this.toastService.success(`Repas enregistré`, { duration: 4000 });
 		this.editMode = false;
 		this.cd.detectChanges();
+		this.mealSaved.emit(this.containerRef?.nativeElement);
 	}
 
 	/**

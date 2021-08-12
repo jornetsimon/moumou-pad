@@ -45,6 +45,7 @@
 			[meal]="meal"
 			*ngFor="let meal of meals$ | async; trackBy: trackByFn"
 			class="meal"
+			(mealSaved)="scrollToMeal($event)"
 		></cb-meal>
 	</div>
 

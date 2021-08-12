@@ -22,6 +22,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxVibrationModule } from 'ngx-vibration';
+import { LayoutModule } from '@angular/cdk/layout';
 
 const components: Array<any> = [];
 
@@ -50,6 +51,7 @@ const modules = [
 	MatCheckboxModule,
 	MatMenuModule,
 	DragDropModule,
+	LayoutModule,
 ];
 
 @NgModule({
