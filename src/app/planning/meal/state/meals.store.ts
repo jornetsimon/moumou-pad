@@ -13,7 +13,9 @@ export class MealsStore extends EntityStore<MealState> {
 	}
 
 	akitaPreAddEntity(meal: Meal) {
-		const date = fromUnixTime(meal.timestamp);
+		const src = meal.timestamp as any;
+		const timestamp = typeof src === 'number' ? src : src.seconds;
+		const date = fromUnixTime(timestamp);
 		return { ...meal, date };
 	}
 }

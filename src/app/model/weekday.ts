@@ -1,7 +1,3 @@
-import { timer } from 'rxjs';
-import { GLOBAL_CONFIG } from '../../global-config';
-import { map, shareReplay } from 'rxjs/operators';
-
 export const weekdaysValues = [0, 1, 2, 3, 4, 5, 6] as const;
 export enum WeekdayLabel {
 	Monday = 'lundi',
@@ -22,8 +18,3 @@ export const weekdays: Record<WeekdayLabel, WeekdayValue> = {
 	samedi: 5,
 	dimanche: 6,
 };
-const updateTimeIntervalInMilliseconds = GLOBAL_CONFIG.nowUpdateIntervalInMinutes * 60 * 1000;
-export const now$ = timer(0, updateTimeIntervalInMilliseconds).pipe(
-	map(() => new Date()),
-	shareReplay(1)
-);

@@ -1,5 +1,40 @@
-<div class="title">Planning de la semaine</div>
+<div class="title">
+	Planning de la semaine
 
+	<div *ngIf="(isThisWeek$ | async) === false" class="current-period">
+		<ng-container *ngIf="currentSchedule$ | async as schedule">
+			du
+			{{
+				(scheduleOverlapsTwoMonths$ | async)
+					? (schedule.from | date: 'd MMMM')
+					: (schedule.from | date: 'd')
+			}}
+			au
+			{{ schedule.to | date: 'd MMMM' }}
+		</ng-container>
+	</div>
+</div>
+
+<div class="period-arrows-container">
+	<button
+		mat-icon-button
+		color="primary"
+		(click)="shiftSchedule('previous')"
+		matTooltip="Semaine précédente"
+		matTooltipPosition="right"
+	>
+		<mat-icon>navigate_before</mat-icon>
+	</button>
+	<button
+		mat-icon-button
+		color="primary"
+		(click)="shiftSchedule('next')"
+		matTooltip="Semaine suivante"
+		matTooltipPosition="left"
+	>
+		<mat-icon>navigate_next</mat-icon>
+	</button>
+</div>
 <ng-container cdkDropListGroup>
 	<div
 		class="meals-container"

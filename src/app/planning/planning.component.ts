@@ -3,8 +3,12 @@ import { MealQuery } from './meal/state/meal.query';
 import { Observable } from 'rxjs';
 import { Meal } from './meal/state/meal.model';
 import { DragDropService } from './meal/drag-drop.service';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, switchMap } from 'rxjs/operators';
 import { NgxVibrationService } from 'ngx-vibration';
+import { AppService } from '../../state/app.service';
+import { AppQuery } from '../../state/app.query';
+import { generateSchedule, Period } from '../model/period';
+import { isSameDay, isSameMonth } from 'date-fns/esm';
 
 @Component({
 	selector: 'cb-planning',
@@ -13,19 +17,36 @@ import { NgxVibrationService } from 'ngx-vibration';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlanningComponent {
-	meals$: Observable<Meal[]> = this.mealQuery.getMealDays();
+	meals$: Observable<Meal[]> = this.appQuery
+		.select('schedule')
+		.pipe(switchMap((schedule) => this.mealQuery.getMealDays(schedule)));
 	showDragCancelButton$ = this.dragDropService.dragging$.pipe(
 		map((dragging) => !!dragging),
 		startWith(false)
 	);
+	currentSchedule$: Observable<Period> = this.appQuery.select('schedule');
+	isThisWeek$: Observable<boolean> = this.currentSchedule$.pipe(
+		map((schedule) => isSameDay(schedule.from, generateSchedule().from))
+	);
+	scheduleOverlapsTwoMonths$: Observable<boolean> = this.currentSchedule$.pipe(
+		map((schedule) => !isSameMonth(schedule.from, schedule.to))
+	);
+
 	trackByFn: TrackByFunction<Meal> = (index, item) => item.date.getTime();
+
 	constructor(
 		private mealQuery: MealQuery,
 		private dragDropService: DragDropService,
-		private vibrationService: NgxVibrationService
+		private vibrationService: NgxVibrationService,
+		private appQuery: AppQuery,
+		private appService: AppService
 	) {}
 
 	onDrop() {
 		this.vibrationService.vibrate([150]);
+	}
+
+	shiftSchedule(direction: 'previous' | 'next') {
+		this.appService.shiftSchedule(direction);
 	}
 }

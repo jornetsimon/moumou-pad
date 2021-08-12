@@ -100,3 +100,15 @@
 		}
 	}
 }
+
+.period-arrows-container {
+	display: flex;
+	justify-content: space-between;
+	position: absolute;
+	left: 5px;
+	width: calc(100% - 10px);
+}
+
+.current-period {
+	font-size: 0.5em;
+}
