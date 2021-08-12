@@ -12,6 +12,7 @@
 			[cdkDropListData]="meal"
 			[cdkDropListEnterPredicate]="canEnter"
 			(cdkDropListDropped)="onDrop($event)"
+			(cdkDropListEntered)="onEnter()"
 		>
 			<div
 				class="day"
@@ -64,6 +65,7 @@
 			[class.has-jow-recipe]="meal?.jowRecipe"
 			fxLayoutAlign="space-between center"
 			(click)="toggleEdit()"
+			ngxVibration="10"
 			matRipple
 		>
 			<mat-card-title>

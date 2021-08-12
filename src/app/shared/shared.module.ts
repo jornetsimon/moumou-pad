@@ -21,6 +21,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatMenuModule } from '@angular/material/menu';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NgxVibrationModule } from 'ngx-vibration';
 
 const components: Array<any> = [];
 
@@ -32,6 +33,7 @@ const modules = [
 	HttpClientModule,
 	FlexLayoutModule,
 	NgForRepeatModule,
+	NgxVibrationModule,
 	MatTooltipModule,
 	MatCardModule,
 	MatRippleModule,

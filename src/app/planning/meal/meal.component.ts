@@ -22,6 +22,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { NgxVibrationService } from 'ngx-vibration';
 
 @Component({
 	selector: 'cb-meal',
@@ -68,7 +69,8 @@ export class MealComponent implements OnChanges {
 		public jowService: JowService,
 		private cd: ChangeDetectorRef,
 		public dragDropService: DragDropService,
-		private dialog: MatDialog
+		private dialog: MatDialog,
+		private vibrationService: NgxVibrationService
 	) {}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -139,5 +141,9 @@ export class MealComponent implements OnChanges {
 
 	onDragEnd() {
 		this.dragDropService.dragStop();
+	}
+
+	onEnter() {
+		this.vibrationService.vibrate([25]);
 	}
 }

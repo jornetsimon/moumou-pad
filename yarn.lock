@@ -7914,6 +7914,13 @@ ng-for-repeat@^1.0.1:
   dependencies:
     tslib "^2.0.0"
 
+ngx-vibration@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ngx-vibration/-/ngx-vibration-1.1.1.tgz#ec6215871735926110f897daecf8d91b8d06411a"
+  integrity sha512-vVaxgd7+6tIvluAb4/6NiVg0PwXuckpUNIyT+Kp34uN6UrR1GMFTe3ToxM7wM9eN40R/yqdo1i/USFPPGVtYiQ==
+  dependencies:
+    tslib "^2.0.0"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "https://registry.npmjs.org/nice-try/-/nice-try-1.0.5.tgz"

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Meal } from './meal/state/meal.model';
 import { DragDropService } from './meal/drag-drop.service';
 import { map, startWith } from 'rxjs/operators';
+import { NgxVibrationService } from 'ngx-vibration';
 
 @Component({
 	selector: 'cb-planning',
@@ -18,5 +19,13 @@ export class PlanningComponent {
 		startWith(false)
 	);
 	trackByFn: TrackByFunction<Meal> = (index, item) => item.date.getTime();
-	constructor(private mealQuery: MealQuery, private dragDropService: DragDropService) {}
+	constructor(
+		private mealQuery: MealQuery,
+		private dragDropService: DragDropService,
+		private vibrationService: NgxVibrationService
+	) {}
+
+	onDrop() {
+		this.vibrationService.vibrate([150]);
+	}
 }

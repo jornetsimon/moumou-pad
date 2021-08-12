@@ -18,6 +18,7 @@
 		cdkDropList
 		[cdkDropListData]="{ id: 'cancel' }"
 		[class.show]="showDragCancelButton$ | async"
+		(cdkDropListDropped)="onDrop()"
 	>
 		<button mat-fab matTooltip="Annuler" matTooltipShowDelay="500">
 			<mat-icon>cancel</mat-icon>
