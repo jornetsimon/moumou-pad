@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "cooking-board": {
+    "moumou-pad": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -23,7 +23,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/cooking-board",
+            "outputPath": "dist/moumou-pad",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -77,10 +77,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "cooking-board:build:production"
+              "browserTarget": "moumou-pad:build:production"
             },
             "development": {
-              "browserTarget": "cooking-board:build:development"
+              "browserTarget": "moumou-pad:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -88,7 +88,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cooking-board:build"
+            "browserTarget": "moumou-pad:build"
           }
         },
         "test": {
@@ -127,5 +127,5 @@
       }
     }
   },
-  "defaultProject": "cooking-board"
+  "defaultProject": "moumou-pad"
 }

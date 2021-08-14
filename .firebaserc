@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "cooking-board"
+    "default": "moumou-pad"
   },
   "targets": {
-    "cooking-board": {
+    "moumou-pad": {
       "hosting": {
-        "cooking-board": [
-          "cooking-board"
+        "moumou-pad": [
+          "moumou-pad"
         ]
       }
     }

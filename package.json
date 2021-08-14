@@ -1,10 +1,10 @@
 {
-  "name": "cooking-board",
+  "name": "moumou-pad",
   "version": "0.0.0",
   "author": "Simon Jornet",
   "license": "MIT",
   "private": false,
-  "repository": "github:jornetsimon/cooking-board",
+  "repository": "github:jornetsimon/moumou-pad",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,7 +14,7 @@
     "build:stats": "ng build --stats-json",
     "deploy-prod": "npm run build && firebase deploy",
     "deploy-prod-only-hosting": "npm run build && firebase deploy --only hosting",
-    "analyze": "webpack-bundle-analyzer -p 9999 dist/cooking-board/stats.json",
+    "analyze": "webpack-bundle-analyzer -p 9999 dist/moumou-pad/stats.json",
     "lint": "ng lint"
   },
   "dependencies": {

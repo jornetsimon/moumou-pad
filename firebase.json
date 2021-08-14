@@ -11,8 +11,8 @@
 	},
 	"hosting": [
 		{
-			"target": "cooking-board",
-			"public": "dist/cooking-board",
+			"target": "moumou-pad",
+			"public": "dist/moumou-pad",
 			"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
 			"headers": [
 				{
