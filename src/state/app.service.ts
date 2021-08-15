@@ -38,4 +38,8 @@ export class AppService {
 			};
 		});
 	}
+
+	resetSchedule() {
+		this.appStore.setInitialSchedule();
+	}
 }

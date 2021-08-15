@@ -35,7 +35,11 @@ export class AppStore extends Store<AppState> {
 			.pipe(untilDestroyed(this))
 			.subscribe(() => {
 				console.log('Updating the schedule');
-				this.update({ schedule: generateSchedule() });
+				this.setInitialSchedule();
 			});
+	}
+
+	setInitialSchedule() {
+		this.update({ schedule: generateSchedule() });
 	}
 }

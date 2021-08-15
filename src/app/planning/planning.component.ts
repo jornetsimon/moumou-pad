@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { MealQuery } from './meal/state/meal.query';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { Meal } from './meal/state/meal.model';
 import { DragDropService } from './meal/drag-drop.service';
 import { map, startWith, switchMap } from 'rxjs/operators';
@@ -8,7 +8,7 @@ import { NgxVibrationService } from 'ngx-vibration';
 import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
 import { generateSchedule, Period } from '../model/period';
-import { isSameDay, isSameMonth } from 'date-fns/esm';
+import { addDays, isSameDay, isSameMonth } from 'date-fns/esm';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
@@ -18,9 +18,21 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlanningComponent {
-	meals$: Observable<Meal[]> = this.appQuery
-		.select('schedule')
-		.pipe(switchMap((schedule) => this.mealQuery.getMealDays(schedule)));
+	meals$: Observable<Meal[]> = combineLatest([
+		this.appQuery.select('schedule'),
+		this.appQuery.userConfig$,
+	]).pipe(
+		switchMap(([schedule, userConfig]) => {
+			const startWeekOn = userConfig?.startWeekOn;
+			const res = { ...schedule };
+			if (startWeekOn && startWeekOn > 0) {
+				// The user wants the week to start another day than monday
+				res.from = addDays(res.from, startWeekOn - 7);
+				res.to = addDays(res.to, startWeekOn - 7);
+			}
+			return this.mealQuery.getMealDays(res);
+		})
+	);
 	showDragCancelButton$ = this.dragDropService.dragging$.pipe(
 		map((dragging) => !!dragging),
 		startWith(false)
@@ -60,5 +72,9 @@ export class PlanningComponent {
 		if (this.breakpointObserver.isMatched(Breakpoints.XSmall)) {
 			mealElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		}
+	}
+
+	onCurrentPeriodClicked() {
+		this.appService.resetSchedule();
 	}
 }

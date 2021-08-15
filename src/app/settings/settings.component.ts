@@ -8,6 +8,7 @@ import { AppQuery } from '../../state/app.query';
 import { distinctUntilChanged } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { HotToastService } from '@ngneat/hot-toast';
+import { Router } from '@angular/router';
 
 @UntilDestroy()
 @Component({
@@ -25,7 +26,8 @@ export class SettingsComponent {
 		private title: Title,
 		private appService: AppService,
 		private appQuery: AppQuery,
-		private toastService: HotToastService
+		private toastService: HotToastService,
+		private router: Router
 	) {
 		this.appQuery
 			.select('userData')
@@ -41,8 +43,9 @@ export class SettingsComponent {
 	}
 
 	save() {
-		this.appService
-			.setConfig(this.form.value)
-			.then(() => this.toastService.success('Préférences enregistrées'));
+		this.appService.setConfig(this.form.value).then(() => {
+			this.toastService.success('Préférences enregistrées');
+			this.router.navigateByUrl('/');
+		});
 	}
 }

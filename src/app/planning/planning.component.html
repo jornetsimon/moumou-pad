@@ -2,7 +2,7 @@
 	Planning de la semaine
 
 	<div *ngIf="(isThisWeek$ | async) === false" class="current-period">
-		<ng-container *ngIf="currentSchedule$ | async as schedule">
+		<a (click)="onCurrentPeriodClicked()" *ngIf="currentSchedule$ | async as schedule">
 			du
 			{{
 				(scheduleOverlapsTwoMonths$ | async)
@@ -11,7 +11,7 @@
 			}}
 			au
 			{{ schedule.to | date: 'd MMMM' }}
-		</ng-container>
+		</a>
 	</div>
 </div>
 

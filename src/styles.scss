@@ -2,6 +2,7 @@
 
 @import 'styles/utilities';
 @import 'styles/fonts';
+@import 'styles/colors';
 
 html,
 body {
@@ -61,4 +62,13 @@ body {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+a {
+	cursor: pointer;
+	transition: color 0.3s;
+
+	&:hover {
+		color: $primary;
+	}
 }

@@ -98,7 +98,6 @@ export class MealFormComponent implements OnChanges {
 			jowRecipe: this.jowRecipe,
 			extras: this.extrasFg.value,
 		};
-		console.log(meal);
 		if (this.meal?.name) {
 			this.mealService.update(
 				this.meal.id,
