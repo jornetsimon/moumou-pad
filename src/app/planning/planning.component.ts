@@ -8,7 +8,7 @@ import { NgxVibrationService } from 'ngx-vibration';
 import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
 import { generateSchedule, Period } from '../model/period';
-import { addDays, isSameDay, isSameMonth } from 'date-fns/esm';
+import { addDays, isBefore, isSameDay, isSameMonth, startOfDay } from 'date-fns/esm';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
@@ -26,9 +26,13 @@ export class PlanningComponent {
 			const startWeekOn = userConfig?.startWeekOn;
 			const res = { ...schedule };
 			if (startWeekOn && startWeekOn > 0) {
+				const today = startOfDay(Date.now());
+				const shiftBy = isBefore(today, addDays(new Date(res.from), startWeekOn))
+					? startWeekOn - 7
+					: startWeekOn;
 				// The user wants the week to start another day than monday
-				res.from = addDays(res.from, startWeekOn - 7);
-				res.to = addDays(res.to, startWeekOn - 7);
+				res.from = addDays(new Date(res.from), shiftBy);
+				res.to = addDays(new Date(res.to), shiftBy);
 			}
 			return this.mealQuery.getMealDays(res);
 		})
