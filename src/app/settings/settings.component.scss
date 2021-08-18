@@ -1,5 +1,13 @@
 @import '../../styles/colors.scss';
 
+::ng-deep {
+	cb-settings {
+		@media (max-width: 599px) {
+			padding: 0 20px;
+			display: block;
+		}
+	}
+}
 form {
 	max-width: 500px;
 }
@@ -23,9 +31,10 @@ mat-divider {
 	color: #d35460d4;
 }
 
-::ng-deep .pending-list .mat-list-item-content {
-	padding: 0 !important;
-
+.pending-list {
+	margin: 20px 0;
+	padding-top: 20px;
+	border-top: 1px dashed rgb(128 128 128 / 50%);
 	.mat-icon {
 		margin-right: 10px !important;
 	}

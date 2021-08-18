@@ -38,6 +38,12 @@
 </form>
 
 <ng-container *ngIf="userData$ | async as userData">
+	<mat-progress-spinner
+		mode="indeterminate"
+		[diameter]="25"
+		style="margin: 10px"
+		*ngIf="loadingSubject.asObservable() | async"
+	></mat-progress-spinner>
 	<div class="family-container" *ngIf="userData.familyName">
 		<div>
 			Ma famille : <span class="family-name">{{ userData.familyName }}</span>
@@ -50,30 +56,34 @@
 			🐺 Vous êtes le chef de la famille
 
 			<ng-container *ngIf="pending$ | async as pendingList">
-				<mat-list role="list" class="pending-list" *ngIf="pendingList.length">
-					<mat-list-item role="listitem" *ngFor="let pendingUid of pendingList">
-						<div fxLayoutAlign="start center" fxLayoutGap="20px">
+				<div class="pending-list" *ngIf="pendingList.length">
+					<div
+						fxLayout="row wrap"
+						fxLayoutAlign="start center"
+						*ngFor="let pendingUid of pendingList"
+					>
+						<div fxLayoutAlign="start" style="margin: 10px 20px 10px 0">
 							<mat-icon style="color: #3f51b5">new_releases</mat-icon>
 							<div>Une personne souhaiterait rejoindre la famille</div>
-							<div fxLayoutAlign="center center" fxLayoutGap="10px">
-								<button
-									mat-raised-button
-									color="warn"
-									(click)="denyPending(userData.familyName, pendingUid)"
-								>
-									Ignorer
-								</button>
-								<button
-									mat-raised-button
-									color="primary"
-									(click)="approvePending(userData.familyName, pendingUid)"
-								>
-									Accepter
-								</button>
-							</div>
 						</div>
-					</mat-list-item>
-				</mat-list>
+						<div fxLayoutAlign="center center" fxLayoutGap="10px">
+							<button
+								mat-raised-button
+								color="warn"
+								(click)="denyPending(userData.familyName, pendingUid)"
+							>
+								Ignorer
+							</button>
+							<button
+								mat-raised-button
+								color="primary"
+								(click)="approvePending(userData.familyName, pendingUid)"
+							>
+								Accepter
+							</button>
+						</div>
+					</div>
+				</div>
 			</ng-container>
 		</ng-container>
 	</div>

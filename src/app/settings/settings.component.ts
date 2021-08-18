@@ -5,14 +5,14 @@ import { Title } from '@angular/platform-browser';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
-import { distinctUntilChanged, first, map } from 'rxjs/operators';
+import { distinctUntilChanged, finalize, first, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Router } from '@angular/router';
 import { AngularFireFunctions } from '@angular/fire/functions';
 import { MealService } from '../planning/meal/state/meal.service';
 import { SettingsService } from './settings.service';
-import { combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -35,6 +35,7 @@ export class SettingsComponent {
 		map(([user, family]) => user?.uid && user?.uid === family?.manager)
 	);
 	pending$: Observable<string[]> = this.family$.pipe(map((family) => family?.pending || []));
+	loadingSubject = new BehaviorSubject(false);
 
 	constructor(
 		private title: Title,
@@ -69,33 +70,45 @@ export class SettingsComponent {
 	}
 
 	joinFamily(formValues: { name: string }) {
-		console.log({ formValues });
+		this.loadingSubject.next(true);
 		const callable = this.fns.httpsCallable('joinFamily');
-		callable({ name: formValues.name }).subscribe({
-			next: () => {
-				this.toastService.success(`Vous avez bien rejoint la famille ${formValues.name}`);
-				this.mealService
-					.syncCollection({
-						reset: true,
-					})
-					.pipe(first())
-					.subscribe();
-			},
-			error: (err) => {
-				console.error(err);
-				this.toastService.error(`Impossible de rejoindre la famille 😢`);
-			},
-		});
+		callable({ name: formValues.name })
+			.pipe(finalize(() => this.loadingSubject.next(false)))
+			.subscribe({
+				next: () => {
+					this.toastService.success(
+						`Vous avez bien rejoint la famille ${formValues.name}`
+					);
+					this.mealService
+						.syncCollection({
+							reset: true,
+						})
+						.pipe(first())
+						.subscribe();
+				},
+				error: (err) => {
+					console.error(err);
+					this.toastService.error(`Impossible de rejoindre la famille 😢`);
+				},
+			});
 	}
 
 	approvePending(familyName: string, uid: string) {
-		this.settingsService.approveOrDenyNewMember(familyName, uid, 'approve').subscribe(() => {
-			this.toastService.success('Cette personne a bien été acceptée dans la famille');
-		});
+		this.loadingSubject.next(true);
+		this.settingsService
+			.approveOrDenyNewMember(familyName, uid, 'approve')
+			.pipe(finalize(() => this.loadingSubject.next(false)))
+			.subscribe(() => {
+				this.toastService.success('Cette personne a bien été acceptée dans la famille');
+			});
 	}
 	denyPending(familyName: string, uid: string) {
-		this.settingsService.approveOrDenyNewMember(familyName, uid, 'deny').subscribe(() => {
-			this.toastService.success('Cette personne a bien été refusée');
-		});
+		this.loadingSubject.next(true);
+		this.settingsService
+			.approveOrDenyNewMember(familyName, uid, 'deny')
+			.pipe(finalize(() => this.loadingSubject.next(false)))
+			.subscribe(() => {
+				this.toastService.success('Cette personne a bien été refusée');
+			});
 	}
 }

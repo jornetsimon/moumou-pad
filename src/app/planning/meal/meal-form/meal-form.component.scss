@@ -111,13 +111,12 @@ $selected-recipe-border-radius: 16px;
 }
 
 .form-actions {
-	@media (max-width: 599px) {
-		position: sticky;
-		bottom: 0;
-		left: 0;
-		width: 100%;
-		padding: 15px;
-		background: ghostwhite;
-		z-index: 2;
-	}
+	position: sticky;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding: 15px;
+	box-shadow: 0 2px 0 2px ghostwhite;
+	background: ghostwhite;
+	z-index: 2;
 }
