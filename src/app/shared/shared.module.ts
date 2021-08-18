@@ -23,6 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxVibrationModule } from 'ngx-vibration';
 import { LayoutModule } from '@angular/cdk/layout';
+import { MatListModule } from '@angular/material/list';
 
 const components: Array<any> = [];
 
@@ -52,6 +53,7 @@ const modules = [
 	MatMenuModule,
 	DragDropModule,
 	LayoutModule,
+	MatListModule,
 ];
 
 @NgModule({

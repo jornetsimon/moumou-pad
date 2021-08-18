@@ -11,7 +11,17 @@ export class MealService extends CollectionService<MealState> {
 	}
 
 	get path() {
-		const userId = this.appQuery.getValue().user!.uid;
+		const stateSnapshot = this.appQuery.getValue();
+		const userData = stateSnapshot.userData;
+		const familyName = userData?.familyName;
+		const isAllowedInFamily = userData?.isAllowedInFamily;
+		const userId = stateSnapshot.user!.uid;
+
+		if (familyName && isAllowedInFamily) {
+			console.log(`getting meals from families`);
+			return `families/${familyName}/meals`;
+		}
+		console.log(`getting meals from users`);
 		return `users/${userId}/meals`;
 	}
 

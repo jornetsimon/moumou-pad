@@ -5,10 +5,14 @@ import { Title } from '@angular/platform-browser';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, first, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Router } from '@angular/router';
+import { AngularFireFunctions } from '@angular/fire/functions';
+import { MealService } from '../planning/meal/state/meal.service';
+import { SettingsService } from './settings.service';
+import { combineLatest, Observable } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -21,22 +25,37 @@ export class SettingsComponent {
 	form = new FormGroup({
 		startWeekOn: new FormControl(undefined, Validators.required),
 	});
+	familyForm = new FormGroup({
+		name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+	});
+
+	userData$ = this.appQuery.select('userData');
+	family$ = this.settingsService.family$;
+	isManager$ = combineLatest([this.appQuery.select('user'), this.family$]).pipe(
+		map(([user, family]) => user?.uid && user?.uid === family?.manager)
+	);
+	pending$: Observable<string[]> = this.family$.pipe(map((family) => family?.pending || []));
 
 	constructor(
 		private title: Title,
 		private appService: AppService,
 		private appQuery: AppQuery,
 		private toastService: HotToastService,
-		private router: Router
+		private router: Router,
+		private fns: AngularFireFunctions,
+		private mealService: MealService,
+		private settingsService: SettingsService
 	) {
-		this.appQuery
-			.select('userData')
+		this.userData$
 			.pipe(distinctUntilChanged((a, b) => _.isEqual(a, b)))
 			.subscribe((userData) => {
 				if (userData) {
 					const config = userData.config;
 					this.form.setValue({
 						startWeekOn: config.startWeekOn,
+					});
+					this.familyForm.setValue({
+						name: userData.familyName || '',
 					});
 				}
 			});
@@ -46,6 +65,37 @@ export class SettingsComponent {
 		this.appService.setConfig(this.form.value).then(() => {
 			this.toastService.success('Préférences enregistrées');
 			this.router.navigateByUrl('/');
+		});
+	}
+
+	joinFamily(formValues: { name: string }) {
+		console.log({ formValues });
+		const callable = this.fns.httpsCallable('joinFamily');
+		callable({ name: formValues.name }).subscribe({
+			next: () => {
+				this.toastService.success(`Vous avez bien rejoint la famille ${formValues.name}`);
+				this.mealService
+					.syncCollection({
+						reset: true,
+					})
+					.pipe(first())
+					.subscribe();
+			},
+			error: (err) => {
+				console.error(err);
+				this.toastService.error(`Impossible de rejoindre la famille 😢`);
+			},
+		});
+	}
+
+	approvePending(familyName: string, uid: string) {
+		this.settingsService.approveOrDenyNewMember(familyName, uid, 'approve').subscribe(() => {
+			this.toastService.success('Cette personne a bien été acceptée dans la famille');
+		});
+	}
+	denyPending(familyName: string, uid: string) {
+		this.settingsService.approveOrDenyNewMember(familyName, uid, 'deny').subscribe(() => {
+			this.toastService.success('Cette personne a bien été refusée');
 		});
 	}
 }

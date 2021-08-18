@@ -4,6 +4,8 @@
 		<mat-icon fontSet="material-icons-round">home</mat-icon>
 	</button>
 </div>
+
+<h2>Général</h2>
 <form [formGroup]="form" (ngSubmit)="save()">
 	<mat-form-field appearance="fill" class="width-100">
 		<mat-label>Jour de début de semaine</mat-label>
@@ -15,3 +17,64 @@
 	</mat-form-field>
 	<button mat-raised-button color="primary" type="submit">Enregistrer</button>
 </form>
+
+<mat-divider></mat-divider>
+
+<h2>Famille</h2>
+<form [formGroup]="familyForm" (ngSubmit)="joinFamily(familyForm.value)">
+	<mat-form-field appearance="fill" class="width-100">
+		<mat-label>Créer ou rejoindre une famille</mat-label>
+		<input matInput formControlName="name" placeholder="Nom de ma famille" />
+	</mat-form-field>
+	<button
+		mat-raised-button
+		color="primary"
+		type="submit"
+		*ngIf="(userData$ | async)?.familyName !== familyForm.get('name')?.value"
+		[disabled]="familyForm.invalid"
+	>
+		Rejoindre
+	</button>
+</form>
+
+<ng-container *ngIf="userData$ | async as userData">
+	<div class="family-container" *ngIf="userData.familyName">
+		<div>
+			Ma famille : <span class="family-name">{{ userData.familyName }}</span>
+		</div>
+
+		<div *ngIf="!userData.isAllowedInFamily" class="pending-family-access">
+			En attente d'approbation du chef de famille
+		</div>
+		<ng-container *ngIf="isManager$ | async">
+			🐺 Vous êtes le chef de la famille
+
+			<ng-container *ngIf="pending$ | async as pendingList">
+				<mat-list role="list" class="pending-list" *ngIf="pendingList.length">
+					<mat-list-item role="listitem" *ngFor="let pendingUid of pendingList">
+						<div fxLayoutAlign="start center" fxLayoutGap="20px">
+							<mat-icon style="color: #3f51b5">new_releases</mat-icon>
+							<div>Une personne souhaiterait rejoindre la famille</div>
+							<div fxLayoutAlign="center center" fxLayoutGap="10px">
+								<button
+									mat-raised-button
+									color="warn"
+									(click)="denyPending(userData.familyName, pendingUid)"
+								>
+									Ignorer
+								</button>
+								<button
+									mat-raised-button
+									color="primary"
+									(click)="approvePending(userData.familyName, pendingUid)"
+								>
+									Accepter
+								</button>
+							</div>
+						</div>
+					</mat-list-item>
+				</mat-list>
+			</ng-container>
+		</ng-container>
+	</div>
+</ng-container>

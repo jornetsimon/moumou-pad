@@ -10,7 +10,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AppStore } from '../state/app.store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, first, switchMap } from 'rxjs/operators';
+import { filter, switchMap } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { MealService } from './planning/meal/state/meal.service';
@@ -46,20 +46,12 @@ export class AppComponent implements AfterViewInit {
 		user$
 			.pipe(
 				filter((user) => !!user),
-				switchMap((user) => this.appService.fetchConfig(user!.uid))
-			)
-			.subscribe();
-
-		// Subscribe to the Firestore collection
-		user$
-			.pipe(
-				first((user) => !!user),
+				switchMap((user) => this.appService.fetchConfig(user!.uid)),
 				switchMap(() =>
 					this.mealService.syncCollection({
 						reset: true,
 					})
-				),
-				untilDestroyed(this)
+				)
 			)
 			.subscribe();
 

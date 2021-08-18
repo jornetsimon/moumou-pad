@@ -1,3 +1,32 @@
+@import '../../styles/colors.scss';
+
 form {
 	max-width: 500px;
+}
+mat-divider {
+	margin: 40px 0;
+}
+
+.family-container {
+	width: fit-content;
+	border: 1px solid $accent;
+	border-radius: 5px;
+	padding: 1em;
+	line-height: 1.5em;
+}
+.family-name {
+	font-weight: bold;
+	color: $accent;
+	margin: 0.2em 0;
+}
+.pending-family-access {
+	color: #d35460d4;
+}
+
+::ng-deep .pending-list .mat-list-item-content {
+	padding: 0 !important;
+
+	.mat-icon {
+		margin-right: 10px !important;
+	}
 }
