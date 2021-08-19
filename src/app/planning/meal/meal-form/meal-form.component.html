@@ -148,17 +148,17 @@
 			<mat-chip-list multiple>
 				<mat-chip
 					color="accent"
-					(click)="toggleExtra('croquettes')"
-					[selected]="extrasFg.get('croquettes')!.value"
-				>
-					Croquettes 🐱
-				</mat-chip>
-				<mat-chip
-					color="accent"
 					(click)="toggleExtra('freezer')"
 					[selected]="extrasFg.get('freezer')!.value"
 				>
 					Congel ❄️
+				</mat-chip>
+				<mat-chip
+					color="accent"
+					(click)="toggleExtra('croquettes')"
+					[selected]="extrasFg.get('croquettes')!.value"
+				>
+					Croquettes 🐱
 				</mat-chip>
 			</mat-chip-list>
 		</div>
