@@ -10,11 +10,12 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AppStore } from '../state/app.store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { MealService } from './planning/meal/state/meal.service';
 import { JowService } from './jow/state/jow.service';
+import { AppQuery } from '../state/app.query';
 
 @UntilDestroy()
 @Component({
@@ -32,6 +33,7 @@ export class AppComponent implements AfterViewInit {
 		private router: Router,
 		private appStore: AppStore,
 		private appService: AppService,
+		private appQuery: AppQuery,
 		private mealService: MealService,
 		private jowService: JowService
 	) {
@@ -57,6 +59,16 @@ export class AppComponent implements AfterViewInit {
 
 		this.jowService.fetchFeatured();
 	}
+
+	userData$ = this.appQuery.select('userData');
+	family$ = this.userData$.pipe(
+		map((userData) => {
+			if (userData?.familyName && userData.isAllowedInFamily) {
+				return userData?.familyName;
+			}
+			return undefined;
+		})
+	);
 
 	ngAfterViewInit() {
 		this.update.available.subscribe(() => {

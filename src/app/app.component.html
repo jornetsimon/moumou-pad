@@ -7,9 +7,14 @@
 		[matMenuTriggerFor]="userMenu"
 	/>
 	<mat-menu #userMenu="matMenu">
-		<button mat-menu-item disabled>
-			<span>{{ user.displayName }}</span>
-		</button>
+		<div class="mat-menu-item" disabled style="height: auto">
+			<div>{{ user.displayName }}</div>
+			<div *ngIf="family$ | async as family">
+				<span>
+					Famille <span class="family-name">{{ family }}</span>
+				</span>
+			</div>
+		</div>
 		<button mat-menu-item routerLink="/settings">
 			<mat-icon>settings</mat-icon>
 			<span>Préférences</span>
