@@ -5,9 +5,7 @@ import {
 	ElementRef,
 	EventEmitter,
 	Input,
-	OnChanges,
 	Output,
-	SimpleChanges,
 	ViewChild,
 } from '@angular/core';
 import { Meal } from './state/meal.model';
@@ -23,7 +21,7 @@ import { DragDropService } from './drag-drop.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { interval, merge, Observable, Subject } from 'rxjs';
 import { NgxVibrationService } from 'ngx-vibration';
 
 @Component({
@@ -40,11 +38,19 @@ import { NgxVibrationService } from 'ngx-vibration';
 		}),
 	],
 })
-export class MealComponent implements OnChanges {
-	@Input() meal!: Meal;
+export class MealComponent {
+	@Input() set meal(meal: Meal) {
+		this._meal = meal;
+		this.mealSubject.next(meal);
+	}
+	get meal(): Meal {
+		return this._meal;
+	}
 	@ViewChild('container') containerRef: ElementRef | undefined;
 	@ViewChild('dropListRef') dropListRef: CdkDropList<Meal> | undefined;
 	@Output() mealSaved = new EventEmitter<HTMLDivElement>();
+	private _meal!: Meal;
+	mealSubject = new Subject<Meal>();
 	editMode = false;
 	isNext = false;
 	cannotDropHere$: Observable<boolean> = this.dragDropService.dragging$.pipe(
@@ -53,6 +59,19 @@ export class MealComponent implements OnChanges {
 				return false;
 			}
 			return !this.canEnter({ data: dragging } as CdkDrag<Meal>, this.dropListRef);
+		})
+	);
+	isNext$ = merge(interval(60 * 60 * 1000), this.mealSubject.asObservable()).pipe(
+		map(() => {
+			const now = Date.now();
+			const isMealToday = isSameDay(this.meal.date, now);
+			const currentHour = getHours(now);
+			if (isMealToday) {
+				const matchesLunch = currentHour < 14 && this.meal.type === 'lunch';
+				const matchesDinner = currentHour >= 14 && this.meal.type === 'dinner';
+				return matchesLunch || matchesDinner;
+			}
+			return false;
 		})
 	);
 
@@ -75,19 +94,6 @@ export class MealComponent implements OnChanges {
 		private dialog: MatDialog,
 		private vibrationService: NgxVibrationService
 	) {}
-
-	ngOnChanges(changes: SimpleChanges) {
-		if (changes.meal) {
-			const now = Date.now();
-			const isToday = isSameDay(this.meal.date, now);
-			const currentHour = getHours(now);
-			if (isToday) {
-				const matchesLunch = currentHour < 14 && this.meal.type === 'lunch';
-				const matchesDinner = currentHour >= 14 && this.meal.type === 'dinner';
-				this.isNext = matchesLunch || matchesDinner;
-			}
-		}
-	}
 
 	toggleEdit() {
 		this.editMode = !this.editMode;

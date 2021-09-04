@@ -1,7 +1,7 @@
 <div fxLayout="column nowrap" fxLayoutAlign="start" class="container" #container>
 	<div class="topper" fxLayoutAlign="center center">
 		<div fxFlex="33%" class="relative">
-			<span class="is-next" *ngIf="isNext">prochain</span>
+			<span class="is-next" *ngIf="isNext$ | async">prochain</span>
 		</div>
 		<div
 			fxFlex="1 0 33%"
