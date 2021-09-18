@@ -6,9 +6,10 @@ import {
 	EventEmitter,
 	Input,
 	Output,
+	TrackByFunction,
 	ViewChild,
 } from '@angular/core';
-import { Meal } from './state/meal.model';
+import { Dish, Meal } from './state/meal.model';
 import { MealQuery } from './state/meal.query';
 import { collapseOnLeaveAnimation, expandOnEnterAnimation } from 'angular-animations';
 import { JowService } from '../../jow/state/jow.service';
@@ -74,6 +75,19 @@ export class MealComponent {
 			return false;
 		})
 	);
+	headers$: Observable<Dish[]> = this.mealSubject
+		.asObservable()
+		.pipe(
+			map(
+				(meal) =>
+					[
+						{ name: meal.name, jowRecipe: meal.jowRecipe },
+						meal.alternateDish?.name ? meal.alternateDish : undefined,
+					].filter(Boolean) as Dish[]
+			)
+		);
+
+	trackByIndex: TrackByFunction<Dish> = (index) => index;
 
 	canEnter = (drag: CdkDrag<Meal>, drop: CdkDropList<Meal>): boolean => {
 		const origin = drag.data;

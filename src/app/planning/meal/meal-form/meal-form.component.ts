@@ -43,6 +43,10 @@ export class MealFormComponent implements OnChanges {
 		name: new FormControl(undefined),
 		searchTerm: new FormControl(undefined),
 		extras: this.extrasFg,
+		alternateDish: new FormGroup({
+			name: new FormControl(undefined),
+			show: new FormControl(false),
+		}),
 	});
 
 	recipeSearchResults$: Observable<Recipe[]> = this.form.get('searchTerm')!.valueChanges.pipe(
@@ -83,10 +87,20 @@ export class MealFormComponent implements OnChanges {
 	}
 
 	initializeForm() {
+		console.log('initiaize', {
+			name: this.meal?.name || '',
+			searchTerm: '',
+			extras: this.meal?.extras,
+			alternateDish: this.meal?.alternateDish,
+		});
 		this.form.patchValue({
 			name: this.meal?.name || '',
 			searchTerm: '',
 			extras: this.meal?.extras,
+			alternateDish: {
+				name: this.meal?.alternateDish?.name,
+				show: !!this.meal?.alternateDish?.name,
+			},
 		});
 	}
 
@@ -97,8 +111,14 @@ export class MealFormComponent implements OnChanges {
 			name: this.form.value.name,
 			jowRecipe: this.jowRecipe,
 			extras: this.extrasFg.value,
+			alternateDish: this.form.value.alternateDish,
 		};
+		console.log(meal);
 		if (this.meal?.name) {
+			console.log(
+				'saving meal',
+				pickBy(meal, (p) => p !== undefined)
+			);
 			this.mealService.update(
 				this.meal.id,
 				pickBy(meal, (p) => p !== undefined)
@@ -149,5 +169,9 @@ export class MealFormComponent implements OnChanges {
 		}
 		const currentValue = !!control.value;
 		control.setValue(!currentValue);
+	}
+
+	showAlternateDish() {
+		this.form.get('alternateDish')!.get('show')?.setValue(true);
 	}
 }

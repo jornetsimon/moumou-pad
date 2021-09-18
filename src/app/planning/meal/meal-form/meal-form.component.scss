@@ -120,3 +120,13 @@ $selected-recipe-border-radius: 16px;
 	background: ghostwhite;
 	z-index: 2;
 }
+
+.alternate-dish-button {
+	font-size: small;
+	color: grey;
+}
+
+.alternate-dish .mat-divider {
+	margin-bottom: 20px;
+	position: initial;
+}

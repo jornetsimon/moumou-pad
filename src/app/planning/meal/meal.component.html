@@ -60,33 +60,42 @@
 		[style.background-color]="meal.jowRecipe?.backgroundColor"
 	>
 		<div class="overlay"></div>
-		<mat-card-header
-			class="header"
-			[class.has-jow-recipe]="meal?.jowRecipe"
-			fxLayoutAlign="space-between center"
-			(click)="toggleEdit()"
-			ngxVibration="10"
-			matRipple
-		>
-			<mat-card-title>
-				<div fxLayout="column">
-					<div>
-						<ng-container *ngIf="meal?.name; else noMealTpl">
-							{{ meal?.name }}
-						</ng-container>
-						<ng-template #noMealTpl>
-							<div class="no-meal-title">Aucun plat</div>
-						</ng-template>
+		<div fxLayoutAlign (click)="toggleEdit()" ngxVibration="10" matRipple>
+			<div
+				class="header-container"
+				*ngFor="let header of headers$ | async; trackBy: trackByIndex"
+			>
+				<mat-card-header
+					class="header"
+					[class.has-jow-recipe]="header?.jowRecipe"
+					fxLayoutAlign="space-between center"
+				>
+					<mat-card-title>
+						<div fxLayout="column">
+							<div>
+								<ng-container *ngIf="header?.name; else noMealTpl">
+									{{ header?.name }}
+								</ng-container>
+								<ng-template #noMealTpl>
+									<div class="no-meal-title">Aucun plat</div>
+								</ng-template>
+							</div>
+						</div>
+					</mat-card-title>
+					<div
+						fxLayoutAlign="end center"
+						fxLayoutGap="10px"
+						fxFlex="noshrink"
+						class="icons"
+					>
+						<div *ngIf="meal.extras?.freezer">❄️</div>
+						<button mat-icon-button *ngIf="!meal.name">
+							<mat-icon>add_circle</mat-icon>
+						</button>
 					</div>
-				</div>
-			</mat-card-title>
-			<div fxLayoutAlign="end center" fxLayoutGap="10px" fxFlex="noshrink" class="icons">
-				<div *ngIf="meal.extras?.freezer">❄️</div>
-				<button mat-icon-button *ngIf="!meal.name">
-					<mat-icon>add_circle</mat-icon>
-				</button>
+				</mat-card-header>
 			</div>
-		</mat-card-header>
+		</div>
 		<mat-card-content>
 			<div *ngIf="editMode" [@expandOnEnter] [@collapseOnLeave]>
 				<div class="form-container">

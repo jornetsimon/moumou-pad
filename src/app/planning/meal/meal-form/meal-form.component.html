@@ -162,6 +162,38 @@
 				</mat-chip>
 			</mat-chip-list>
 		</div>
+		<div style="margin-top: 10px">
+			<button
+				type="button"
+				mat-button
+				*ngIf="!form.get('alternateDish')!.get('show')?.value"
+				class="alternate-dish-button"
+				(click)="showAlternateDish()"
+			>
+				Ajouter un second plat
+			</button>
+		</div>
+	</div>
+
+	<div
+		class="alternate-dish"
+		*ngIf="form.get('alternateDish')!.get('show')?.value"
+		fxLayout="column"
+		fxLayoutAlign="start center"
+		formGroupName="alternateDish"
+	>
+		<mat-divider></mat-divider>
+		<mat-form-field appearance="fill" class="width-100">
+			<mat-label>Nom du second plat</mat-label>
+			<input matInput placeholder="Poulet poivrons, huevos rotos..." formControlName="name" />
+			<mat-icon
+				matSuffix
+				class="clear-icon"
+				(click)="form.get('alternateDish')?.get('name')?.reset()"
+			>
+				clear
+			</mat-icon>
+		</mat-form-field>
 	</div>
 
 	<div fxLayoutAlign="center" class="actions form-actions">

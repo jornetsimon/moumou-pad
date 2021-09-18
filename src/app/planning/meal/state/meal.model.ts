@@ -2,6 +2,10 @@ import { format } from 'date-fns';
 import { Recipe } from '../../../model/receipe';
 
 export type MealType = 'lunch' | 'dinner';
+export type Dish = {
+	name?: string | null;
+	jowRecipe?: Recipe | null;
+};
 
 export interface Meal {
 	id: string;
@@ -11,6 +15,7 @@ export interface Meal {
 	name?: string | null;
 	jowRecipe: Recipe | null;
 	extras?: MealExtras;
+	alternateDish?: Dish;
 }
 export interface MealExtras {
 	croquettes: boolean;
@@ -24,10 +29,12 @@ export function createMeal(input: {
 	name?: string | null;
 	jowRecipe: Recipe | null;
 	extras?: MealExtras;
+	alternateDish?: Dish;
 }): Meal {
 	return {
 		id: format(input.date, `yyyy-MM-dd-`) + input.type,
 		...input,
 		timestamp: input.date.getTime() / 1000,
+		alternateDish: input.alternateDish,
 	};
 }
