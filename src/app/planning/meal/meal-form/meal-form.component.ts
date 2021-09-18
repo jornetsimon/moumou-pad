@@ -98,7 +98,7 @@ export class MealFormComponent implements OnChanges {
 			searchTerm: '',
 			extras: this.meal?.extras,
 			alternateDish: {
-				name: this.meal?.alternateDish?.name,
+				name: this.meal?.alternateDish?.name || null,
 				show: !!this.meal?.alternateDish?.name,
 			},
 		});
@@ -113,7 +113,6 @@ export class MealFormComponent implements OnChanges {
 			extras: this.extrasFg.value,
 			alternateDish: this.form.value.alternateDish,
 		};
-		console.log(meal);
 		if (this.meal?.name) {
 			console.log(
 				'saving meal',
