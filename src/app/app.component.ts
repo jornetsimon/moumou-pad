@@ -73,7 +73,7 @@ export class AppComponent implements AfterViewInit {
 	ngAfterViewInit() {
 		this.update.available.subscribe(() => {
 			this.toastService.info(this.swUpdateTpl, {
-				icon: '🔄',
+				autoClose: false,
 			});
 		});
 	}
