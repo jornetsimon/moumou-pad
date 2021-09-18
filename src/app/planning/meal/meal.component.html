@@ -51,23 +51,26 @@
 		[class.empty]="!meal.name"
 		[class.out-of-home]="!!meal.extras?.outOfHome"
 		[class.has-jow-recipe]="!!meal.jowRecipe"
+		[class.has-theme]="!!(mealTheme$ | async)"
 		[class.open]="editMode"
-		[style.background-image]="
-			meal.jowRecipe?.imageUrl
-				? 'url(\'' + jowService.constructAssetUrl(meal.jowRecipe!.imageUrl) + '\')'
-				: ''
-		"
-		[style.background-color]="meal.jowRecipe?.backgroundColor"
+		[style.background-image]="themeBackgroundImage$ | async"
+		[style.background-color]="meal.jowRecipe?.backgroundColor || (mealTheme$ | async)?.color"
+		[style.box-shadow]="themeBoxShadow$ | async"
 	>
 		<div class="overlay"></div>
 		<div fxLayoutAlign (click)="toggleEdit()" ngxVibration="10" matRipple>
 			<div
 				class="header-container"
-				*ngFor="let header of headers$ | async; trackBy: trackByIndex"
+				*ngFor="
+					let header of headers$ | async;
+					let headerIndex = index;
+					trackBy: trackByIndex
+				"
 			>
 				<mat-card-header
 					class="header"
 					[class.has-jow-recipe]="header?.jowRecipe"
+					[class.has-theme]="!!(mealTheme$ | async)"
 					fxLayoutAlign="space-between center"
 				>
 					<mat-card-title>
@@ -75,6 +78,9 @@
 							<div>
 								<ng-container *ngIf="header?.name; else noMealTpl">
 									{{ header?.name }}
+								</ng-container>
+								<ng-container *ngIf="headerIndex === 0">
+									{{ themeEmoji$ | async }}
 								</ng-container>
 								<ng-template #noMealTpl>
 									<div class="no-meal-title">Aucun plat</div>

@@ -44,7 +44,8 @@ $meal-color: $primary;
 	&.out-of-home {
 		background-color: $accent;
 	}
-	&.has-jow-recipe {
+	&.has-jow-recipe,
+	&.has-theme {
 		background-repeat: no-repeat, no-repeat !important;
 		background-position: center;
 		background-size: cover;

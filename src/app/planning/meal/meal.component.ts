@@ -21,9 +21,12 @@ import { CdkDrag } from '@angular/cdk/drag-drop/directives/drag';
 import { DragDropService } from './drag-drop.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
-import { map } from 'rxjs/operators';
+import { map, withLatestFrom } from 'rxjs/operators';
 import { interval, merge, Observable, Subject } from 'rxjs';
 import { NgxVibrationService } from 'ngx-vibration';
+import { MEAL_THEMES, MealTheme } from './meal.themes';
+import { sanitizeString, stringContainsEmoji } from '../../shared/utilities';
+import * as tinycolor from 'tinycolor2';
 
 @Component({
 	selector: 'cb-meal',
@@ -51,7 +54,8 @@ export class MealComponent {
 	@ViewChild('dropListRef') dropListRef: CdkDropList<Meal> | undefined;
 	@Output() mealSaved = new EventEmitter<HTMLDivElement>();
 	private _meal!: Meal;
-	mealSubject = new Subject<Meal>();
+	private mealSubject = new Subject<Meal>();
+	meal$ = this.mealSubject.asObservable();
 	editMode = false;
 	isNext = false;
 	cannotDropHere$: Observable<boolean> = this.dragDropService.dragging$.pipe(
@@ -62,7 +66,7 @@ export class MealComponent {
 			return !this.canEnter({ data: dragging } as CdkDrag<Meal>, this.dropListRef);
 		})
 	);
-	isNext$ = merge(interval(60 * 60 * 1000), this.mealSubject.asObservable()).pipe(
+	isNext$ = merge(interval(60 * 60 * 1000), this.meal$).pipe(
 		map(() => {
 			const now = Date.now();
 			const isMealToday = isSameDay(this.meal.date, now);
@@ -75,17 +79,58 @@ export class MealComponent {
 			return false;
 		})
 	);
-	headers$: Observable<Dish[]> = this.mealSubject
-		.asObservable()
-		.pipe(
-			map(
-				(meal) =>
-					[
-						{ name: meal.name, jowRecipe: meal.jowRecipe },
-						meal.alternateDish?.name ? meal.alternateDish : undefined,
-					].filter(Boolean) as Dish[]
-			)
-		);
+	headers$: Observable<Dish[]> = this.meal$.pipe(
+		map(
+			(meal) =>
+				[
+					{ name: meal.name, jowRecipe: meal.jowRecipe },
+					meal.alternateDish?.name ? meal.alternateDish : undefined,
+				].filter(Boolean) as Dish[]
+		)
+	);
+	mealTheme$: Observable<MealTheme | undefined> = this.meal$.pipe(
+		map((meal): MealTheme | undefined => {
+			const name = sanitizeString(meal.name || '');
+			const matchedThemeIndex = MEAL_THEMES.findIndex((themeEntry) =>
+				themeEntry.keywords.some((keyword) => sanitizeString(keyword) === name)
+			);
+			if (!(matchedThemeIndex >= 0)) {
+				return undefined;
+			}
+			return MEAL_THEMES[matchedThemeIndex].theme;
+		})
+	);
+	themeBoxShadow$ = this.mealTheme$.pipe(
+		map((theme) =>
+			theme?.color && theme.shadow
+				? `0px 0px 7px 0px ${tinycolor(theme.color)
+						.setAlpha(theme.backgroundImage ? 1 : 0.5)
+						.toRgbString()}`
+				: undefined
+		)
+	);
+	themeBackgroundImage$: Observable<string> = this.mealTheme$.pipe(
+		withLatestFrom(this.meal$),
+		map(([theme, meal]) => {
+			let url;
+			if (meal.jowRecipe?.imageUrl) {
+				url = "url('" + this.jowService.constructAssetUrl(meal.jowRecipe!.imageUrl) + "')";
+			}
+			if (theme?.backgroundImage) {
+				url = theme.backgroundImage;
+			}
+			return url ? `url('${url}')` : '';
+		})
+	);
+	themeEmoji$: Observable<string> = this.mealTheme$.pipe(
+		withLatestFrom(this.meal$),
+		map(([theme, meal]) => {
+			if (meal?.name && stringContainsEmoji(meal.name)) {
+				return '';
+			}
+			return theme?.emoji || '';
+		})
+	);
 
 	trackByIndex: TrackByFunction<Dish> = (index) => index;
 
