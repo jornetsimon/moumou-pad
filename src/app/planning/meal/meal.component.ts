@@ -118,10 +118,11 @@ export class MealComponent {
 		map(([theme, meal]) => {
 			let url;
 			if (meal.jowRecipe?.imageUrl) {
-				url = "url('" + this.jowService.constructAssetUrl(meal.jowRecipe!.imageUrl) + "')";
-			}
-			if (theme?.backgroundImage) {
-				url = theme.backgroundImage;
+				url = this.jowService.constructAssetUrl(meal.jowRecipe!.imageUrl);
+			} else {
+				if (theme?.backgroundImage) {
+					url = theme.backgroundImage;
+				}
 			}
 			return url ? `url('${url}')` : '';
 		})
