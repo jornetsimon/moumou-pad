@@ -18,10 +18,8 @@ export class MealService extends CollectionService<MealState> {
 		const userId = stateSnapshot.user!.uid;
 
 		if (familyName && isAllowedInFamily) {
-			console.log(`getting meals from families`);
 			return `families/${familyName}/meals`;
 		}
-		console.log(`getting meals from users`);
 		return `users/${userId}/meals`;
 	}
 
@@ -31,11 +29,13 @@ export class MealService extends CollectionService<MealState> {
 			...to,
 			name: from.name || null,
 			jowRecipe: from.jowRecipe || null,
+			extras: from.extras || null,
 		});
 		batch.set(this.getRef(from.id), {
 			...from,
 			name: to.name || null,
 			jowRecipe: to.jowRecipe || null,
+			extras: to.extras || null,
 		});
 		return batch.commit();
 	}
