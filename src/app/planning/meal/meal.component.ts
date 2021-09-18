@@ -22,11 +22,12 @@ import { DragDropService } from './drag-drop.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
 import { map, withLatestFrom } from 'rxjs/operators';
-import { interval, merge, Observable, Subject } from 'rxjs';
+import { combineLatest, interval, merge, Observable, Subject } from 'rxjs';
 import { NgxVibrationService } from 'ngx-vibration';
-import { MEAL_THEMES, MealTheme } from './meal.themes';
+import { MealThemeModel } from './theme/meal-theme.model';
 import { sanitizeString, stringContainsEmoji } from '../../shared/utilities';
 import * as tinycolor from 'tinycolor2';
+import { MealThemeService } from './theme/meal-theme.service';
 
 @Component({
 	selector: 'cb-meal',
@@ -88,16 +89,19 @@ export class MealComponent {
 				].filter(Boolean) as Dish[]
 		)
 	);
-	mealTheme$: Observable<MealTheme | undefined> = this.meal$.pipe(
-		map((meal): MealTheme | undefined => {
+	mealTheme$: Observable<MealThemeModel | undefined> = combineLatest([
+		this.meal$,
+		this.mealThemeService.mealThemes$,
+	]).pipe(
+		map(([meal, themes]): MealThemeModel | undefined => {
 			const name = sanitizeString(meal.name || '');
-			const matchedThemeIndex = MEAL_THEMES.findIndex((themeEntry) =>
+			const matchedThemeIndex = themes.findIndex((themeEntry) =>
 				themeEntry.keywords.some((keyword) => sanitizeString(keyword) === name)
 			);
 			if (!(matchedThemeIndex >= 0)) {
 				return undefined;
 			}
-			return MEAL_THEMES[matchedThemeIndex].theme;
+			return themes[matchedThemeIndex].theme;
 		})
 	);
 	themeBoxShadow$ = this.mealTheme$.pipe(
@@ -151,7 +155,8 @@ export class MealComponent {
 		private cd: ChangeDetectorRef,
 		public dragDropService: DragDropService,
 		private dialog: MatDialog,
-		private vibrationService: NgxVibrationService
+		private vibrationService: NgxVibrationService,
+		private mealThemeService: MealThemeService
 	) {}
 
 	toggleEdit() {
