@@ -96,7 +96,7 @@ export class MealComponent {
 		map(([meal, themes]): MealThemeModel | undefined => {
 			const name = sanitizeString(meal.name || '');
 			const matchedThemeIndex = themes.findIndex((themeEntry) =>
-				themeEntry.keywords.some((keyword) => sanitizeString(keyword) === name)
+				themeEntry.keywords.some((keyword) => name.includes(sanitizeString(keyword)))
 			);
 			if (!(matchedThemeIndex >= 0)) {
 				return undefined;
