@@ -9,3 +9,6 @@ export function stringContainsEmoji(str: string): boolean {
 		str
 	);
 }
+export function isNotNullOrUndefined<T>(input: T | null | undefined): input is T {
+	return input !== undefined && input !== null;
+}

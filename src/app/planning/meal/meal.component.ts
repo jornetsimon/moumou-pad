@@ -21,11 +21,11 @@ import { CdkDrag } from '@angular/cdk/drag-drop/directives/drag';
 import { DragDropService } from './drag-drop.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
-import { map, withLatestFrom } from 'rxjs/operators';
-import { combineLatest, interval, merge, Observable, Subject } from 'rxjs';
+import { filter, map, withLatestFrom } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
 import { NgxVibrationService } from 'ngx-vibration';
 import { MealThemeModel } from './theme/meal-theme.model';
-import { sanitizeString, stringContainsEmoji } from '../../shared/utilities';
+import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../../shared/utilities';
 import * as tinycolor from 'tinycolor2';
 import { MealThemeService } from './theme/meal-theme.service';
 
@@ -55,8 +55,8 @@ export class MealComponent {
 	@ViewChild('dropListRef') dropListRef: CdkDropList<Meal> | undefined;
 	@Output() mealSaved = new EventEmitter<HTMLDivElement>();
 	private _meal!: Meal;
-	private mealSubject = new Subject<Meal>();
-	meal$ = this.mealSubject.asObservable();
+	private mealSubject = new BehaviorSubject<Meal | undefined>(undefined);
+	meal$: Observable<Meal> = this.mealSubject.asObservable().pipe(filter(isNotNullOrUndefined));
 	editMode = false;
 	isNext = false;
 	cannotDropHere$: Observable<boolean> = this.dragDropService.dragging$.pipe(
