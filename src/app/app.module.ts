@@ -34,7 +34,7 @@ registerLocaleData(fr);
 		BrowserModule,
 		environment.production ? [] : AkitaNgDevtools.forRoot(),
 		AngularFireModule.initializeApp(environment.firebaseConfig),
-		AngularFirestoreModule,
+		AngularFirestoreModule.enablePersistence(),
 		AngularFireFunctionsModule,
 		AngularFireAuthModule,
 		AngularFireAuthGuardModule,

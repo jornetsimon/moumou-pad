@@ -3,7 +3,7 @@ import { MealQuery } from './meal/state/meal.query';
 import { combineLatest, Observable } from 'rxjs';
 import { Meal } from './meal/state/meal.model';
 import { DragDropService } from './meal/drag-drop.service';
-import { map, startWith, switchMap } from 'rxjs/operators';
+import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
 import { NgxVibrationService } from 'ngx-vibration';
 import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
@@ -35,7 +35,8 @@ export class PlanningComponent {
 				res.to = addDays(new Date(res.to), shiftBy);
 			}
 			return this.mealQuery.getMealDays(res);
-		})
+		}),
+		debounceTime(200)
 	);
 	showDragCancelButton$ = this.dragDropService.dragging$.pipe(
 		map((dragging) => !!dragging),
