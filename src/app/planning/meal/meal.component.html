@@ -57,6 +57,12 @@
 		[style.background-color]="meal.jowRecipe?.backgroundColor || (mealTheme$ | async)?.color"
 		[style.box-shadow]="themeBoxShadow$ | async"
 	>
+		<div
+			class="color-overlay"
+			[style.background-color]="
+				meal.jowRecipe?.backgroundColor || (mealTheme$ | async)?.color
+			"
+		></div>
 		<div class="overlay"></div>
 		<div fxLayoutAlign (click)="toggleEdit()" ngxVibration="10" matRipple>
 			<div

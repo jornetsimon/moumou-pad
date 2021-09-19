@@ -4,7 +4,7 @@
 	font-size: 37px;
 	font-weight: 300;
 	text-align: center;
-	margin: 15px 0 5px 0;
+	margin: 22px 0 5px 0;
 	font-family: 'Dancing Script', cursive;
 
 	@media (max-width: 599px) {
@@ -14,8 +14,6 @@
 }
 
 .meals-container {
-	height: 80vh;
-
 	@media (max-width: 599px) {
 		margin-top: 15px;
 
@@ -112,4 +110,5 @@
 
 .current-period {
 	font-size: 0.5em;
+	height: 22px;
 }

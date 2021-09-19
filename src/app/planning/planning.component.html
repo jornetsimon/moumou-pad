@@ -1,17 +1,19 @@
 <div class="title">
 	Planning de la semaine
 
-	<div *ngIf="(isThisWeek$ | async) === false" class="current-period">
-		<a (click)="onCurrentPeriodClicked()" *ngIf="currentSchedule$ | async as schedule">
-			du
-			{{
-				(scheduleOverlapsTwoMonths$ | async)
-					? (schedule.from | date: 'd MMMM')
-					: (schedule.from | date: 'd')
-			}}
-			au
-			{{ schedule.to | date: 'd MMMM' }}
-		</a>
+	<div class="current-period">
+		<ng-container *ngIf="(isThisWeek$ | async) === false">
+			<a (click)="onCurrentPeriodClicked()" *ngIf="currentSchedule$ | async as schedule">
+				du
+				{{
+					(scheduleOverlapsTwoMonths$ | async)
+						? (schedule.from | date: 'd MMMM')
+						: (schedule.from | date: 'd')
+				}}
+				au
+				{{ schedule.to | date: 'd MMMM' }}
+			</a>
+		</ng-container>
 	</div>
 </div>
 

@@ -50,7 +50,7 @@ export class PlanningComponent {
 		map((schedule) => !isSameMonth(schedule.from, schedule.to))
 	);
 
-	trackByFn: TrackByFunction<Meal> = (index, item) => item.date.getTime();
+	trackByFn: TrackByFunction<Meal> = (index, item) => item.id;
 
 	constructor(
 		private mealQuery: MealQuery,
