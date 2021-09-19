@@ -28,6 +28,16 @@
 				"timeout": "1s",
 				"strategy": "performance"
 			}
+		},
+		{
+			"name": "jow-recipes",
+			"urls": ["https://static.jow.fr/recipes/*"],
+			"cacheConfig": {
+				"maxAge": "7d",
+				"maxSize": 1,
+				"timeout": "500u",
+				"strategy": "performance"
+			}
 		}
 	]
 }
