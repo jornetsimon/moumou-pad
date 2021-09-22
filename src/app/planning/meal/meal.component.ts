@@ -107,7 +107,7 @@ export class MealComponent {
 	themeBoxShadow$ = this.mealTheme$.pipe(
 		map((theme) =>
 			theme?.color && theme.shadow
-				? `0px 0px 7px 0px ${tinycolor(theme.color)
+				? `0px 0px 11px 2px ${tinycolor(theme.color)
 						.setAlpha(theme.backgroundImage ? 1 : 0.5)
 						.toRgbString()}`
 				: undefined

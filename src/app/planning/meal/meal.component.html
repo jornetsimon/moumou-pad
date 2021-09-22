@@ -52,6 +52,7 @@
 		[class.out-of-home]="!!meal.extras?.outOfHome"
 		[class.has-jow-recipe]="!!meal.jowRecipe"
 		[class.has-theme]="!!(mealTheme$ | async)"
+		[class.has-theme-background]="!!(themeBackgroundImage$ | async)"
 		[class.open]="editMode"
 		[style.background-image]="themeBackgroundImage$ | async"
 		[style.background-color]="meal.jowRecipe?.backgroundColor || (mealTheme$ | async)?.color"

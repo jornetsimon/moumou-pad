@@ -66,8 +66,11 @@ $meal-color: $primary;
 				border-radius: 7px;
 			}
 		}
-		&:not(.open) .overlay {
-			background-color: rgb(0 0 0 / 33%);
+		&.has-jow-recipe,
+		&.has-theme-background {
+			&:not(open) .overlay {
+				background-color: rgb(0 0 0 / 33%);
+			}
 		}
 
 		.color-overlay {
