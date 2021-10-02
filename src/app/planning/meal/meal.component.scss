@@ -36,6 +36,14 @@ $meal-color: $primary;
 
 .meal {
 	min-height: 40px;
+
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	@media (min-width: 600px) {
+		min-height: 50px;
+	}
+
 	background-color: $meal-color;
 	// transition: background-color 0.5s;
 	&.empty {
