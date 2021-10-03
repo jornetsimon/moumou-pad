@@ -234,28 +234,4 @@ export class MealComponent {
 	onEnter() {
 		this.vibrationService.vibrate([25]);
 	}
-
-	togglePrepared() {
-		if (!this.meal.name) {
-			console.warn('Calling togglePrepared on nonexistent meal');
-			return;
-		}
-		this.vibrationService.vibrate([10, 200, 50, 100, 50]);
-		let newValue: boolean;
-		this.mealService
-			.update(this.meal.id, (state) => {
-				newValue = !state.extras?.prepared;
-				return {
-					extras: {
-						...state.extras,
-						prepared: newValue,
-					},
-				};
-			})
-			.then(() => {
-				this.toastService.success(
-					newValue ? 'Repas marqué comme préparé' : 'Repas marqué comme non préparé'
-				);
-			});
-	}
 }

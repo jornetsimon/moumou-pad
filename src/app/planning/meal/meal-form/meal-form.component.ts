@@ -40,6 +40,7 @@ export class MealFormComponent implements OnChanges {
 		croquettes: new FormControl(false),
 		freezer: new FormControl(false),
 		outOfHome: new FormControl(false),
+		prepared: new FormControl(false),
 	});
 	form = new FormGroup({
 		name: new FormControl(undefined),
@@ -91,12 +92,6 @@ export class MealFormComponent implements OnChanges {
 	}
 
 	initializeForm() {
-		console.log('initiaize', {
-			name: this.meal?.name || '',
-			searchTerm: '',
-			extras: this.meal?.extras,
-			alternateDish: this.meal?.alternateDish,
-		});
 		this.form.patchValue({
 			name: this.meal?.name || '',
 			searchTerm: '',
@@ -119,10 +114,6 @@ export class MealFormComponent implements OnChanges {
 			recipeMemo: this.recipeMemo || this.meal?.recipeMemo,
 		};
 		if (this.meal?.name) {
-			console.log(
-				'saving meal',
-				pickBy(meal, (p) => p !== undefined)
-			);
 			this.mealService.update(
 				this.meal.id,
 				pickBy(meal, (p) => p !== undefined)
