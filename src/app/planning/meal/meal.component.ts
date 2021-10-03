@@ -1,6 +1,5 @@
 import {
 	ChangeDetectionStrategy,
-	ChangeDetectorRef,
 	Component,
 	ElementRef,
 	EventEmitter,
@@ -21,13 +20,14 @@ import { CdkDrag } from '@angular/cdk/drag-drop/directives/drag';
 import { DragDropService } from './drag-drop.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
-import { filter, map, withLatestFrom } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
 import { NgxVibrationService } from 'ngx-vibration';
 import { MealThemeModel } from './theme/meal-theme.model';
 import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../../shared/utilities';
 import * as tinycolor from 'tinycolor2';
 import { MealThemeService } from './theme/meal-theme.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
 	selector: 'cb-meal',
@@ -58,6 +58,17 @@ export class MealComponent {
 	private mealSubject = new BehaviorSubject<Meal | undefined>(undefined);
 	meal$: Observable<Meal> = this.mealSubject.asObservable().pipe(filter(isNotNullOrUndefined));
 	editMode = false;
+	editMode$ = this.route.fragment.pipe(
+		map((fragment) => fragment === this.meal.id),
+		distinctUntilChanged(),
+		tap((editMode) => {
+			if (editMode && this.containerRef) {
+				setTimeout(() => {
+					this.containerRef!.nativeElement.scrollIntoView({ behavior: 'smooth' });
+				}, 250);
+			}
+		})
+	);
 	isNext = false;
 	cannotDropHere$: Observable<boolean> = this.dragDropService.dragging$.pipe(
 		map((dragging) => {
@@ -153,27 +164,29 @@ export class MealComponent {
 		private mealService: MealService,
 		private toastService: HotToastService,
 		public jowService: JowService,
-		private cd: ChangeDetectorRef,
 		public dragDropService: DragDropService,
 		private dialog: MatDialog,
 		private vibrationService: NgxVibrationService,
-		private mealThemeService: MealThemeService
+		private mealThemeService: MealThemeService,
+		private router: Router,
+		private route: ActivatedRoute
 	) {}
 
-	toggleEdit() {
-		this.editMode = !this.editMode;
-		this.cd.detectChanges();
-		if (this.containerRef) {
-			setTimeout(() => {
-				this.containerRef!.nativeElement.scrollIntoView({ behavior: 'smooth' });
-			}, 250);
+	toggleEdit(setTo?: boolean) {
+		let newFragment: string | undefined;
+		if (setTo !== undefined) {
+			newFragment = setTo ? this.meal.id : undefined;
+		} else {
+			newFragment = this.route.snapshot.fragment === this.meal.id ? undefined : this.meal.id;
 		}
+		this.router.navigate([], {
+			fragment: newFragment,
+		});
 	}
 
 	afterSave() {
 		this.toastService.success(`Repas enregistré`, { duration: 4000 });
-		this.editMode = false;
-		this.cd.detectChanges();
+		this.toggleEdit(false);
 		this.mealSaved.emit(this.containerRef?.nativeElement);
 	}
 

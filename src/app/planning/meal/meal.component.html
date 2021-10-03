@@ -53,7 +53,7 @@
 		[class.has-jow-recipe]="!!meal.jowRecipe"
 		[class.has-theme]="!!(mealTheme$ | async)"
 		[class.has-theme-background]="!!(themeBackgroundImage$ | async)"
-		[class.open]="editMode"
+		[class.open]="editMode$ | async"
 		[style.background-image]="themeBackgroundImage$ | async"
 		[style.background-color]="meal.jowRecipe?.backgroundColor || (mealTheme$ | async)?.color"
 		[style.box-shadow]="themeBoxShadow$ | async"
@@ -110,7 +110,7 @@
 			</div>
 		</div>
 		<mat-card-content>
-			<div *ngIf="editMode" [@expandOnEnter] [@collapseOnLeave]>
+			<div *ngIf="editMode$ | async" [@expandOnEnter] [@collapseOnLeave]>
 				<div class="form-container">
 					<cb-meal-form [meal]="meal" (mealSaved)="afterSave()"></cb-meal-form>
 				</div>
