@@ -173,7 +173,7 @@ export class MealFormComponent implements OnChanges {
 	openNoteDialog() {
 		const dialogRef = this.dialog.open(NoteComponent, {
 			data: {
-				content: this.meal!.recipeMemo,
+				content: this.recipeMemo || this.meal!.recipeMemo,
 			},
 			autoFocus: false,
 		});
