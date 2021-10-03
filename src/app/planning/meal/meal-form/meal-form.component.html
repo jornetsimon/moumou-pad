@@ -4,49 +4,6 @@
 		<input matInput placeholder="Poulet poivrons, huevos rotos..." formControlName="name" />
 		<mat-icon matSuffix class="clear-icon" (click)="form.get('name')?.reset()">clear</mat-icon>
 	</mat-form-field>
-	<ng-container formGroupName="extras">
-		<mat-checkbox formControlName="outOfHome">En dehors de la maison</mat-checkbox>
-	</ng-container>
-
-	<div class="separator" *ngIf="!jowRecipe" style="margin-top: 15px">Ou</div>
-
-	<mat-form-field appearance="standard" class="width-100">
-		<mat-label>
-			<ng-container *ngIf="!jowRecipe"> Rechercher une recette sur Jow </ng-container>
-			<ng-container *ngIf="jowRecipe"> Trouver une autre recette Jow </ng-container>
-		</mat-label>
-		<input
-			matInput
-			aria-label="State"
-			[matAutocomplete]="auto"
-			formControlName="searchTerm"
-			placeholder="Mot-clé"
-		/>
-		<mat-icon matSuffix>
-			<ng-container *ngIf="loadingSearchResults">
-				<mat-spinner [diameter]="20"></mat-spinner>
-			</ng-container>
-			<ng-container *ngIf="!loadingSearchResults"> search </ng-container>
-		</mat-icon>
-		<mat-autocomplete
-			#auto="matAutocomplete"
-			[displayWith]="displayWithFn"
-			(optionSelected)="onRecipeSelected($event.option.value)"
-		>
-			<mat-option *ngFor="let recipe of recipeSearchResults$ | async" [value]="recipe">
-				<img
-					alt="Recipe preview"
-					class="recipe-option-image"
-					[src]="jowService.constructAssetUrl(recipe.imageUrl)"
-				/>
-				<span style="font-size: 14px">{{ recipe.title }}</span>
-				<small *ngIf="recipe.difficulty >= 2">
-					|
-					<ng-container *ngForRepeat="recipe.difficulty">💪️</ng-container>
-				</small>
-			</mat-option>
-		</mat-autocomplete>
-	</mat-form-field>
 
 	<ng-container *ngIf="jowRecipe">
 		<div class="selected-recipe-intro" [style.background-color]="jowRecipe.backgroundColor">
@@ -106,15 +63,62 @@
 		</mat-card>
 	</ng-container>
 
-	<ng-container *ngIf="!jowRecipe && !form.get('name')!.value">
-		<mat-card>
-			<mat-card-title style="font-size: medium">
-				<div fxLayoutAlign="space-between center">
-					<div style="color: #737373">Quelques idées de recettes</div>
-					<mat-icon svgIcon="jow" style="height: 32px; width: 32px"></mat-icon>
+	<mat-card *ngIf="!jowRecipe">
+		<mat-card-content>
+			<div [fxLayoutAlign]="jowRecipe ? 'space-between center' : 'space-between start'">
+				<mat-form-field appearance="standard" class="jow-recipe-search-field">
+					<mat-label>
+						<ng-container *ngIf="!jowRecipe">
+							Rechercher une recette sur Jow
+						</ng-container>
+						<ng-container *ngIf="jowRecipe">
+							Trouver une autre recette Jow
+						</ng-container>
+					</mat-label>
+					<input
+						matInput
+						aria-label="State"
+						[matAutocomplete]="auto"
+						formControlName="searchTerm"
+						placeholder="Mot-clé"
+					/>
+					<mat-icon matSuffix>
+						<ng-container *ngIf="loadingSearchResults">
+							<mat-spinner [diameter]="20"></mat-spinner>
+						</ng-container>
+						<ng-container *ngIf="!loadingSearchResults"> search </ng-container>
+					</mat-icon>
+					<mat-autocomplete
+						#auto="matAutocomplete"
+						[displayWith]="displayWithFn"
+						(optionSelected)="onRecipeSelected($event.option.value)"
+					>
+						<mat-option
+							*ngFor="let recipe of recipeSearchResults$ | async"
+							[value]="recipe"
+						>
+							<img
+								alt="Recipe preview"
+								class="recipe-option-image"
+								[src]="jowService.constructAssetUrl(recipe.imageUrl)"
+							/>
+							<span style="font-size: 14px">{{ recipe.title }}</span>
+							<small *ngIf="recipe.difficulty >= 2">
+								|
+								<ng-container *ngForRepeat="recipe.difficulty">💪️</ng-container>
+							</small>
+						</mat-option>
+					</mat-autocomplete>
+				</mat-form-field>
+				<mat-icon
+					svgIcon="jow"
+					style="height: 32px; width: 32px; margin-left: 15px"
+				></mat-icon>
+			</div>
+			<div *ngIf="!form.get('name')!.value" style="margin-top: 10px">
+				<div style="font-size: medium; color: #737373; margin-bottom: 10px">
+					Quelques idées de recettes
 				</div>
-			</mat-card-title>
-			<mat-card-content>
 				<div
 					class="suggestions"
 					fxLayout="row wrap"
@@ -139,9 +143,9 @@
 						<mat-spinner [diameter]="30"></mat-spinner>
 					</ng-template>
 				</div>
-			</mat-card-content>
-		</mat-card>
-	</ng-container>
+			</div>
+		</mat-card-content>
+	</mat-card>
 
 	<div
 		class="memo"
@@ -170,6 +174,15 @@
 			</mat-chip-list>
 		</div>
 		<div class="buttons" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
+			<button
+				mat-icon-button
+				type="button"
+				matTooltip="En dehors de la maison"
+				[class.out-of-home-enabled]="extrasFg.get('outOfHome')!.value"
+				(click)="extrasFg.get('outOfHome')!.setValue(!extrasFg.get('outOfHome')!.value)"
+			>
+				<mat-icon>location_city</mat-icon>
+			</button>
 			<button
 				mat-icon-button
 				type="button"

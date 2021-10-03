@@ -4,6 +4,14 @@
 	}
 }
 
+.jow-recipe-search-field {
+	width: 100%;
+
+	::ng-deep .mat-form-field-flex {
+		padding: 0;
+	}
+}
+
 .suggestions {
 	padding: 5px 0;
 
@@ -137,6 +145,10 @@ $selected-recipe-border-radius: 16px;
 				background-color: #61d346;
 				color: white;
 			}
+			&.out-of-home-enabled {
+				background-color: #ff4081;
+				color: white;
+			}
 		}
 	}
 }
@@ -152,7 +164,7 @@ $selected-recipe-border-radius: 16px;
 	bottom: 0;
 	left: 0;
 	width: 100%;
-	padding: 15px;
+	padding-top: 15px;
 	box-shadow: 0 2px 0 2px ghostwhite;
 	background: ghostwhite;
 	z-index: 2;
