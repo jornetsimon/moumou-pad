@@ -15,7 +15,7 @@ service cloud.firestore {
             }
         }
         match /meal-themes/{mealThemeId} {
-            allow read: if true;
+            allow read: if request.auth != null;
         }
     }
 
