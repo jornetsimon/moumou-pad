@@ -1,4 +1,10 @@
-<div fxLayout="column nowrap" fxLayoutAlign="start" class="container" #container>
+<div
+	fxLayout="column nowrap"
+	fxLayoutAlign="start"
+	class="container"
+	#container
+	(press)="$event.preventDefault(); togglePrepared()"
+>
 	<div class="topper" fxLayoutAlign="center center">
 		<div fxFlex="33%" class="relative">
 			<span class="is-next" *ngIf="isNext$ | async">prochain</span>
@@ -43,8 +49,9 @@
 			>
 				<mat-icon svgIcon="jow"></mat-icon>
 			</div>-->
-			<div *ngIf="meal.recipeMemo">📝</div>
-			<div *ngIf="meal.extras?.croquettes">🐱</div>
+			<div *ngIf="meal.extras?.prepared" matTooltip="Repas préparé">✅</div>
+			<div *ngIf="meal.recipeMemo" matTooltip="Note">📝</div>
+			<div *ngIf="meal.extras?.croquettes" matTooltip="Jour de croquettes">🐱</div>
 		</div>
 	</div>
 	<mat-card

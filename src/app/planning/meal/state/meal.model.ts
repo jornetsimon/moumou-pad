@@ -19,9 +19,10 @@ export interface Meal {
 	recipeMemo?: string | null;
 }
 export interface MealExtras {
-	croquettes: boolean;
-	freezer: boolean;
-	outOfHome: boolean;
+	croquettes?: boolean;
+	freezer?: boolean;
+	outOfHome?: boolean;
+	prepared?: boolean;
 }
 
 export function createMeal(input: {
