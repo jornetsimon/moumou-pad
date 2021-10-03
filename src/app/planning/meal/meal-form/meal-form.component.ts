@@ -19,6 +19,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
 import { Observable, of } from 'rxjs';
 import { JowService } from '../../../jow/state/jow.service';
+import { NoteComponent } from './note/note.component';
+import { RenderService } from '../../../shared/render.service';
 
 @Component({
 	selector: 'cb-meal-form',
@@ -64,13 +66,15 @@ export class MealFormComponent implements OnChanges {
 	);
 	displayWithFn = (recipe: Recipe | undefined) => recipe?.title || '';
 	jowRecipe: Recipe | null = null;
+	recipeMemo: string | null = null;
 
 	constructor(
 		private mealService: MealService,
 		private jowQuery: JowQuery,
 		public dialog: MatDialog,
 		public jowService: JowService,
-		private cd: ChangeDetectorRef
+		private cd: ChangeDetectorRef,
+		public sanitizerService: RenderService
 	) {}
 
 	ngOnChanges(changes: SimpleChanges) {
@@ -112,6 +116,7 @@ export class MealFormComponent implements OnChanges {
 			jowRecipe: this.jowRecipe,
 			extras: this.extrasFg.value,
 			alternateDish: this.form.value.alternateDish,
+			recipeMemo: this.recipeMemo || this.meal?.recipeMemo,
 		};
 		if (this.meal?.name) {
 			console.log(
@@ -172,5 +177,19 @@ export class MealFormComponent implements OnChanges {
 
 	showAlternateDish() {
 		this.form.get('alternateDish')!.get('show')?.setValue(true);
+	}
+
+	openNoteDialog() {
+		const dialogRef = this.dialog.open(NoteComponent, {
+			data: {
+				content: this.meal!.recipeMemo,
+			},
+			autoFocus: false,
+		});
+
+		dialogRef.afterClosed().subscribe((note: string | undefined) => {
+			this.recipeMemo = note || null;
+			this.cd.detectChanges();
+		});
 	}
 }

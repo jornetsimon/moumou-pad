@@ -1,0 +1,6 @@
+.note-field {
+	width: 100%;
+	@media (min-width: 450px) {
+		min-width: 300px;
+	}
+}

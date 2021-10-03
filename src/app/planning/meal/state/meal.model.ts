@@ -16,6 +16,7 @@ export interface Meal {
 	jowRecipe: Recipe | null;
 	extras?: MealExtras;
 	alternateDish?: Dish;
+	recipeMemo?: string | null;
 }
 export interface MealExtras {
 	croquettes: boolean;
@@ -30,6 +31,7 @@ export function createMeal(input: {
 	jowRecipe: Recipe | null;
 	extras?: MealExtras;
 	alternateDish?: Dish;
+	recipeMemo?: string | null;
 }): Meal {
 	return {
 		id: format(input.date, `yyyy-MM-dd-`) + input.type,

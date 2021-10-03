@@ -143,6 +143,13 @@
 		</mat-card>
 	</ng-container>
 
+	<div
+		class="memo"
+		*ngIf="recipeMemo || meal?.recipeMemo"
+		[innerHTML]="sanitizerService.render(recipeMemo || meal?.recipeMemo || '')"
+		(click)="openNoteDialog()"
+	></div>
+
 	<div class="extras" fxLayout="column" fxLayoutAlign="start center" formGroupName="extras">
 		<div>
 			<mat-chip-list multiple>
@@ -162,15 +169,24 @@
 				</mat-chip>
 			</mat-chip-list>
 		</div>
-		<div style="margin-top: 10px">
+		<div class="buttons" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
 			<button
+				mat-icon-button
 				type="button"
-				mat-button
 				*ngIf="!form.get('alternateDish')!.get('show')?.value"
-				class="alternate-dish-button"
+				matTooltip="Ajouter un second plat"
 				(click)="showAlternateDish()"
 			>
-				Ajouter un second plat
+				<mat-icon>restaurant_menu</mat-icon>
+			</button>
+			<button
+				mat-icon-button
+				type="button"
+				*ngIf="!(recipeMemo || meal?.recipeMemo)"
+				matTooltip="Ajouter un mémo"
+				(click)="openNoteDialog()"
+			>
+				<mat-icon>edit_note</mat-icon>
 			</button>
 		</div>
 	</div>
