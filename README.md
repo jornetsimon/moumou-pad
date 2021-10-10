@@ -1,27 +1,36 @@
-# CookingBoard
+# MoumouPad
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.0.4.
+![Licence](https://badgen.net/badge/license/MIT/blue)
 
-## Development server
+🥘 An Angular PWA to organize meal schedules and other household stuff
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+![Banner](https://i.imgur.com/uCKnsWd.png)
 
-## Code scaffolding
+### Features:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- Organize your week meals in advance 🥗
+- Search, view and add [Jow](https://jow.fr) recipes 🔎
+- Create or join a family to share a common schedule 👨‍👩‍👧‍👦
+- Add secondary meal, memo (recipe URL, notes...) 📝
+- Mark meal as outside, prepared (in advance) ✅
+- Pet food indicator, freezer indicator 🐱
+- Keyword based meal themes 🖼
 
-## Build
+### Try it 🔗
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+[moumou-pad.web.app](https://moumou-pad.web.app)
 
-## Running unit tests
+_Powered by Firebase and instant Google account login._
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+# But why?
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+MoumouPad was created as a gift for my fiancé, who likes to plan the meals for every week 🎁. After crafting a magnetic board with erasable whiteboard cards, I quickly figured it could be turned into an app to live on a fridge iPad.
 
-## Further help
+![Before & After](https://i.imgur.com/JTdxGvM.jpg)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Tadaaa! 🪄 MoumouPad was born, named after her nickname.
+
+It's just a simple personally project with no other ambition than serving our own needs. I keep adding small features to make our day-to-day lives easier and more fun. 💕
+
+For now the app it still French only, but I do plan to internationalize it in the future, just for fun. 🌍
