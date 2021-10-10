@@ -1,4 +1,4 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -20,13 +20,31 @@ import {
 } from '@angular/fire/functions';
 import { RecipeModalComponent } from './jow/recipe-modal/recipe-modal.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AngularFireAuthModule, USE_EMULATOR as USE_AUTH_EMULATOR } from '@angular/fire/auth';
+import {
+	AngularFireAuth,
+	AngularFireAuthModule,
+	USE_EMULATOR as USE_AUTH_EMULATOR,
+} from '@angular/fire/auth';
 import { AuthModule } from './auth/auth.module';
 import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 import { AppRoutingModule } from './app-routing.module';
 import { HotToastModule } from '@ngneat/hot-toast';
 
 registerLocaleData(fr);
+
+function initializeApp(afAuth: AngularFireAuth): () => Promise<void> {
+	return () => {
+		return new Promise((resolve) => {
+			if (!environment.useEmulators) {
+				return resolve();
+			} else {
+				afAuth.useEmulator(`http://${location.hostname}:9099/`).then(() => {
+					resolve();
+				});
+			}
+		});
+	};
+}
 
 @NgModule({
 	declarations: [AppComponent, RecipeModalComponent],
@@ -55,6 +73,12 @@ registerLocaleData(fr);
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'fr' },
+		{
+			provide: APP_INITIALIZER,
+			multi: true,
+			deps: [AngularFireAuth],
+			useFactory: initializeApp,
+		},
 		{
 			provide: USE_FIRESTORE_EMULATOR,
 			useValue: environment.useEmulators ? ['localhost', 8080] : undefined,
