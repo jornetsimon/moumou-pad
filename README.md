@@ -11,6 +11,7 @@
 - Organize your week meals in advance 🥗
 - Search, view and add [Jow](https://jow.fr) recipes 🔎
 - Create or join a family to share a common schedule 👨‍👩‍👧‍👦
+- Swap meals by drag & drop 🔄
 - Add secondary meal, memo (recipe URL, notes...) 📝
 - Mark meal as outside, prepared (in advance) ✅
 - Pet food indicator, freezer indicator 🐱
