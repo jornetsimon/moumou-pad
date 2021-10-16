@@ -1,0 +1,44 @@
+<div class="header">À la télé ce soir</div>
+<div *ngIf="primeTimePrograms$ | async as programs">
+	<mat-accordion class="programs" multi>
+		<mat-expansion-panel *ngFor="let program of programs">
+			<mat-expansion-panel-header>
+				<mat-panel-title>
+					<div fxLayoutAlign="left center" fxLayoutGap="10px">
+						<div class="channel">
+							<img
+								[src]="program._attributes.channel.icon._attributes.src"
+								[alt]="program._attributes.channel['display-name']"
+							/>
+						</div>
+						<div class="date">
+							{{ program._attributes.start | date: "HH'h'mm" }}
+						</div>
+					</div>
+				</mat-panel-title>
+				<mat-panel-description>
+					{{ program.title._text }}
+				</mat-panel-description>
+			</mat-expansion-panel-header>
+
+			<div>
+				<div class="tags">
+					<div class="duration">
+						{{ program._attributes.durationStr }}
+					</div>
+					<div class="type">
+						{{ program.category?._text }}
+					</div>
+				</div>
+				<div>
+					<div class="sub-title">
+						{{ program['sub-title']?._text }}
+					</div>
+					<div class="description">
+						{{ program.desc?._text || 'Aucune description' }}
+					</div>
+				</div>
+			</div>
+		</mat-expansion-panel>
+	</mat-accordion>
+</div>

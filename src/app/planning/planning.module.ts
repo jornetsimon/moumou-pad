@@ -5,6 +5,7 @@ import { SharedModule } from '../shared/shared.module';
 import { MealFormComponent } from './meal/meal-form/meal-form.component';
 import { MealSwapDialogComponent } from './meal/meal-swap-dialog/meal-swap-dialog.component';
 import { NoteComponent } from './meal/meal-form/note/note.component';
+import { TvModule } from '../tv/tv.module';
 
 @NgModule({
 	declarations: [
@@ -14,6 +15,6 @@ import { NoteComponent } from './meal/meal-form/note/note.component';
 		MealSwapDialogComponent,
 		NoteComponent,
 	],
-	imports: [SharedModule],
+	imports: [SharedModule, TvModule],
 })
 export class PlanningModule {}

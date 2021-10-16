@@ -32,5 +32,6 @@ module.exports = {
 		"@typescript-eslint/no-unused-vars": "off",
 		"prefer-promise-reject-errors": "off",
 		"max-len": ["error", {"code": 100}],
+		"require-jsdoc": "off",
 	},
 };

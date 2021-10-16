@@ -10,7 +10,7 @@
 	cursor: pointer;
 	border: 1px solid white;
 	float: right;
-	margin: 5px;
+	margin: 0 5px;
 
 	&:not(.has-photo) {
 		border: 1px solid #9b9a93;
@@ -26,4 +26,12 @@
 	font-weight: bold;
 	color: $accent;
 	margin: 0.25em;
+}
+
+.featurettes {
+	float: left;
+
+	@media (max-width: 599px) {
+		display: none;
+	}
 }

@@ -1,4 +1,16 @@
 <div class="user" *ngIf="angularFireAuth.user | async as user">
+	<div class="featurettes">
+		<button
+			[@fadeInOnEnter]
+			*ngIf="showTvButton$ | async"
+			mat-icon-button
+			color="primary"
+			matTooltip="Programme TV"
+			(click)="showTvProgram()"
+		>
+			<mat-icon>tv</mat-icon>
+		</button>
+	</div>
 	<img
 		class="avatar"
 		[class.has-photo]="user.photoURL"
@@ -25,7 +37,9 @@
 		</button>
 	</mat-menu>
 </div>
-<div><router-outlet></router-outlet></div>
+<div>
+	<router-outlet></router-outlet>
+</div>
 
 <ng-template #swUpdateTpl>
 	<div (click)="reloadApp()" class="cursor-pointer">Une mise à jour est disponible !</div>

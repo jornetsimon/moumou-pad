@@ -24,6 +24,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { NgxVibrationModule } from 'ngx-vibration';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatListModule } from '@angular/material/list';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const components: Array<any> = [];
 
@@ -46,11 +48,13 @@ const modules = [
 	MatDividerModule,
 	MatChipsModule,
 	MatDialogModule,
+	MatBottomSheetModule,
 	MatAutocompleteModule,
 	MatOptionModule,
 	MatProgressSpinnerModule,
 	MatCheckboxModule,
 	MatMenuModule,
+	MatExpansionModule,
 	DragDropModule,
 	LayoutModule,
 	MatListModule,

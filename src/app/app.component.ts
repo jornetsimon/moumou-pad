@@ -10,12 +10,16 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AppStore } from '../state/app.store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { MealService } from './planning/meal/state/meal.service';
 import { JowService } from './jow/state/jow.service';
 import { AppQuery } from '../state/app.query';
+import { MatDialog } from '@angular/material/dialog';
+import { TvComponent } from './tv/tv.component';
+import { fadeInOnEnterAnimation } from 'angular-animations';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
 
 @UntilDestroy()
 @Component({
@@ -23,6 +27,7 @@ import { AppQuery } from '../state/app.query';
 	templateUrl: './app.component.html',
 	styleUrls: ['./app.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [fadeInOnEnterAnimation()],
 })
 export class AppComponent implements AfterViewInit {
 	@ViewChild('swUpdateTpl') swUpdateTpl: TemplateRef<any> | undefined;
@@ -35,7 +40,9 @@ export class AppComponent implements AfterViewInit {
 		private appService: AppService,
 		private appQuery: AppQuery,
 		private mealService: MealService,
-		private jowService: JowService
+		private jowService: JowService,
+		private dialog: MatDialog,
+		private bottomSheet: MatBottomSheet
 	) {
 		const user$ = this.angularFireAuth.user.pipe(untilDestroyed(this));
 		user$.subscribe((user) => {
@@ -57,6 +64,16 @@ export class AppComponent implements AfterViewInit {
 			)
 			.subscribe();
 
+		// Fetch TV programs
+		this.userData$
+			.pipe(
+				filter(Boolean),
+				take(1),
+				tap((_) => console.log(_)),
+				switchMap(() => this.appStore.fetchPrimeTimePrograms())
+			)
+			.subscribe();
+
 		this.jowService.fetchFeatured();
 	}
 
@@ -69,6 +86,10 @@ export class AppComponent implements AfterViewInit {
 			return undefined;
 		})
 	);
+
+	showTvButton$ = this.appQuery
+		.select()
+		.pipe(map((state) => !!state.tvPrograms?.primeTime?.length));
 
 	ngAfterViewInit() {
 		this.update.available.subscribe(() => {
@@ -89,5 +110,9 @@ export class AppComponent implements AfterViewInit {
 
 	reloadApp() {
 		window.location.reload();
+	}
+
+	showTvProgram() {
+		this.bottomSheet.open(TvComponent, { panelClass: 'tv-program-sheet' });
 	}
 }
