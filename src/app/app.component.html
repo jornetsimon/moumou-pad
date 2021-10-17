@@ -1,5 +1,13 @@
 <div class="user" *ngIf="angularFireAuth.user | async as user">
 	<div class="featurettes">
+		<div class="weather" *ngIf="weatherIconUrl$ | async as weatherIconUrl">
+			<img
+				class="weather-icon"
+				[src]="weatherIconUrl"
+				alt="weather"
+				[matTooltip]="(weatherTooltip$ | async) || ''"
+			/>
+		</div>
 		<button
 			[@fadeInOnEnter]
 			*ngIf="showTvButton$ | async"

@@ -24,6 +24,7 @@ export class SettingsComponent {
 	weekdays = Object.entries(weekdays).map(([key, value]) => ({ label: key, value }));
 	form = new FormGroup({
 		startWeekOn: new FormControl(undefined, Validators.required),
+		city: new FormControl(undefined),
 	});
 	familyForm = new FormGroup({
 		name: new FormControl('', [Validators.required, Validators.minLength(2)]),
@@ -54,6 +55,7 @@ export class SettingsComponent {
 					const config = userData.config;
 					this.form.setValue({
 						startWeekOn: config.startWeekOn,
+						city: config.city || '',
 					});
 					this.familyForm.setValue({
 						name: userData.familyName || '',

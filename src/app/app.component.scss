@@ -30,8 +30,18 @@
 
 .featurettes {
 	float: left;
+	display: flex;
+	justify-content: start;
+	align-items: center;
 
 	@media (max-width: 599px) {
 		display: none;
 	}
+}
+.weather {
+	display: flex;
+	align-items: center;
+}
+.weather-icon {
+	width: 50px;
 }

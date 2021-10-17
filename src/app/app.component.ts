@@ -7,10 +7,10 @@ import {
 } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppStore } from '../state/app.store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { MealService } from './planning/meal/state/meal.service';
@@ -20,6 +20,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { TvComponent } from './tv/tv.component';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { WeatherService } from './weather/weather.service';
+import { Observable } from 'rxjs';
+import { CityWeather } from './weather/model/cityWeather';
 
 @UntilDestroy()
 @Component({
@@ -36,13 +39,15 @@ export class AppComponent implements AfterViewInit {
 		private toastService: HotToastService,
 		public angularFireAuth: AngularFireAuth,
 		private router: Router,
+		private route: ActivatedRoute,
 		private appStore: AppStore,
 		private appService: AppService,
 		private appQuery: AppQuery,
 		private mealService: MealService,
 		private jowService: JowService,
 		private dialog: MatDialog,
-		private bottomSheet: MatBottomSheet
+		private bottomSheet: MatBottomSheet,
+		private weatherService: WeatherService
 	) {
 		const user$ = this.angularFireAuth.user.pipe(untilDestroyed(this));
 		user$.subscribe((user) => {
@@ -90,6 +95,14 @@ export class AppComponent implements AfterViewInit {
 	showTvButton$ = this.appQuery
 		.select()
 		.pipe(map((state) => !!state.tvPrograms?.primeTime?.length));
+
+	weather$: Observable<CityWeather> = this.weatherService.weather$;
+	weatherTemp$: Observable<number> = this.weatherService.temperature$;
+	weatherIconUrl$ = this.weatherService.weatherIconUrl$;
+	weatherTooltip$ = this.weather$.pipe(
+		withLatestFrom(this.weatherTemp$),
+		map(([weatherData, temp]) => `${weatherData.weather[0]?.description} | ${temp}°C`)
+	);
 
 	ngAfterViewInit() {
 		this.update.available.subscribe(() => {

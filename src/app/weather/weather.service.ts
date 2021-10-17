@@ -1,0 +1,34 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { AppQuery } from '../../state/app.query';
+import { filter, map, switchMap, take } from 'rxjs/operators';
+import { CityWeather } from './model/cityWeather';
+
+@Injectable({
+	providedIn: 'root',
+})
+export class WeatherService {
+	constructor(private http: HttpClient, private appQuery: AppQuery) {}
+
+	private API_KEY = '633570e4f43519c6abcb3649cabce6c4';
+
+	weather$ = this.appQuery.select('userData').pipe(
+		map((user) => user?.config.city),
+		filter(Boolean),
+		take(1),
+		switchMap((city) =>
+			this.http.get<CityWeather>(
+				`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.API_KEY}&units=metric&lang=fr`
+			)
+		)
+	);
+
+	weatherIconUrl$ = this.weather$.pipe(
+		map((weatherData) => {
+			const icon = weatherData.weather[0]?.icon;
+			return icon ? `/assets/weather/icons/${icon}.svg` : undefined;
+		})
+	);
+
+	temperature$ = this.weather$.pipe(map((weatherData) => Math.round(weatherData.main.temp)));
+}
