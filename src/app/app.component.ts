@@ -101,8 +101,10 @@ export class AppComponent implements AfterViewInit {
 	weatherIconUrl$ = this.weatherService.weatherIconUrl$;
 	weatherTooltip$ = this.weather$.pipe(
 		withLatestFrom(this.weatherTemp$),
-		map(([weatherData, temp]) => `${weatherData.weather[0]?.description} | ${temp}°C`)
+		map(([weatherData, temp]) => `${weatherData.weather[0]?.description} • ${temp}°C`)
 	);
+
+	isHome$ = this.appService.isHome$;
 
 	ngAfterViewInit() {
 		this.update.available.subscribe(() => {
