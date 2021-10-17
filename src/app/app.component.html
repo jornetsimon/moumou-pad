@@ -1,4 +1,4 @@
-<div class="user" *ngIf="angularFireAuth.user | async as user">
+<div *ngIf="angularFireAuth.user | async as user">
 	<div class="featurettes" *ngIf="isHome$ | async">
 		<div class="weather" *ngIf="weatherIconUrl$ | async as weatherIconUrl">
 			<img
