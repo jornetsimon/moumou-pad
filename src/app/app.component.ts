@@ -10,7 +10,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppStore } from '../state/app.store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, map, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { MealService } from './planning/meal/state/meal.service';
@@ -69,16 +69,6 @@ export class AppComponent implements AfterViewInit {
 			)
 			.subscribe();
 
-		// Fetch TV programs
-		this.userData$
-			.pipe(
-				filter(Boolean),
-				take(1),
-				tap((_) => console.log(_)),
-				switchMap(() => this.appStore.fetchPrimeTimePrograms())
-			)
-			.subscribe();
-
 		this.jowService.fetchFeatured();
 	}
 
@@ -91,10 +81,6 @@ export class AppComponent implements AfterViewInit {
 			return undefined;
 		})
 	);
-
-	showTvButton$ = this.appQuery
-		.select()
-		.pipe(map((state) => !!state.tvPrograms?.primeTime?.length));
 
 	weather$: Observable<CityWeather> = this.weatherService.weather$;
 	weatherTemp$: Observable<number> = this.weatherService.temperature$;

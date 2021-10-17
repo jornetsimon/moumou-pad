@@ -6,9 +6,6 @@ import { GLOBAL_CONFIG } from '../global-config';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { generateSchedule } from '../app/model/period';
 import { interval } from 'rxjs';
-import { ProgrammeWithDuration } from '../app/model/tv.model';
-import { programsWithDuration, TvService } from '../app/tv/tv.service';
-import { tap } from 'rxjs/operators';
 
 export interface AppState {
 	user?: firebase.User;
@@ -16,9 +13,6 @@ export interface AppState {
 	schedule: {
 		from: Date;
 		to: Date;
-	};
-	tvPrograms?: {
-		primeTime?: ProgrammeWithDuration[];
 	};
 }
 
@@ -32,7 +26,7 @@ export function createInitialState(): AppState {
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'app' })
 export class AppStore extends Store<AppState> {
-	constructor(private tvService: TvService) {
+	constructor() {
 		super(createInitialState());
 
 		const updateTimeIntervalInMilliseconds =
@@ -47,14 +41,5 @@ export class AppStore extends Store<AppState> {
 
 	setInitialSchedule() {
 		this.update({ schedule: generateSchedule() });
-	}
-
-	fetchPrimeTimePrograms() {
-		return this.tvService
-			.getPrimeTimeProgram()
-			.pipe(
-				programsWithDuration,
-				tap({ next: (programs) => this.update({ tvPrograms: { primeTime: programs } }) })
-			);
 	}
 }

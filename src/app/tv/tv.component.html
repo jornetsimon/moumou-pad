@@ -1,5 +1,5 @@
 <div class="header">À la télé ce soir</div>
-<div *ngIf="primeTimePrograms$ | async as programs">
+<div *ngIf="primeTimePrograms$ | async as programs; else loadingTpl">
 	<mat-accordion class="programs" multi>
 		<mat-expansion-panel *ngFor="let program of programs">
 			<mat-expansion-panel-header>
@@ -42,3 +42,9 @@
 		</mat-expansion-panel>
 	</mat-accordion>
 </div>
+
+<ng-template #loadingTpl>
+	<div fxLayoutAlign="center" style="margin: 10px 0">
+		<mat-spinner></mat-spinner>
+	</div>
+</ng-template>

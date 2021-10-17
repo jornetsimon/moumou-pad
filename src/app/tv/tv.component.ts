@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AppQuery } from '../../state/app.query';
-import { map } from 'rxjs/operators';
+import { filter, switchMap, take } from 'rxjs/operators';
+import { programsWithDuration, TvService } from './tv.service';
 
 @Component({
 	selector: 'cb-tv',
@@ -8,9 +9,12 @@ import { map } from 'rxjs/operators';
 	styleUrls: ['./tv.component.scss'],
 })
 export class TvComponent {
-	constructor(private appQuery: AppQuery) {}
+	constructor(private appQuery: AppQuery, private tvService: TvService) {}
 
-	primeTimePrograms$ = this.appQuery
-		.select()
-		.pipe(map((state) => state.tvPrograms?.primeTime || []));
+	primeTimePrograms$ = this.appQuery.select('userData').pipe(
+		filter(Boolean),
+		take(1),
+		switchMap(() => this.tvService.getPrimeTimeProgram()),
+		programsWithDuration
+	);
 }
