@@ -10,7 +10,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppStore } from '../state/app.store';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { filter, first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { MealService } from './planning/meal/state/meal.service';
@@ -23,6 +23,7 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { WeatherService } from './weather/weather.service';
 import { Observable } from 'rxjs';
 import { CityWeather } from './weather/model/cityWeather';
+import { isNotNullOrUndefined } from './shared/utilities';
 
 @UntilDestroy()
 @Component({
@@ -70,6 +71,18 @@ export class AppComponent implements AfterViewInit {
 			.subscribe();
 
 		this.jowService.fetchFeatured();
+
+		// TV program shortcut
+		this.userData$
+			.pipe(
+				filter(isNotNullOrUndefined),
+				switchMap(() => this.route.queryParams),
+				first(),
+				filter((params) => params.feat === 'tv')
+			)
+			.subscribe(() => {
+				this.showTvProgram();
+			});
 	}
 
 	userData$ = this.appQuery.select('userData');
