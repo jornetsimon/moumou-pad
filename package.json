@@ -37,7 +37,7 @@
     "@ngneat/overview": "^2.0.2",
     "@ngneat/until-destroy": "^8.0.4",
     "@ngx-pwa/local-storage": "12.0.0",
-    "akita-ng-fire": "^6.0.0",
+    "akita-ng-fire": "^7.0.0-beta.3",
     "angular-animations": "^0.11.0",
     "bluebird": "^3.7.2",
     "date-fns": "^2.22.1",
