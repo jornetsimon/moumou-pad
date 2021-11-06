@@ -14,7 +14,12 @@ import { AuthModule } from './auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { connectFirestoreEmulator, getFirestore, provideFirestore } from '@angular/fire/firestore';
+import {
+	connectFirestoreEmulator,
+	enableIndexedDbPersistence,
+	getFirestore,
+	provideFirestore,
+} from '@angular/fire/firestore';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 
@@ -31,6 +36,7 @@ registerLocaleData(fr);
 			if (environment.useEmulators) {
 				connectFirestoreEmulator(firestore, 'localhost', 8080);
 			}
+			enableIndexedDbPersistence(firestore);
 			return firestore;
 		}),
 		provideAuth(() => {
