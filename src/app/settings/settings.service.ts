@@ -1,32 +1,37 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { AppQuery } from '../../state/app.query';
 import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
+import { Functions, httpsCallable } from '@angular/fire/functions';
+import { doc, docData, Firestore } from '@angular/fire/firestore';
+import { DocumentReference } from 'rxfire/firestore/interfaces';
 import { Family } from '../model/family';
-import { AngularFireFunctions } from '@angular/fire/functions';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class SettingsService {
-	constructor(
-		private afs: AngularFirestore,
-		private appQuery: AppQuery,
-		private fns: AngularFireFunctions
-	) {}
+	constructor(private firestore: Firestore, private appQuery: AppQuery, private fns: Functions) {}
 
-	family$ = this.appQuery.select().pipe(
+	family$: Observable<Family | undefined> = this.appQuery.select().pipe(
 		switchMap((state) => {
 			if (!state.user) {
 				return of(undefined);
 			}
-			return this.afs.doc<Family>(`families/${state.userData?.familyName}`).valueChanges();
+			return docData(
+				doc(
+					this.firestore,
+					`families/${state.userData?.familyName}`
+				) as DocumentReference<Family>
+			);
 		})
 	);
 
 	approveOrDenyNewMember(familyName: string, memberUid: string, action: 'approve' | 'deny') {
-		const callable = this.fns.httpsCallable('approveOrDenyNewFamilyMember');
-		return callable({ memberUid, action });
+		const callable = httpsCallable<{ memberUid: string; action: 'approve' | 'deny' }, void>(
+			this.fns,
+			'approveOrDenyNewFamilyMember'
+		);
+		return from(callable({ memberUid, action }));
 	}
 }

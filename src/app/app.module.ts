@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, LOCALE_ID, NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
@@ -8,54 +8,45 @@ import { SharedModule } from './shared/shared.module';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AngularFireModule } from '@angular/fire';
-import {
-	AngularFirestoreModule,
-	USE_EMULATOR as USE_FIRESTORE_EMULATOR,
-} from '@angular/fire/firestore';
-import {
-	AngularFireFunctionsModule,
-	REGION,
-	USE_EMULATOR as USE_FUNCTIONS_EMULATOR,
-} from '@angular/fire/functions';
 import { RecipeModalComponent } from './jow/recipe-modal/recipe-modal.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import {
-	AngularFireAuth,
-	AngularFireAuthModule,
-	USE_EMULATOR as USE_AUTH_EMULATOR,
-} from '@angular/fire/auth';
 import { AuthModule } from './auth/auth.module';
-import { AngularFireAuthGuardModule } from '@angular/fire/auth-guard';
 import { AppRoutingModule } from './app-routing.module';
 import { HotToastModule } from '@ngneat/hot-toast';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import {
+	connectFirestoreEmulator,
+	enableIndexedDbPersistence,
+	getFirestore,
+	provideFirestore,
+} from '@angular/fire/firestore';
+import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
+import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 
 registerLocaleData(fr);
-
-function initializeApp(afAuth: AngularFireAuth): () => Promise<void> {
-	return () => {
-		return new Promise((resolve) => {
-			if (!environment.useEmulators) {
-				return resolve();
-			} else {
-				afAuth.useEmulator(`http://${location.hostname}:9099/`).then(() => {
-					resolve();
-				});
-			}
-		});
-	};
-}
 
 @NgModule({
 	declarations: [AppComponent, RecipeModalComponent],
 	imports: [
 		BrowserModule,
 		environment.production ? [] : AkitaNgDevtools.forRoot(),
-		AngularFireModule.initializeApp(environment.firebaseConfig),
-		AngularFirestoreModule.enablePersistence(),
-		AngularFireFunctionsModule,
-		AngularFireAuthModule,
-		AngularFireAuthGuardModule,
+		provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+		provideFirestore(() => {
+			const firestore = getFirestore();
+			connectFirestoreEmulator(firestore, 'localhost', 8080);
+			enableIndexedDbPersistence(firestore);
+			return firestore;
+		}),
+		provideAuth(() => {
+			const auth = getAuth();
+			connectAuthEmulator(auth, 'http://localhost:9099');
+			return auth;
+		}),
+		provideFunctions(() => {
+			const functions = getFunctions(undefined, 'europe-west1');
+			connectFunctionsEmulator(functions, 'localhost', 5001);
+			return functions;
+		}),
 		AuthModule,
 		PlanningModule,
 		BrowserAnimationsModule,
@@ -71,28 +62,7 @@ function initializeApp(afAuth: AngularFireAuth): () => Promise<void> {
 			registrationStrategy: 'registerWhenStable:30000',
 		}),
 	],
-	providers: [
-		{ provide: LOCALE_ID, useValue: 'fr' },
-		{
-			provide: APP_INITIALIZER,
-			multi: true,
-			deps: [AngularFireAuth],
-			useFactory: initializeApp,
-		},
-		{
-			provide: USE_FIRESTORE_EMULATOR,
-			useValue: environment.useEmulators ? ['localhost', 8080] : undefined,
-		},
-		{
-			provide: USE_FUNCTIONS_EMULATOR,
-			useValue: environment.useEmulators ? ['localhost', 5001] : undefined,
-		},
-		{
-			provide: USE_AUTH_EMULATOR,
-			useValue: environment.useEmulators ? ['localhost', 9099] : undefined,
-		},
-		{ provide: REGION, useValue: 'europe-west1' },
-	],
+	providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

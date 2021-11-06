@@ -9,10 +9,10 @@ import { distinctUntilChanged, finalize, first, map } from 'rxjs/operators';
 import * as _ from 'lodash';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Router } from '@angular/router';
-import { AngularFireFunctions } from '@angular/fire/functions';
 import { MealService } from '../planning/meal/state/meal.service';
 import { SettingsService } from './settings.service';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, from, Observable } from 'rxjs';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 
 @UntilDestroy()
 @Component({
@@ -44,7 +44,7 @@ export class SettingsComponent {
 		private appQuery: AppQuery,
 		private toastService: HotToastService,
 		private router: Router,
-		private fns: AngularFireFunctions,
+		private fns: Functions,
 		private mealService: MealService,
 		private settingsService: SettingsService
 	) {
@@ -73,8 +73,8 @@ export class SettingsComponent {
 
 	joinFamily(formValues: { name: string }) {
 		this.loadingSubject.next(true);
-		const callable = this.fns.httpsCallable('joinFamily');
-		callable({ name: formValues.name })
+		const callable = httpsCallable<{ name: string }, void>(this.fns, 'joinFamily');
+		from(callable({ name: formValues.name }))
 			.pipe(finalize(() => this.loadingSubject.next(false)))
 			.subscribe({
 				next: () => {

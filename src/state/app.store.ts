@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import firebase from 'firebase';
 import { UserData } from '../app/model/user-data';
 import { GLOBAL_CONFIG } from '../global-config';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { generateSchedule } from '../app/model/period';
 import { interval } from 'rxjs';
+import { User as FirebaseUser } from '@firebase/auth';
 
 export interface AppState {
-	user?: firebase.User;
+	user?: FirebaseUser;
 	userData?: UserData;
 	schedule: {
 		from: Date;

@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/firestore';
 import { MealThemeEntry } from './meal-theme.model';
+import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { CollectionReference } from '@firebase/firestore';
+import { Observable } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class MealThemeService {
-	constructor(private afs: AngularFirestore) {}
-	mealThemes$ = this.afs.collection<MealThemeEntry>('/meal-themes').valueChanges();
+	constructor(private firestore: Firestore) {}
+	mealThemes$: Observable<MealThemeEntry[]> = collectionData(
+		collection(this.firestore, '/meal-themes') as CollectionReference<MealThemeEntry>
+	);
 }
