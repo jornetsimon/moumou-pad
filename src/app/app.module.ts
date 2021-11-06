@@ -14,12 +14,7 @@ import { AuthModule } from './auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
 import { HotToastModule } from '@ngneat/hot-toast';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import {
-	connectFirestoreEmulator,
-	enableIndexedDbPersistence,
-	getFirestore,
-	provideFirestore,
-} from '@angular/fire/firestore';
+import { connectFirestoreEmulator, getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 
@@ -33,18 +28,23 @@ registerLocaleData(fr);
 		provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
 		provideFirestore(() => {
 			const firestore = getFirestore();
-			connectFirestoreEmulator(firestore, 'localhost', 8080);
-			enableIndexedDbPersistence(firestore);
+			if (environment.useEmulators) {
+				connectFirestoreEmulator(firestore, 'localhost', 8080);
+			}
 			return firestore;
 		}),
 		provideAuth(() => {
 			const auth = getAuth();
-			connectAuthEmulator(auth, 'http://localhost:9099');
+			if (environment.useEmulators) {
+				connectAuthEmulator(auth, 'http://localhost:9099');
+			}
 			return auth;
 		}),
 		provideFunctions(() => {
 			const functions = getFunctions(undefined, 'europe-west1');
-			connectFunctionsEmulator(functions, 'localhost', 5001);
+			if (environment.useEmulators) {
+				connectFunctionsEmulator(functions, 'localhost', 5001);
+			}
 			return functions;
 		}),
 		AuthModule,
