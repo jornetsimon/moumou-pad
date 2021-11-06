@@ -6,13 +6,13 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
 import { distinctUntilChanged, finalize, first, map } from 'rxjs/operators';
-import * as _ from 'lodash';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Router } from '@angular/router';
 import { MealService } from '../planning/meal/state/meal.service';
 import { SettingsService } from './settings.service';
 import { BehaviorSubject, combineLatest, from, Observable } from 'rxjs';
 import { Functions, httpsCallable } from '@angular/fire/functions';
+import { isEqual } from 'lodash-es';
 
 @UntilDestroy()
 @Component({
@@ -48,20 +48,18 @@ export class SettingsComponent {
 		private mealService: MealService,
 		private settingsService: SettingsService
 	) {
-		this.userData$
-			.pipe(distinctUntilChanged((a, b) => _.isEqual(a, b)))
-			.subscribe((userData) => {
-				if (userData) {
-					const config = userData.config;
-					this.form.setValue({
-						startWeekOn: config.startWeekOn,
-						city: config.city || '',
-					});
-					this.familyForm.setValue({
-						name: userData.familyName || '',
-					});
-				}
-			});
+		this.userData$.pipe(distinctUntilChanged((a, b) => isEqual(a, b))).subscribe((userData) => {
+			if (userData) {
+				const config = userData.config;
+				this.form.setValue({
+					startWeekOn: config.startWeekOn,
+					city: config.city || '',
+				});
+				this.familyForm.setValue({
+					name: userData.familyName || '',
+				});
+			}
+		});
 	}
 
 	save() {
