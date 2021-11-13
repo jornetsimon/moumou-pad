@@ -6,10 +6,9 @@ import {
 	ViewChild,
 } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { AngularFireAuth } from '@angular/fire/auth';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AppStore } from '../state/app.store';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { filter, first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -24,6 +23,7 @@ import { WeatherService } from './weather/weather.service';
 import { Observable } from 'rxjs';
 import { CityWeather } from './weather/model/cityWeather';
 import { isNotNullOrUndefined } from './shared/utilities';
+import { Auth } from '@angular/fire/auth';
 
 @UntilDestroy()
 @Component({
@@ -36,9 +36,9 @@ import { isNotNullOrUndefined } from './shared/utilities';
 export class AppComponent implements AfterViewInit {
 	@ViewChild('swUpdateTpl') swUpdateTpl: TemplateRef<any> | undefined;
 	constructor(
-		private update: SwUpdate,
+		private swUpdate: SwUpdate,
 		private toastService: HotToastService,
-		public angularFireAuth: AngularFireAuth,
+		public angularFireAuth: Auth,
 		private router: Router,
 		private route: ActivatedRoute,
 		private appStore: AppStore,
@@ -50,15 +50,13 @@ export class AppComponent implements AfterViewInit {
 		private bottomSheet: MatBottomSheet,
 		private weatherService: WeatherService
 	) {
-		const user$ = this.angularFireAuth.user.pipe(untilDestroyed(this));
-		user$.subscribe((user) => {
+		this.angularFireAuth.onAuthStateChanged((user) => {
 			this.appStore.update({
 				user: user || undefined,
 			});
 		});
-
 		// Fetch user config
-		user$
+		this.firebaseUser$
 			.pipe(
 				filter((user) => !!user),
 				switchMap((user) => this.appService.fetchConfig(user!.uid)),
@@ -85,6 +83,7 @@ export class AppComponent implements AfterViewInit {
 			});
 	}
 
+	firebaseUser$ = this.appQuery.select('user');
 	userData$ = this.appQuery.select('userData');
 	family$ = this.userData$.pipe(
 		map((userData) => {
@@ -106,11 +105,13 @@ export class AppComponent implements AfterViewInit {
 	isHome$ = this.appService.isHome$;
 
 	ngAfterViewInit() {
-		this.update.available.subscribe(() => {
-			this.toastService.info(this.swUpdateTpl, {
-				autoClose: false,
+		this.swUpdate.versionUpdates
+			.pipe(filter((event) => event.type === 'VERSION_READY'))
+			.subscribe(() => {
+				this.toastService.info(this.swUpdateTpl, {
+					autoClose: false,
+				});
 			});
-		});
 	}
 
 	logout() {

@@ -1,33 +1,30 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { JowStore } from './jow.store';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { Recipe } from '../../model/receipe';
-import { AngularFireFunctions } from '@angular/fire/functions';
+import { Functions, httpsCallable } from '@angular/fire/functions';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class JowService {
-	constructor(
-		private jowStore: JowStore,
-		private http: HttpClient,
-		private fns: AngularFireFunctions
-	) {}
+	constructor(private jowStore: JowStore, private http: HttpClient, private fns: Functions) {}
 
 	fetchFeatured() {
-		const callable = this.fns.httpsCallable('jowFeaturedRecipes');
-		(callable({}) as Observable<Recipe[]>).subscribe((recipes) => {
-			this.jowStore.update({ featured: recipes });
+		const callable = httpsCallable<{}, Recipe[]>(this.fns, 'jowFeaturedRecipes');
+		from(callable({})).subscribe((res) => {
+			this.jowStore.update({ featured: res.data });
 		});
 	}
 
 	getRecipe(id: string): Observable<Recipe> {
-		const callable = this.fns.httpsCallable('jowRecipe');
-		return callable({ id });
+		const callable = httpsCallable<{ id: string }, Recipe>(this.fns, 'jowRecipe');
+		return from(callable({ id })).pipe(map((res) => res.data));
 	}
 
 	search(term: string): Observable<Recipe[]> {
-		const callable = this.fns.httpsCallable('jowRecipeSearch');
-		return callable({ term });
+		const callable = httpsCallable<{ term: string }, Recipe[]>(this.fns, 'jowRecipeSearch');
+		return from(callable({ term })).pipe(map((res) => res.data));
 	}
 
 	constructAssetUrl(asset: string) {

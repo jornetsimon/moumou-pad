@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AngularFireFunctions } from '@angular/fire/functions';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { Channel, Programme, ProgrammeWithDuration } from '../model/tv.model';
 import { map, tap } from 'rxjs/operators';
 import { intervalToDuration, parseISO, setMinutes } from 'date-fns/esm';
 import { setHours } from 'date-fns';
 import { padStart } from 'lodash-es';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 
 type RawProgramme = Omit<Programme, '_attributes'> & {
 	_attributes: { start: string; stop: string; durationHours: number; channel: Channel };
@@ -45,17 +45,23 @@ export function programsWithDuration(
 	providedIn: 'root',
 })
 export class TvService {
-	constructor(private fns: AngularFireFunctions) {}
+	constructor(private fns: Functions) {}
 
 	getPrimeTimeProgram(): Observable<Programme[]> {
-		const callable = this.fns.httpsCallable('primeTimePrograms');
-		const from: Date = setMinutes(setHours(Date.now(), 20), 45);
-		const to: Date = setMinutes(setHours(Date.now(), 21), 20);
-		return callable({
-			targetRange: { from, to },
-		}).pipe(
+		const callable = httpsCallable<{ targetRange: { from: Date; to: Date } }, RawProgramme[]>(
+			this.fns,
+			'primeTimePrograms'
+		);
+		const fromDate: Date = setMinutes(setHours(Date.now(), 20), 45);
+		const toDate: Date = setMinutes(setHours(Date.now(), 21), 20);
+		return from(
+			callable({
+				targetRange: { from: fromDate, to: toDate },
+			})
+		).pipe(
+			map((res) => res.data),
 			tap((_) => console.log('Fetching latest TV program', _)),
-			map((programs: RawProgramme[]) =>
+			map((programs) =>
 				programs.map((program) => ({
 					...program,
 					_attributes: {

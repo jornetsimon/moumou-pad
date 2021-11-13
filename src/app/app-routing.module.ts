@@ -6,7 +6,7 @@ import {
 	AngularFireAuthGuard,
 	redirectLoggedInTo,
 	redirectUnauthorizedTo,
-} from '@angular/fire/auth-guard';
+} from './auth/angular-fire-auth.guard';
 
 const routes: Routes = [
 	{
