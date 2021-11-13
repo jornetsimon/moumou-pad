@@ -24,6 +24,8 @@ import { Observable } from 'rxjs';
 import { CityWeather } from './weather/model/cityWeather';
 import { isNotNullOrUndefined } from './shared/utilities';
 import { Auth } from '@angular/fire/auth';
+import { where } from '@angular/fire/firestore';
+import { startOfWeek, subWeeks } from 'date-fns/esm';
 
 @UntilDestroy()
 @Component({
@@ -60,11 +62,12 @@ export class AppComponent implements AfterViewInit {
 			.pipe(
 				filter((user) => !!user),
 				switchMap((user) => this.appService.fetchConfig(user!.uid)),
-				switchMap(() =>
-					this.mealService.syncCollection({
-						reset: true,
-					})
-				)
+				switchMap(() => {
+					const minimumDate: Date = subWeeks(startOfWeek(Date.now()), 2); // Only as old as two weeks in the past
+					return this.mealService.syncCollection([
+						where('timestamp', '>=', minimumDate.getTime() / 1000),
+					]);
+				})
 			)
 			.subscribe();
 
