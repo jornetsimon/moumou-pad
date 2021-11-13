@@ -36,7 +36,7 @@ import { Auth } from '@angular/fire/auth';
 export class AppComponent implements AfterViewInit {
 	@ViewChild('swUpdateTpl') swUpdateTpl: TemplateRef<any> | undefined;
 	constructor(
-		private update: SwUpdate,
+		private swUpdate: SwUpdate,
 		private toastService: HotToastService,
 		public angularFireAuth: Auth,
 		private router: Router,
@@ -105,11 +105,13 @@ export class AppComponent implements AfterViewInit {
 	isHome$ = this.appService.isHome$;
 
 	ngAfterViewInit() {
-		this.update.available.subscribe(() => {
-			this.toastService.info(this.swUpdateTpl, {
-				autoClose: false,
+		this.swUpdate.versionUpdates
+			.pipe(filter((event) => event.type === 'VERSION_READY'))
+			.subscribe(() => {
+				this.toastService.info(this.swUpdateTpl, {
+					autoClose: false,
+				});
 			});
-		});
 	}
 
 	logout() {
