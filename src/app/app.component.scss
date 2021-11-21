@@ -31,7 +31,7 @@
 .featurettes {
 	float: left;
 	display: flex;
-	justify-content: start;
+	justify-content: flex-start;
 	align-items: center;
 
 	@media (max-width: 599px) {
