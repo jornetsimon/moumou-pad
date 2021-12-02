@@ -45,8 +45,9 @@
 	>
 		<cb-meal
 			[meal]="meal"
-			*ngFor="let meal of meals$ | async; trackBy: trackByFn"
-			class="meal"
+			*ngFor="let meal of meals$ | async; let mealIndex = index trackBy: trackByFn"
+			class="meal slide-in-blurred-bottom"
+			[style.animation-delay]="getMealAnimationDelay(mealIndex)"
 			(mealSaved)="scrollToMeal($event)"
 		></cb-meal>
 	</div>

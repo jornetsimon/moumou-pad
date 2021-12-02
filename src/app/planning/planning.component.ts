@@ -82,4 +82,8 @@ export class PlanningComponent {
 	onCurrentPeriodClicked() {
 		this.appService.resetSchedule();
 	}
+
+	getMealAnimationDelay(index: number) {
+		return Math.pow(1.25, index) * 50 + 'ms';
+	}
 }
