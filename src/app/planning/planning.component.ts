@@ -52,6 +52,10 @@ export class PlanningComponent {
 
 	trackByFn: TrackByFunction<Meal> = (index, item) => item.id;
 
+	get isXSmall() {
+		return this.breakpointObserver.isMatched(Breakpoints.XSmall);
+	}
+
 	constructor(
 		private mealQuery: MealQuery,
 		private dragDropService: DragDropService,
@@ -74,7 +78,7 @@ export class PlanningComponent {
 	 * @param mealElement
 	 */
 	scrollToMeal(mealElement: HTMLDivElement) {
-		if (this.breakpointObserver.isMatched(Breakpoints.XSmall)) {
+		if (this.isXSmall) {
 			mealElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		}
 	}
@@ -83,7 +87,17 @@ export class PlanningComponent {
 		this.appService.resetSchedule();
 	}
 
+	getMealAnimation() {
+		if (this.isXSmall) {
+			return 'swing-in-top-fwd';
+		}
+		return 'slide-in-blurred-bottom';
+	}
+
 	getMealAnimationDelay(index: number) {
+		if (this.isXSmall) {
+			return index * 50 + 'ms';
+		}
 		return Math.pow(1.25, index) * 50 + 'ms';
 	}
 }

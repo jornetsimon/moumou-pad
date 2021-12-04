@@ -1,4 +1,5 @@
 import {
+	AfterViewInit,
 	ChangeDetectionStrategy,
 	Component,
 	ElementRef,
@@ -20,7 +21,7 @@ import { CdkDrag } from '@angular/cdk/drag-drop/directives/drag';
 import { DragDropService } from './drag-drop.service';
 import { MatDialog } from '@angular/material/dialog';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
-import { distinctUntilChanged, filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { delay, distinctUntilChanged, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
 import { NgxVibrationService } from 'ngx-vibration';
 import { MealThemeModel } from './theme/meal-theme.model';
@@ -28,7 +29,9 @@ import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../..
 import * as tinycolor from 'tinycolor2';
 import { MealThemeService } from './theme/meal-theme.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
 	selector: 'cb-meal',
 	templateUrl: './meal.component.html',
@@ -43,7 +46,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 		}),
 	],
 })
-export class MealComponent {
+export class MealComponent implements AfterViewInit {
 	@Input() set meal(meal: Meal) {
 		this._meal = meal;
 		this.mealSubject.next(meal);
@@ -54,6 +57,8 @@ export class MealComponent {
 	@ViewChild('container') containerRef: ElementRef | undefined;
 	@ViewChild('dropListRef') dropListRef: CdkDropList<Meal> | undefined;
 	@Output() mealSaved = new EventEmitter<HTMLDivElement>();
+	@Output() isNext = new EventEmitter<HTMLDivElement>();
+
 	private _meal!: Meal;
 	private mealSubject = new BehaviorSubject<Meal | undefined>(undefined);
 	meal$: Observable<Meal> = this.mealSubject.asObservable().pipe(filter(isNotNullOrUndefined));
@@ -69,7 +74,6 @@ export class MealComponent {
 			}
 		})
 	);
-	isNext = false;
 	cannotDropHere$: Observable<boolean> = this.dragDropService.dragging$.pipe(
 		map((dragging) => {
 			if (!dragging || !this.dropListRef) {
@@ -171,6 +175,19 @@ export class MealComponent {
 		private router: Router,
 		private route: ActivatedRoute
 	) {}
+
+	ngAfterViewInit() {
+		this.isNext$
+			.pipe(
+				distinctUntilChanged(),
+				filter((isNext) => isNext),
+				delay(1200),
+				untilDestroyed(this)
+			)
+			.subscribe(() => {
+				this.isNext.emit(this.containerRef?.nativeElement);
+			});
+	}
 
 	toggleEdit(setTo?: boolean) {
 		let newFragment: string | undefined;
