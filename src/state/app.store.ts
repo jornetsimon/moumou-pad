@@ -6,6 +6,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { generateSchedule } from '../app/model/period';
 import { interval } from 'rxjs';
 import { User as FirebaseUser } from '@firebase/auth';
+import { startOfWeek, subWeeks } from 'date-fns/esm';
 
 export interface AppState {
 	user?: FirebaseUser;
@@ -14,11 +15,13 @@ export interface AppState {
 		from: Date;
 		to: Date;
 	};
+	syncFromDate: Date;
 }
 
 export function createInitialState(): AppState {
 	return {
 		schedule: generateSchedule(),
+		syncFromDate: subWeeks(startOfWeek(Date.now()), 2), // At startup, load 2 weeks in the past
 	};
 }
 

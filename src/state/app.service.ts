@@ -3,14 +3,16 @@ import { filter, map, tap } from 'rxjs/operators';
 import { AppStore } from './app.store';
 import { UserData } from '../app/model/user-data';
 import { UserConfig } from '../app/model/user-config';
-import { addWeeks } from 'date-fns/esm';
+import { addWeeks, isBefore } from 'date-fns/esm';
 import { Observable } from 'rxjs';
 import { NavigationEnd, Router } from '@angular/router';
 import { doc, docData, Firestore, updateDoc } from '@angular/fire/firestore';
 import { DocumentReference } from 'rxfire/firestore/interfaces';
+import { UntilDestroy } from '@ngneat/until-destroy';
 
 export type ShiftDirection = 'previous' | 'next';
 
+@UntilDestroy()
 @Injectable({ providedIn: 'root' })
 export class AppService {
 	constructor(private appStore: AppStore, private firestore: Firestore, private router: Router) {}
@@ -37,12 +39,22 @@ export class AppService {
 		this.appStore.update((state) => {
 			const { from, to } = state.schedule;
 			const shift = direction === 'next' ? 1 : -1;
+			const newFromDate = addWeeks(from, shift);
+			const newToDate = addWeeks(to, shift);
+
+			let syncFromDate = state.syncFromDate;
+			if (isBefore(newFromDate, state.syncFromDate)) {
+				console.log(`Broadening the past loaded meals to ${newFromDate}`);
+				syncFromDate = newFromDate;
+			}
+
 			return {
 				...state,
 				schedule: {
-					from: addWeeks(from, shift),
-					to: addWeeks(to, shift),
+					from: newFromDate,
+					to: newToDate,
 				},
+				syncFromDate,
 			};
 		});
 	}
