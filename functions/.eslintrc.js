@@ -33,5 +33,6 @@ module.exports = {
 		"prefer-promise-reject-errors": "off",
 		"max-len": ["error", {"code": 100}],
 		"require-jsdoc": "off",
+		"@typescript-eslint/no-non-null-assertion": "off",
 	},
 };

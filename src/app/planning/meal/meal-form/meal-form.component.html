@@ -1,7 +1,12 @@
 <form [formGroup]="form" (ngSubmit)="saveMeal()">
 	<mat-form-field appearance="fill" class="width-100">
 		<mat-label>Nom du plat</mat-label>
-		<input matInput placeholder="Poulet poivrons, huevos rotos..." formControlName="name" />
+		<input
+			matInput
+			placeholder="Poulet poivrons, huevos rotos..."
+			formControlName="name"
+			[disabled]="isReadonly"
+		/>
 		<mat-icon matSuffix class="clear-icon" (click)="form.get('name')?.reset()">clear</mat-icon>
 	</mat-form-field>
 
@@ -56,6 +61,7 @@
 					title="Retirer la recette"
 					[style.color]="jowRecipe.backgroundColor"
 					(click)="onRecipeRemoved()"
+					*ngIf="!isReadonly"
 				>
 					<mat-icon>delete</mat-icon>
 				</button>
@@ -63,7 +69,7 @@
 		</mat-card>
 	</ng-container>
 
-	<mat-card *ngIf="!jowRecipe">
+	<mat-card *ngIf="!jowRecipe && !isReadonly">
 		<mat-card-content>
 			<div [fxLayoutAlign]="jowRecipe ? 'space-between center' : 'space-between start'">
 				<mat-form-field appearance="standard" class="jow-recipe-search-field">
@@ -154,7 +160,13 @@
 		(click)="openNoteDialog()"
 	></div>
 
-	<div class="extras" fxLayout="column" fxLayoutAlign="start center" formGroupName="extras">
+	<div
+		class="extras"
+		fxLayout="column"
+		fxLayoutAlign="start center"
+		formGroupName="extras"
+		[class.eyes-only-strict]="isReadonly"
+	>
 		<div>
 			<mat-chip-list multiple>
 				<mat-chip
@@ -229,7 +241,12 @@
 		<mat-divider></mat-divider>
 		<mat-form-field appearance="fill" class="width-100">
 			<mat-label>Nom du second plat</mat-label>
-			<input matInput placeholder="Poulet poivrons, huevos rotos..." formControlName="name" />
+			<input
+				matInput
+				placeholder="Poulet poivrons, huevos rotos..."
+				formControlName="name"
+				[disabled]="isReadonly"
+			/>
 			<mat-icon
 				matSuffix
 				class="clear-icon"
@@ -240,7 +257,7 @@
 		</mat-form-field>
 	</div>
 
-	<div fxLayoutAlign="center" class="actions form-actions">
+	<div fxLayoutAlign="center" class="actions form-actions" *ngIf="!isReadonly">
 		<button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">
 			Enregistrer mon menu
 		</button>

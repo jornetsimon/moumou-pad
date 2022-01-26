@@ -30,6 +30,7 @@ import { RenderService } from '../../../shared/render.service';
 })
 export class MealFormComponent implements OnChanges {
 	@Input() meal: Meal | undefined;
+	@Input() isReadonly = false;
 	@Output() mealSaved = new EventEmitter<void>();
 	loadingSearchResults = false;
 	recipeIdeas$ = this.jowQuery

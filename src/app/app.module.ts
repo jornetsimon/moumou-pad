@@ -22,6 +22,7 @@ import {
 } from '@angular/fire/firestore';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
+import { SearchModule } from './search/search.module';
 
 registerLocaleData(fr);
 
@@ -67,6 +68,7 @@ registerLocaleData(fr);
 			// or after 30 seconds (whichever comes first).
 			registrationStrategy: 'registerWhenStable:30000',
 		}),
+		SearchModule,
 	],
 	providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
 	bootstrap: [AppComponent],

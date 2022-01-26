@@ -42,6 +42,9 @@
 	cursor: default;
 	user-select: none;
 }
+.eyes-only-strict {
+	pointer-events: none;
+}
 .strikethrough {
 	text-decoration: line-through;
 }

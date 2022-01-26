@@ -1,10 +1,16 @@
-<div fxLayout="column nowrap" fxLayoutAlign="start" class="container" #container>
+<div
+	fxLayout="column nowrap"
+	fxLayoutAlign="start"
+	class="container"
+	[class.has-margins]="hasMargins"
+	#container
+>
 	<div class="topper" fxLayoutAlign="center center">
 		<div fxFlex="33%" class="relative">
 			<span class="is-next" *ngIf="isNext$ | async">prochain</span>
 		</div>
 		<div
-			fxFlex="1 0 33%"
+			fxFlex="1 0 auto"
 			fxLayout="row-reverse"
 			fxLayoutAlign="center"
 			cdkDropList
@@ -18,7 +24,9 @@
 				class="day"
 				[class.waiting-for-swap]="dragDropService.dragging$ | async"
 				[class.cannot-drop]="cannotDropHere$ | async"
-				[matTooltip]="(meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'"
+				[matTooltip]="
+					showFullDateInTopper ? '' : (meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'
+				"
 				cdkDrag
 				[cdkDragData]="meal"
 				(cdkDragStarted)="onDragStart()"
@@ -26,7 +34,12 @@
 				cdkDragPreviewClass="dragging"
 				cdkDragPreviewContainer="parent"
 			>
-				{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;
+				<ng-container *ngIf="showFullDateInTopper; else defaultTopperDateTpl">
+					{{ meal.date | date: 'EEEE dd MMMM' | titlecase }}&nbsp;
+				</ng-container>
+				<ng-template #defaultTopperDateTpl>
+					{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;
+				</ng-template>
 				<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900">
 					light_mode
 				</mat-icon>
@@ -48,7 +61,7 @@
 		[class.has-jow-recipe]="!!meal.jowRecipe"
 		[class.has-theme]="!!(mealTheme$ | async)"
 		[class.has-theme-background]="!!(themeBackgroundImage$ | async)"
-		[class.open]="editMode$ | async"
+		[class.open]="(editMode$ | async) || editMode"
 		[style.background-image]="themeBackgroundImage$ | async"
 		[style.background-color]="meal.jowRecipe?.backgroundColor || (mealTheme$ | async)?.color"
 		[style.box-shadow]="themeBoxShadow$ | async"
@@ -105,9 +118,13 @@
 			</div>
 		</div>
 		<mat-card-content>
-			<div *ngIf="editMode$ | async" [@expandOnEnter] [@collapseOnLeave]>
+			<div *ngIf="(editMode$ | async) || editMode" [@expandOnEnter] [@collapseOnLeave]>
 				<div class="form-container">
-					<cb-meal-form [meal]="meal" (mealSaved)="afterSave()"></cb-meal-form>
+					<cb-meal-form
+						[meal]="meal"
+						[isReadonly]="isReadonly"
+						(mealSaved)="afterSave()"
+					></cb-meal-form>
 				</div>
 			</div>
 		</mat-card-content>

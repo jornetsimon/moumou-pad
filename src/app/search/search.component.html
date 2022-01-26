@@ -1,0 +1,37 @@
+<form [formGroup]="form" fxLayoutAlign="center" class="search-form">
+	<mat-form-field appearance="outline" class="term-field">
+		<mat-label>Rechercher un mot-clé</mat-label>
+		<input
+			type="search"
+			matInput
+			placeholder="Poulet, salade..."
+			formControlName="term"
+			autocomplete="off"
+		/>
+	</mat-form-field>
+</form>
+
+<div class="results-container" *ngIf="form.valid">
+	<ng-container *ngIf="searchResults$ | async as searchResults">
+		<div
+			fxLayout="column"
+			fxLayoutAlign="center center"
+			*ngIf="searchResults.length; else noResultsTpl"
+		>
+			<div class="results-count">{{ searchResults.length }} résultats trouvés</div>
+			<div class="results">
+				<div class="meal-search-result" *ngFor="let meal of searchResults">
+					<cb-meal
+						[meal]="meal"
+						[isReadonly]="true"
+						[showFullDateInTopper]="true"
+					></cb-meal>
+				</div>
+			</div>
+		</div>
+	</ng-container>
+</div>
+
+<ng-template #noResultsTpl>
+	<div class="no-results">Aucun résultat pour « {{ termFc.value }} »</div>
+</ng-template>

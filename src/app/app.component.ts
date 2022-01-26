@@ -25,6 +25,7 @@ import { CityWeather } from './weather/model/cityWeather';
 import { isNotNullOrUndefined } from './shared/utilities';
 import { Auth } from '@angular/fire/auth';
 import { where } from '@angular/fire/firestore';
+import { SearchComponent } from './search/search.component';
 
 @UntilDestroy()
 @Component({
@@ -131,5 +132,12 @@ export class AppComponent implements AfterViewInit {
 
 	showTvProgram() {
 		this.bottomSheet.open(TvComponent, { panelClass: 'tv-program-sheet' });
+	}
+
+	openSearchDialog() {
+		const dialogRef = this.dialog.open(SearchComponent);
+		dialogRef.afterClosed().subscribe((result) => {
+			console.log(`Dialog result: ${result}`);
+		});
 	}
 }

@@ -1,0 +1,41 @@
+:host {
+	min-width: 25vw;
+	display: block;
+}
+
+::ng-deep .search-form .mat-form-field-wrapper {
+	padding-bottom: 0;
+}
+
+.term-field {
+	width: 350px;
+	font-size: 1.25rem;
+}
+
+.results-container {
+	overflow-y: scroll;
+	max-height: 50vw;
+}
+
+.results-count {
+	text-align: center;
+	color: slategrey;
+	margin: 10px 0;
+}
+
+.results {
+	margin: 20px 50px;
+
+	.meal-search-result:not(:last-child) {
+		margin-bottom: 15px;
+	}
+}
+
+.meal-search-result {
+}
+
+.no-results {
+	text-align: center;
+	color: slategrey;
+	margin: 10px 0;
+}

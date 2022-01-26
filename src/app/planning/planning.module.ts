@@ -1,20 +1,11 @@
 import { NgModule } from '@angular/core';
-import { MealComponent } from './meal/meal.component';
 import { PlanningComponent } from './planning.component';
 import { SharedModule } from '../shared/shared.module';
-import { MealFormComponent } from './meal/meal-form/meal-form.component';
-import { MealSwapDialogComponent } from './meal/meal-swap-dialog/meal-swap-dialog.component';
-import { NoteComponent } from './meal/meal-form/note/note.component';
 import { TvModule } from '../tv/tv.module';
+import { MealModule } from './meal/meal.module';
 
 @NgModule({
-	declarations: [
-		PlanningComponent,
-		MealComponent,
-		MealFormComponent,
-		MealSwapDialogComponent,
-		NoteComponent,
-	],
-	imports: [SharedModule, TvModule],
+	declarations: [PlanningComponent],
+	imports: [SharedModule, TvModule, MealModule],
 })
 export class PlanningModule {}

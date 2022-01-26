@@ -2,7 +2,7 @@
 
 $meal-color: $primary;
 
-.container {
+.container.has-margins {
 	@media (min-width: 600px) {
 		margin: min(20px, 1.5vh) 0;
 	}

@@ -54,6 +54,9 @@ export class MealComponent implements AfterViewInit {
 	get meal(): Meal {
 		return this._meal;
 	}
+	@Input() hasMargins = false;
+	@Input() showFullDateInTopper = false;
+	@Input() isReadonly = false;
 	@ViewChild('container') containerRef: ElementRef | undefined;
 	@ViewChild('dropListRef') dropListRef: CdkDropList<Meal> | undefined;
 	@Output() mealSaved = new EventEmitter<HTMLDivElement>();
@@ -190,6 +193,10 @@ export class MealComponent implements AfterViewInit {
 	}
 
 	toggleEdit(setTo?: boolean) {
+		if (this.isReadonly) {
+			this.editMode = setTo !== undefined ? setTo : !this.editMode;
+			return;
+		}
 		let newFragment: string | undefined;
 		if (setTo !== undefined) {
 			newFragment = setTo ? this.meal.id : undefined;

@@ -45,12 +45,13 @@
 	>
 		<cb-meal
 			[meal]="meal"
-			*ngFor="let meal of meals$ | async; let mealIndex = index trackBy: trackByFn"
+			[hasMargins]="true"
+			*ngFor="let meal of meals$ | async; let mealIndex = index; trackBy: trackByFn"
 			class="meal"
 			[ngClass]="getMealAnimation()"
 			[style.animation-delay]="getMealAnimationDelay(mealIndex)"
 			(mealSaved)="scrollToMeal($event)"
-			(isNext)='scrollToMeal($event)'
+			(isNext)="scrollToMeal($event)"
 		></cb-meal>
 	</div>
 

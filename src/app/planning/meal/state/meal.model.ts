@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, fromUnixTime } from 'date-fns';
 import { Recipe } from '../../../model/receipe';
 
 export type MealType = 'lunch' | 'dinner';
@@ -17,6 +17,7 @@ export interface Meal {
 	extras?: MealExtras;
 	alternateDish?: Dish;
 	recipeMemo?: string | null;
+	searchKeys: string[];
 }
 export interface MealExtras {
 	croquettes?: boolean;
@@ -39,5 +40,13 @@ export function createMeal(input: {
 		...input,
 		timestamp: input.date.getTime() / 1000,
 		alternateDish: input.alternateDish,
+		searchKeys: [],
 	};
+}
+
+export function addDateToMeal(meal: Meal): Meal {
+	const src = meal.timestamp as any;
+	const timestamp = typeof src === 'number' ? src : src.seconds;
+	const date = fromUnixTime(timestamp);
+	return { ...meal, date };
 }
