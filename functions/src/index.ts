@@ -3,7 +3,7 @@ import { createUser } from './auth';
 import { approveOrDenyNewFamilyMember, joinFamily } from './family';
 import { primeTimePrograms } from './tv';
 import { search } from './search';
-import { createMeal } from './meal';
+import { createFamilyMeal, createMeal } from './meal';
 
 exports.createUser = createUser;
 exports.joinFamily = joinFamily;
@@ -14,3 +14,4 @@ exports.jowRecipe = get;
 exports.search = search;
 exports.primeTimePrograms = primeTimePrograms;
 exports.createMeal = createMeal;
+exports.createFamilyMeal = createFamilyMeal;

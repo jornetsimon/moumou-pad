@@ -7,6 +7,8 @@ import { normalizeString } from './helpers/normalize-string';
 import { firestore } from 'firebase-admin';
 import { isNotNullOrUndefined } from './helpers/is-not-null-or-undefined.helper';
 import slugify from 'slugify';
+import { Change, EventContext } from 'firebase-functions/lib/cloud-functions';
+import { DocumentSnapshot } from 'firebase-functions/lib/providers/firestore';
 import get = require('lodash/get');
 import uniq = require('lodash/uniq');
 import FieldValue = firestore.FieldValue;
@@ -14,8 +16,16 @@ import FieldValue = firestore.FieldValue;
 export const createMeal = functions
 	.region('europe-west1')
 	.firestore.document('users/{userId}/meals/{mealId}')
-	.onWrite(async (change, context) => {
-		const mostUsedRef = db.collection(`users/${context.params.userId}/most-used`);
+	.onWrite(onMealCreated('users'));
+
+export const createFamilyMeal = functions
+	.region('europe-west1')
+	.firestore.document('families/{targetId}/meals/{mealId}')
+	.onWrite(onMealCreated('families'));
+
+export function onMealCreated(targetLocation: 'users' | 'families') {
+	return (change: Change<DocumentSnapshot>, context: EventContext): void => {
+		const mostUsedRef = db.collection(`${targetLocation}/${context.params.targetId}/most-used`);
 		const mealBefore = change.before.exists ? (change.before.data() as Meal) : undefined;
 		const mealAfter = change.after.exists ? (change.after.data() as Meal) : undefined;
 		const removedNames: string[] = mealBefore ? getMealCustomNames(mealBefore) : [];
@@ -52,14 +62,15 @@ export const createMeal = functions
 				);
 			});
 
-		await batch.commit();
-
-		if (mealAfter) {
-			// The document has not been created or updated
-			const searchKeys = generateMealSearchKeys(mealAfter);
-			db.doc(change.after.ref.path).update({ searchKeys });
-		}
-	});
+		batch.commit().then(() => {
+			if (mealAfter) {
+				// The document has not been created or updated
+				const searchKeys = generateMealSearchKeys(mealAfter);
+				db.doc(change.after.ref.path).update({ searchKeys });
+			}
+		});
+	};
+}
 
 function getMealCustomNames(meal: Meal): string[] {
 	const primaryMealName = meal.name === meal.jowRecipe?.title ? undefined : meal.name;
