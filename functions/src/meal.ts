@@ -15,7 +15,7 @@ import FieldValue = firestore.FieldValue;
 
 export const createMeal = functions
 	.region('europe-west1')
-	.firestore.document('users/{userId}/meals/{mealId}')
+	.firestore.document('users/{targetId}/meals/{mealId}')
 	.onWrite(onMealCreated('users'));
 
 export const createFamilyMeal = functions
