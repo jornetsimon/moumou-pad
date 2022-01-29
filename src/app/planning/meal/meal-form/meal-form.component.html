@@ -9,7 +9,7 @@
 			[disabled]="isReadonly"
 			[matAutocomplete]="nameSuggestionsAutocomplete"
 		/>
-		<mat-autocomplete autoActiveFirstOption #nameSuggestionsAutocomplete="matAutocomplete">
+		<mat-autocomplete #nameSuggestionsAutocomplete="matAutocomplete">
 			<mat-option *ngFor="let option of nameSuggestions$ | async" [value]="option">
 				{{ option }}
 			</mat-option>
