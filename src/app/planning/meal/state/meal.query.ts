@@ -1,17 +1,50 @@
 import { Injectable } from '@angular/core';
 import { Order, QueryConfig, QueryEntity } from '@datorama/akita';
 import { MealsStore, MealState } from './meals.store';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { eachDayOfInterval, fromUnixTime, isSameDay } from 'date-fns';
 import { createMeal, Meal, MealType } from './meal.model';
 import { Period } from '../../../model/period';
+import { Observable } from 'rxjs';
+import {
+	collection,
+	collectionData,
+	Firestore,
+	limit,
+	orderBy,
+	query,
+	where,
+} from '@angular/fire/firestore';
+import { AppQuery } from '../../../../state/app.query';
+import { CollectionReference } from '@firebase/firestore';
 
 @QueryConfig({ sortBy: 'date', sortByOrder: Order.ASC })
 @Injectable({ providedIn: 'root' })
 export class MealQuery extends QueryEntity<MealState> {
-	constructor(protected store: MealsStore) {
+	constructor(
+		protected store: MealsStore,
+		protected firestore: Firestore,
+		private appQuery: AppQuery
+	) {
 		super(store);
 	}
+
+	nameSuggestions$: Observable<string[]> = this.appQuery.targetPath$.pipe(
+		switchMap((targetPath) =>
+			collectionData(
+				query(
+					collection(this.firestore, `${targetPath}/most-used`) as CollectionReference<{
+						name: string;
+						count: number;
+					}>,
+					where('count', '>', 0),
+					orderBy('count', 'desc'),
+					limit(5)
+				)
+			)
+		),
+		map((suggestions) => suggestions.map((s) => s.name))
+	);
 
 	getMealDays(period: Period) {
 		const days = eachDayOfInterval({

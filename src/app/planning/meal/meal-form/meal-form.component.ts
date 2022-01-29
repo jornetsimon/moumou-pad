@@ -21,6 +21,7 @@ import { Observable, of } from 'rxjs';
 import { JowService } from '../../../jow/state/jow.service';
 import { NoteComponent } from './note/note.component';
 import { RenderService } from '../../../shared/render.service';
+import { MealQuery } from '../state/meal.query';
 
 @Component({
 	selector: 'cb-meal-form',
@@ -53,6 +54,8 @@ export class MealFormComponent implements OnChanges {
 		}),
 	});
 
+	nameSuggestions$ = this.mealQuery.nameSuggestions$;
+
 	recipeSearchResults$: Observable<Recipe[]> = this.form.get('searchTerm')!.valueChanges.pipe(
 		filter((term) => typeof term === 'string'),
 		debounceTime(500),
@@ -71,6 +74,7 @@ export class MealFormComponent implements OnChanges {
 	recipeMemo: string | null = null;
 
 	constructor(
+		private mealQuery: MealQuery,
 		private mealService: MealService,
 		private jowQuery: JowQuery,
 		public dialog: MatDialog,

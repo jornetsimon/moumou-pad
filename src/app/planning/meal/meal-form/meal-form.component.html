@@ -5,8 +5,15 @@
 			matInput
 			placeholder="Poulet poivrons, huevos rotos..."
 			formControlName="name"
+			autocomplete="off"
 			[disabled]="isReadonly"
+			[matAutocomplete]="nameSuggestionsAutocomplete"
 		/>
+		<mat-autocomplete autoActiveFirstOption #nameSuggestionsAutocomplete="matAutocomplete">
+			<mat-option *ngFor="let option of nameSuggestions$ | async" [value]="option">
+				{{ option }}
+			</mat-option>
+		</mat-autocomplete>
 		<mat-icon matSuffix class="clear-icon" (click)="form.get('name')?.reset()">clear</mat-icon>
 	</mat-form-field>
 

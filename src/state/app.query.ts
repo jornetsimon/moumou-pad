@@ -14,4 +14,22 @@ export class AppQuery extends Query<AppState> {
 	userConfig$: Observable<UserConfig | undefined> = this.select().pipe(
 		map((state) => state.userData?.config)
 	);
+
+	targetPath$ = this.select().pipe(map(AppQuery.extractTargetPath));
+
+	getTargetPath(): string {
+		return AppQuery.extractTargetPath(this.getValue());
+	}
+
+	private static extractTargetPath(stateSnapshot: AppState) {
+		const userData = stateSnapshot.userData;
+		const familyName = userData?.familyName;
+		const isAllowedInFamily = userData?.isAllowedInFamily;
+		const userId = stateSnapshot.user!.uid;
+
+		if (familyName && isAllowedInFamily) {
+			return `families/${familyName}`;
+		}
+		return `users/${userId}`;
+	}
 }

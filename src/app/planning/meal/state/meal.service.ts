@@ -11,16 +11,7 @@ export class MealService extends CollectionService<MealState> {
 	}
 
 	get path() {
-		const stateSnapshot = this.appQuery.getValue();
-		const userData = stateSnapshot.userData;
-		const familyName = userData?.familyName;
-		const isAllowedInFamily = userData?.isAllowedInFamily;
-		const userId = stateSnapshot.user!.uid;
-
-		if (familyName && isAllowedInFamily) {
-			return `families/${familyName}/meals`;
-		}
-		return `users/${userId}/meals`;
+		return `${this.appQuery.getTargetPath()}/meals`;
 	}
 
 	swapMeals(from: Meal, to: Meal) {
