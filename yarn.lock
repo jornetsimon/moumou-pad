@@ -1892,12 +1892,12 @@
   resolved "https://registry.yarnpkg.com/@ngtools/webpack/-/webpack-13.0.3.tgz#ec31dfa49dae79aeee68cc970fea6f5fd9ebc76d"
   integrity sha512-sVi1Xk8pyy6Y6JODySucYfvuxb5k3IIX/oIWy8QxlFVzpeB2UMqEOevrgvtmiEbQNB1W+aYSTph6oeV+PRX5YA==
 
-"@ngx-pwa/local-storage@12.0.0":
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/@ngx-pwa/local-storage/-/local-storage-12.0.0.tgz#24d80a43ca4f823f54bc5819d5cb8542db718e59"
-  integrity sha512-a2KZey5eR8lSHgr6yozPyXHkC79yAOtkVKq9rqXpIqL+6A1Tbs6nfl0BTXpfEgMLS8i+WA3f+4VZ4lQ++ZWWjw==
+"@ngx-pwa/local-storage@13":
+  version "13.0.2"
+  resolved "https://registry.yarnpkg.com/@ngx-pwa/local-storage/-/local-storage-13.0.2.tgz#dc5aeb0a354b08ed772b2b891f0136dde8365e2f"
+  integrity sha512-2gEbIGXK9Ph/pVZUWSTrgE6cFjvxvuVW4C9ow7WGA9+HL52RE9nE7nCXQsSSodnE+EPJeN4hgZZXnz+Cn57vPA==
   dependencies:
-    tslib "^2.2.0"
+    tslib "^2.3.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"

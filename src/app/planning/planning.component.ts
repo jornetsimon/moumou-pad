@@ -10,6 +10,8 @@ import { AppQuery } from '../../state/app.query';
 import { generateSchedule, Period } from '../model/period';
 import { addDays, isBefore, isSameDay, isSameMonth, startOfDay } from 'date-fns/esm';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { CroquettesService } from '../croquettes.service';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Component({
 	selector: 'cb-planning',
@@ -62,8 +64,30 @@ export class PlanningComponent {
 		private vibrationService: NgxVibrationService,
 		private appQuery: AppQuery,
 		private appService: AppService,
-		private breakpointObserver: BreakpointObserver
-	) {}
+		private breakpointObserver: BreakpointObserver,
+		private croquettesService: CroquettesService,
+		private hotToastService: HotToastService
+	) {
+		this.croquettesService.prompt$.subscribe(() => {
+			const croquettesToastRef = this.hotToastService.show(
+				'<strong>Jour de croquettes !</strong>',
+				{
+					icon: '🐱',
+					autoClose: false,
+					dismissible: true,
+					position: 'bottom-center',
+					closeStyle: {
+						'margin-top': '5px',
+						cursor: 'pointer',
+					},
+				}
+			);
+			croquettesToastRef.afterClosed.subscribe(() => {
+				this.vibrationService.vibrate([75]);
+				this.croquettesService.markAsDisplayed();
+			});
+		});
+	}
 
 	onDrop() {
 		this.vibrationService.vibrate([150]);

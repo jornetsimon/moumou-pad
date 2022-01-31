@@ -9,11 +9,10 @@ import {
 	TrackByFunction,
 	ViewChild,
 } from '@angular/core';
-import { Dish, Meal } from './state/meal.model';
+import { Dish, isNextMeal, Meal } from './state/meal.model';
 import { MealQuery } from './state/meal.query';
 import { collapseOnLeaveAnimation, expandOnEnterAnimation } from 'angular-animations';
 import { JowService } from '../../jow/state/jow.service';
-import { getHours, isSameDay } from 'date-fns';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { MealService } from './state/meal.service';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -85,19 +84,7 @@ export class MealComponent implements AfterViewInit {
 			return !this.canEnter({ data: dragging } as CdkDrag<Meal>, this.dropListRef);
 		})
 	);
-	isNext$ = merge(interval(60 * 60 * 1000), this.meal$).pipe(
-		map(() => {
-			const now = Date.now();
-			const isMealToday = isSameDay(this.meal.date, now);
-			const currentHour = getHours(now);
-			if (isMealToday) {
-				const matchesLunch = currentHour < 14 && this.meal.type === 'lunch';
-				const matchesDinner = currentHour >= 14 && this.meal.type === 'dinner';
-				return matchesLunch || matchesDinner;
-			}
-			return false;
-		})
-	);
+	isNext$ = merge(interval(60 * 60 * 1000), this.meal$).pipe(map(() => isNextMeal(this.meal)));
 	headers$: Observable<Dish[]> = this.meal$.pipe(
 		map(
 			(meal) =>

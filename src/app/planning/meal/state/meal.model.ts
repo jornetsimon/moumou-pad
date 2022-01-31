@@ -1,4 +1,4 @@
-import { format, fromUnixTime } from 'date-fns';
+import { format, fromUnixTime, getHours, isSameDay } from 'date-fns';
 import { Recipe } from '../../../model/receipe';
 
 export type MealType = 'lunch' | 'dinner';
@@ -49,4 +49,16 @@ export function addDateToMeal(meal: Meal): Meal {
 	const timestamp = typeof src === 'number' ? src : src.seconds;
 	const date = fromUnixTime(timestamp);
 	return { ...meal, date };
+}
+
+export function isNextMeal(meal: Meal): boolean {
+	const now = Date.now();
+	const isMealToday = isSameDay(meal.date, now);
+	const currentHour = getHours(now);
+	if (isMealToday) {
+		const matchesLunch = currentHour < 14 && meal.type === 'lunch';
+		const matchesDinner = currentHour >= 14 && meal.type === 'dinner';
+		return matchesLunch || matchesDinner;
+	}
+	return false;
 }
