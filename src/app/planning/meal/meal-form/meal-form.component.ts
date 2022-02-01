@@ -17,11 +17,12 @@ import { Recipe } from '../../../model/receipe';
 import { JowQuery } from '../../../jow/state/jow.query';
 import { MatDialog } from '@angular/material/dialog';
 import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { JowService } from '../../../jow/state/jow.service';
 import { NoteComponent } from './note/note.component';
 import { RenderService } from '../../../shared/render.service';
 import { MealQuery } from '../state/meal.query';
+import { normalizeString } from '../../../../../functions/src/helpers/normalize-string';
 
 @Component({
 	selector: 'cb-meal-form',
@@ -34,9 +35,6 @@ export class MealFormComponent implements OnChanges {
 	@Input() isReadonly = false;
 	@Output() mealSaved = new EventEmitter<void>();
 	loadingSearchResults = false;
-	recipeIdeas$ = this.jowQuery
-		.select('featured')
-		.pipe(map((recipes): Recipe[] => shuffle(recipes)));
 
 	extrasFg = new FormGroup({
 		croquettes: new FormControl(false),
@@ -55,6 +53,29 @@ export class MealFormComponent implements OnChanges {
 	});
 
 	nameSuggestions$ = this.mealQuery.nameSuggestions$;
+	filteredNameSuggestion$ = combineLatest([
+		this.nameSuggestions$,
+		this.form.get('name')!.valueChanges,
+	]).pipe(
+		map(([suggestions, inputName]) =>
+			suggestions.filter((s) => normalizeString(s).includes(normalizeString(inputName)))
+		)
+	);
+	alreadyUsedRecipeSuggestions$ = this.mealQuery.lessUsedRecipes$.pipe(
+		map((recipes): Array<Recipe & { useCount: number }> => shuffle(recipes).slice(0, 3))
+	);
+	recipeIdeas$ = combineLatest([
+		this.jowQuery.select('featured'),
+		this.alreadyUsedRecipeSuggestions$,
+	]).pipe(
+		map(([featuredRecipes, alreadyUsedRecipeSuggestions]): Recipe[] =>
+			shuffle(
+				featuredRecipes.filter(
+					(recipe) => !alreadyUsedRecipeSuggestions.find((r) => r._id === recipe._id)
+				)
+			).splice(0, 2)
+		)
+	);
 
 	recipeSearchResults$: Observable<Recipe[]> = this.form.get('searchTerm')!.valueChanges.pipe(
 		filter((term) => typeof term === 'string'),

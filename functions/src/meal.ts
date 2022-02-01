@@ -26,6 +26,9 @@ export const createFamilyMeal = functions
 export function onMealCreated(targetLocation: 'users' | 'families') {
 	return (change: Change<DocumentSnapshot>, context: EventContext): void => {
 		const mostUsedRef = db.collection(`${targetLocation}/${context.params.targetId}/most-used`);
+		const mostUsedRecipesRef = db.collection(
+			`${targetLocation}/${context.params.targetId}/most-used-recipes`
+		);
 		const mealBefore = change.before.exists ? (change.before.data() as Meal) : undefined;
 		const mealAfter = change.after.exists ? (change.after.data() as Meal) : undefined;
 		const removedNames: string[] = mealBefore ? getMealCustomNames(mealBefore) : [];
@@ -61,6 +64,33 @@ export function onMealCreated(targetLocation: 'users' | 'families') {
 					}
 				);
 			});
+
+		if (mealBefore?.jowRecipe?._id !== mealAfter?.jowRecipe?._id) {
+			if (mealBefore?.jowRecipe) {
+				batch.set(
+					mostUsedRecipesRef.doc(mealBefore.jowRecipe._id),
+					{
+						count: FieldValue.increment(-1),
+						recipe: mealBefore.jowRecipe,
+					},
+					{
+						merge: true,
+					}
+				);
+			}
+			if (mealAfter?.jowRecipe) {
+				batch.set(
+					mostUsedRecipesRef.doc(mealAfter.jowRecipe._id),
+					{
+						count: FieldValue.increment(1),
+						recipe: mealAfter.jowRecipe,
+					},
+					{
+						merge: true,
+					}
+				);
+			}
+		}
 
 		batch.commit().then(() => {
 			if (mealAfter) {

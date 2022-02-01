@@ -71,3 +71,8 @@ a {
 		color: $primary;
 	}
 }
+
+.mat-divider.inline {
+	position: inherit !important;
+	margin: 15px 0;
+}
