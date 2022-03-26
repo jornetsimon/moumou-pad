@@ -20,14 +20,14 @@ export class MealService extends CollectionService<MealState> {
 			...to,
 			name: from.name || null,
 			jowRecipe: from.jowRecipe || null,
-			extras: from.extras || null,
+			extras: from.extras ? { ...from.extras, croquettes: to.extras?.croquettes } : null,
 			alternateDish: from.alternateDish,
 		});
 		batch.set(this.getRef(from.id), {
 			...from,
 			name: to.name || null,
 			jowRecipe: to.jowRecipe || null,
-			extras: to.extras || null,
+			extras: to.extras ? { ...to.extras, croquettes: from.extras?.croquettes } : null,
 			alternateDish: to.alternateDish,
 		});
 		return batch.commit();
