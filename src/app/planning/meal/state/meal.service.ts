@@ -3,6 +3,7 @@ import { CollectionService } from 'akita-ng-fire';
 import { MealsStore, MealState } from './meals.store';
 import { AppQuery } from '../../../../state/app.query';
 import { Meal } from './meal.model';
+import { mapUndefinedToNull } from '../../../../utils/mapUndefinedToNull';
 
 @Injectable({ providedIn: 'root' })
 export class MealService extends CollectionService<MealState> {
@@ -16,20 +17,22 @@ export class MealService extends CollectionService<MealState> {
 
 	swapMeals(from: Meal, to: Meal) {
 		const batch = this.batch();
-		batch.set(this.getRef(to.id), {
+		const destination = {
 			...to,
 			name: from.name || null,
 			jowRecipe: from.jowRecipe || null,
-			extras: from.extras ? { ...from.extras, croquettes: to.extras?.croquettes } : null,
+			extras: mapUndefinedToNull({ ...from.extras, croquettes: to.extras?.croquettes }),
 			alternateDish: from.alternateDish,
-		});
-		batch.set(this.getRef(from.id), {
+		};
+		const source = {
 			...from,
 			name: to.name || null,
 			jowRecipe: to.jowRecipe || null,
-			extras: to.extras ? { ...to.extras, croquettes: from.extras?.croquettes } : null,
+			extras: mapUndefinedToNull({ ...to.extras, croquettes: from.extras?.croquettes }),
 			alternateDish: to.alternateDish,
-		});
+		};
+		batch.set(this.getRef(to.id), mapUndefinedToNull(destination));
+		batch.set(this.getRef(from.id), mapUndefinedToNull(source));
 		return batch.commit();
 	}
 }
