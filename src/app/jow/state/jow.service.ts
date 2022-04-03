@@ -31,6 +31,6 @@ export class JowService {
 		return `https://static.jow.fr/${asset}`;
 	}
 	constructRecipeUrl(recipeId: string) {
-		return `https://jow.fr/recettes/${recipeId}`;
+		return `https://app.jow.com/nf5e/?action=recipe&recipeId=${recipeId}`;
 	}
 }

@@ -132,42 +132,48 @@
 				<div style="font-size: medium; color: #737373; margin-bottom: 10px">
 					Quelques idées de recettes
 				</div>
-				<div class="suggestion-section" fxLayoutAlign="start stretch" fxLayoutGap="10px">
+				<ng-container
+					*ngIf="alreadyUsedRecipeSuggestions$ | async as suggestions; else spinnerTpl"
+				>
 					<div
-						class="suggestions"
-						fxLayout="row wrap"
-						fxLayoutAlign="center center"
+						class="suggestion-section"
+						fxLayoutAlign="start stretch"
 						fxLayoutGap="10px"
+						*ngIf="suggestions.length"
 					>
-						<mat-chip-list
-							*ngIf="
-								alreadyUsedRecipeSuggestions$ | async as suggestions;
-								else spinnerTpl
-							"
+						<div
+							class="suggestions"
+							fxLayout="row wrap"
+							fxLayoutAlign="center center"
+							fxLayoutGap="10px"
 						>
-							<mat-chip
-								*ngFor="let recipe of suggestions"
-								color="accent"
-								selected
-								(click)="openRecipeModal(recipe)"
-								[style.background-image]="
-									'url(\'' + jowService.constructAssetUrl(recipe.imageUrl) + '\')'
-								"
-								[style.background-color]="recipe.backgroundColor"
-							>
-								<div class="title">
-									<div>{{ recipe.title }}</div>
-									<div class="recipe-use-note">
-										essayé {{ recipe.useCount }} fois
+							<mat-chip-list>
+								<mat-chip
+									*ngFor="let recipe of suggestions"
+									color="accent"
+									selected
+									(click)="openRecipeModal(recipe)"
+									[style.background-image]="
+										'url(\'' +
+										jowService.constructAssetUrl(recipe.imageUrl) +
+										'\')'
+									"
+									[style.background-color]="recipe.backgroundColor"
+								>
+									<div class="title">
+										<div>{{ recipe.title }}</div>
+										<div class="recipe-use-note">
+											essayé {{ recipe.useCount }} fois
+										</div>
 									</div>
-								</div>
-							</mat-chip>
-						</mat-chip-list>
+								</mat-chip>
+							</mat-chip-list>
+						</div>
+						<div fxFlex="none" fxLayoutAlign="end center">
+							<span>On remet ça</span>
+						</div>
 					</div>
-					<div fxFlex="none" fxLayoutAlign="end center">
-						<span>On remet ça</span>
-					</div>
-				</div>
+				</ng-container>
 				<div style="margin: 8px 0"></div>
 				<div class="suggestion-section" fxLayoutAlign="start stretch" fxLayoutGap="10px">
 					<div
