@@ -1,7 +1,13 @@
+@use 'styles/theme';
+
 @import 'styles/utilities';
 @import 'styles/fonts';
 @import 'styles/colors';
 @import 'styles/animations';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html,
 body {
@@ -9,7 +15,7 @@ body {
 }
 
 html {
-	background-color: #fffef0;
+	@apply bg-light-400 dark:bg-dark-400;
 }
 
 body {
