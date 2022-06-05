@@ -12,7 +12,7 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { filter, first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { MealService } from './planning/meal/state/meal.service';
+import { MealService } from './meal/state/meal.service';
 import { JowService } from './jow/state/jow.service';
 import { AppQuery } from '../state/app.query';
 import { MatDialog } from '@angular/material/dialog';

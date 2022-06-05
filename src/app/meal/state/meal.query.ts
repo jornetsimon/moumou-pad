@@ -4,7 +4,7 @@ import { MealsStore, MealState } from './meals.store';
 import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { eachDayOfInterval, fromUnixTime, isSameDay } from 'date-fns';
 import { createMeal, Meal, MealType } from './meal.model';
-import { Period } from '../../../model/period';
+import { Period } from '../../model/period';
 import { Observable } from 'rxjs';
 import {
 	collection,
@@ -15,9 +15,9 @@ import {
 	query,
 	where,
 } from '@angular/fire/firestore';
-import { AppQuery } from '../../../../state/app.query';
+import { AppQuery } from '../../../state/app.query';
 import { CollectionReference } from '@firebase/firestore';
-import { Recipe } from '../../../model/receipe';
+import { Recipe } from '../../model/receipe';
 
 @QueryConfig({ sortBy: 'date', sortByOrder: Order.ASC })
 @Injectable({ providedIn: 'root' })

@@ -3,8 +3,8 @@ import { StorageMap } from '@ngx-pwa/local-storage';
 import { catchError, filter, first, map } from 'rxjs/operators';
 import { formatISO, isSameDay, parseISO } from 'date-fns/esm';
 import { combineLatest, Observable, of } from 'rxjs';
-import { MealQuery } from './planning/meal/state/meal.query';
-import { Meal } from './planning/meal/state/meal.model';
+import { MealQuery } from './meal/state/meal.query';
+import { Meal } from './meal/state/meal.model';
 import { isNotNullOrUndefined } from './shared/utilities';
 
 @Injectable({

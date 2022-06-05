@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Meal } from '../state/meal.model';
-import { JowService } from '../../../jow/state/jow.service';
+import { JowService } from '../../jow/state/jow.service';
 
 @Component({
 	selector: 'cb-meal-swap-dialog',

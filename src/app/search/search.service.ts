@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { map } from 'rxjs/operators';
-import { addDateToMeal, Meal } from '../planning/meal/state/meal.model';
+import { addDateToMeal, Meal } from '../meal/state/meal.model';
 
 @Injectable({
 	providedIn: 'root',

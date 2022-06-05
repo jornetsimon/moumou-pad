@@ -13,16 +13,16 @@ import { MealService } from '../state/meal.service';
 import { createMeal, Meal } from '../state/meal.model';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 import { pickBy, shuffle } from 'lodash-es';
-import { Recipe } from '../../../model/receipe';
-import { JowQuery } from '../../../jow/state/jow.query';
+import { Recipe } from '../../model/receipe';
+import { JowQuery } from '../../jow/state/jow.query';
 import { MatDialog } from '@angular/material/dialog';
-import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
+import { RecipeModalComponent } from '../../jow/recipe-modal/recipe-modal.component';
 import { combineLatest, Observable, of } from 'rxjs';
-import { JowService } from '../../../jow/state/jow.service';
+import { JowService } from '../../jow/state/jow.service';
 import { NoteComponent } from './note/note.component';
-import { RenderService } from '../../../shared/render.service';
+import { RenderService } from '../../shared/render.service';
 import { MealQuery } from '../state/meal.query';
-import { normalizeString } from '../../../../../functions/src/helpers/normalize-string';
+import { normalizeString } from '../../../../functions/src/helpers/normalize-string';
 
 @Component({
 	selector: 'cb-meal-form',

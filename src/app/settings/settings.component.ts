@@ -8,7 +8,7 @@ import { AppQuery } from '../../state/app.query';
 import { distinctUntilChanged, finalize, first, map } from 'rxjs/operators';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Router } from '@angular/router';
-import { MealService } from '../planning/meal/state/meal.service';
+import { MealService } from '../meal/state/meal.service';
 import { SettingsService } from './settings.service';
 import { BehaviorSubject, combineLatest, from, Observable } from 'rxjs';
 import { Functions, httpsCallable } from '@angular/fire/functions';

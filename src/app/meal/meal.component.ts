@@ -12,7 +12,7 @@ import {
 import { Dish, isNextMeal, Meal } from './state/meal.model';
 import { MealQuery } from './state/meal.query';
 import { collapseOnLeaveAnimation, expandOnEnterAnimation } from 'angular-animations';
-import { JowService } from '../../jow/state/jow.service';
+import { JowService } from '../jow/state/jow.service';
 import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { MealService } from './state/meal.service';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -24,7 +24,7 @@ import { delay, distinctUntilChanged, filter, map, tap, withLatestFrom } from 'r
 import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
 import { NgxVibrationService } from 'ngx-vibration';
 import { MealThemeModel } from './theme/meal-theme.model';
-import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../../shared/utilities';
+import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../shared/utilities';
 import * as tinycolor from 'tinycolor2';
 import { MealThemeService } from './theme/meal-theme.service';
 import { ActivatedRoute, Router } from '@angular/router';

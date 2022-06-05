@@ -1,5 +1,5 @@
 import { format, fromUnixTime, getHours, isSameDay } from 'date-fns';
-import { Recipe } from '../../../model/receipe';
+import { Recipe } from '../../model/receipe';
 
 export type MealType = 'lunch' | 'dinner';
 export type Dish = {

@@ -2,7 +2,11 @@
 	<mat-card class="card" *ngIf="data.recipe as recipe">
 		<img
 			mat-card-image
-			[src]="jowService.constructAssetUrl(recipe.posterUrl)"
+			[src]="
+				jowService.constructAssetUrl(
+					recipe.posterUrl || recipe.editorialPictureUrl || recipe.imageUrl
+				)
+			"
 			class="header-image"
 		/>
 		<div style="padding: 0 10px">

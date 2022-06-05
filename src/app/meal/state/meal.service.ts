@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { CollectionService } from 'akita-ng-fire';
 import { MealsStore, MealState } from './meals.store';
-import { AppQuery } from '../../../../state/app.query';
+import { AppQuery } from '../../../state/app.query';
 import { Meal } from './meal.model';
-import { mapUndefinedToNull } from '../../../../utils/mapUndefinedToNull';
+import { mapUndefinedToNull } from '../../../utils/mapUndefinedToNull';
 
 @Injectable({ providedIn: 'root' })
 export class MealService extends CollectionService<MealState> {

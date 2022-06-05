@@ -18,14 +18,17 @@
 	</mat-form-field>
 
 	<ng-container *ngIf="jowRecipe">
-		<div class="selected-recipe-intro" [style.background-color]="jowRecipe.backgroundColor">
+		<div
+			class="selected-recipe-intro"
+			[style.background-color]="jowRecipe.backgroundColor || 'grey'"
+		>
 			Recette sélectionnée
 		</div>
 		<mat-card class="selected-recipe">
 			<div
 				fxLayout="column"
 				fxLayoutAlign="start center"
-				[style.color]="jowRecipe.backgroundColor"
+				[style.color]="jowRecipe.backgroundColor || 'grey'"
 			>
 				<img
 					class="preview"

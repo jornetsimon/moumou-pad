@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
-import { MealQuery } from './meal/state/meal.query';
+import { MealQuery } from '../meal/state/meal.query';
 import { combineLatest, Observable } from 'rxjs';
-import { Meal } from './meal/state/meal.model';
-import { DragDropService } from './meal/drag-drop.service';
+import { Meal } from '../meal/state/meal.model';
+import { DragDropService } from '../meal/drag-drop.service';
 import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
 import { NgxVibrationService } from 'ngx-vibration';
 import { AppService } from '../../state/app.service';

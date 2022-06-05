@@ -25,7 +25,8 @@ export interface Recipe {
 	description: string;
 	videoUrl: string;
 	imageUrl: string;
-	posterUrl: string;
+	editorialPictureUrl?: string;
+	posterUrl?: string;
 	isVisible: boolean;
 	availabilityZones: string[];
 	additionalConstituents: AdditionalConstituent[];
