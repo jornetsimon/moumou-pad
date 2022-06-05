@@ -26,6 +26,7 @@ import { isNotNullOrUndefined } from './shared/utilities';
 import { Auth } from '@angular/fire/auth';
 import { where } from '@angular/fire/firestore';
 import { SearchComponent } from './search/search.component';
+import { AuthService } from './auth/auth.service';
 
 @UntilDestroy()
 @Component({
@@ -50,7 +51,8 @@ export class AppComponent implements AfterViewInit {
 		private jowService: JowService,
 		private dialog: MatDialog,
 		private bottomSheet: MatBottomSheet,
-		private weatherService: WeatherService
+		private weatherService: WeatherService,
+		private authService: AuthService
 	) {
 		this.angularFireAuth.onAuthStateChanged((user) => {
 			this.appStore.update({
@@ -118,7 +120,7 @@ export class AppComponent implements AfterViewInit {
 	}
 
 	logout() {
-		this.angularFireAuth.signOut().then(() => {
+		this.authService.logout().subscribe(() => {
 			this.toastService.show('Déconnecté', {
 				duration: 3000,
 			});

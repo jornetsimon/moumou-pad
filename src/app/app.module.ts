@@ -20,9 +20,11 @@ import {
 	getFirestore,
 	provideFirestore,
 } from '@angular/fire/firestore';
-import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { SearchModule } from './search/search.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { GoogleApiInterceptor } from './shared/google-api';
 
 registerLocaleData(fr);
 
@@ -42,9 +44,9 @@ registerLocaleData(fr);
 		}),
 		provideAuth(() => {
 			const auth = getAuth();
-			if (environment.useEmulators) {
+			/*if (environment.useEmulators) {
 				connectAuthEmulator(auth, 'http://localhost:9099');
-			}
+			}*/
 			return auth;
 		}),
 		provideFunctions(() => {
@@ -70,7 +72,14 @@ registerLocaleData(fr);
 		}),
 		SearchModule,
 	],
-	providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
+	providers: [
+		{ provide: LOCALE_ID, useValue: 'fr' },
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: GoogleApiInterceptor,
+			multi: true,
+		},
+	],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}
