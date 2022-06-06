@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PlanningComponent } from './planning/planning.component';
 import { LoginComponent } from './auth/login/login.component';
 import {
 	AngularFireAuthGuard,
@@ -16,7 +15,12 @@ const routes: Routes = [
 		children: [
 			{
 				path: '',
-				component: PlanningComponent,
+				loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+			},
+			{
+				path: 'legacy',
+				loadChildren: () =>
+					import('./planning/planning.module').then((m) => m.PlanningModule),
 			},
 			{
 				path: 'settings',

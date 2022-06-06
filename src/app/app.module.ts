@@ -1,9 +1,8 @@
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { environment } from '../environments/environment';
-import { PlanningModule } from './planning/planning.module';
 import { SharedModule } from './shared/shared.module';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
@@ -23,8 +22,6 @@ import {
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { SearchModule } from './search/search.module';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { GoogleApiInterceptor } from './shared/google-api';
 
 registerLocaleData(fr);
 
@@ -57,7 +54,6 @@ registerLocaleData(fr);
 			return functions;
 		}),
 		AuthModule,
-		PlanningModule,
 		BrowserAnimationsModule,
 		SharedModule,
 		AppRoutingModule,
@@ -71,14 +67,6 @@ registerLocaleData(fr);
 			registrationStrategy: 'registerWhenStable:30000',
 		}),
 		SearchModule,
-	],
-	providers: [
-		{ provide: LOCALE_ID, useValue: 'fr' },
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: GoogleApiInterceptor,
-			multi: true,
-		},
 	],
 	bootstrap: [AppComponent],
 })

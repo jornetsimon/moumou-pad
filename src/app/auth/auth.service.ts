@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Auth, GoogleAuthProvider, signInWithCredential, UserCredential } from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import { environment } from '../../environments/environment';
+import { GoogleApiService } from '../shared/google-api';
 
 declare const gapi: any;
 
@@ -10,20 +10,10 @@ declare const gapi: any;
 	providedIn: 'root',
 })
 export class AuthService {
-	constructor(private angularFireAuth: Auth) {
-		gapi.load('client', () => {
-			gapi.client.init({
-				apiKey: environment.firebaseConfig.apiKey,
-				clientId: environment.GAPI_CLIENT_ID,
-				scope: 'https://www.googleapis.com/auth/calendar.readonly \
-                  https://www.googleapis.com/auth/calendar.events.readonly',
-				plugin_name: 'moumou-pad',
-			});
-		});
-	}
+	constructor(private angularFireAuth: Auth, private googleApiService: GoogleApiService) {}
 
 	login(): Observable<UserCredential> {
-		return from(gapi.auth2.getAuthInstance()).pipe(
+		return this.googleApiService.authInstance$.pipe(
 			switchMap((googleAuth: any) => googleAuth.signIn()),
 			switchMap((googleUser: any) => {
 				const token = googleUser.getAuthResponse().id_token;

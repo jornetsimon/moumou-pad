@@ -1,1 +1,32 @@
-<p>calendar works!</p>
+<div class="my-2" *ngIf="calendars | async as calendars; else loadingTpl">
+	<div>{{ calendars.length }} calendars</div>
+	<div class="flex flex-wrap items-start gap-2">
+		<div
+			*ngFor="let calendar of calendars"
+			class="rounded p-2"
+			[style.background-color]="calendar.backgroundColor"
+			[style.color]="calendar.foregroundColor"
+		>
+			<mat-checkbox>
+				{{ calendar.summary }}
+			</mat-checkbox>
+		</div>
+	</div>
+</div>
+<hr />
+<div class="my-2" *ngIf="events$ | async as events; else loadingTpl">
+	<div>{{ events.length }} events</div>
+	<div class="flex flex-wrap items-start gap-2">
+		<div
+			*ngFor="let event of events"
+			class="rounded p-2"
+			[style.background-color]="event.calendar.backgroundColor"
+			[style.color]="event.calendar.foregroundColor"
+		>
+			{{ event.summary }}
+			<pre>{{ events | json }}</pre>
+		</div>
+	</div>
+</div>
+<button mat-button>Test</button>
+<ng-template #loadingTpl> loading... </ng-template>
