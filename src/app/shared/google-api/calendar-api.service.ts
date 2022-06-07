@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Calendar, CalendarEvent, CalendarEventsData } from './types/calendar.model';
 import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { Serialized } from '../../../../functions/src/helpers/serialized';
 import { Observable } from 'rxjs';
 import { GoogleApiService } from './google-api.service';
+import { GoogleApiStore } from './google-api.store';
 
 declare const gapi: any;
 
@@ -12,9 +12,12 @@ declare const gapi: any;
 	providedIn: 'root',
 })
 export class CalendarApiService {
-	constructor(private http: HttpClient, private googleApiService: GoogleApiService) {}
+	constructor(
+		private googleApiService: GoogleApiService,
+		private googleApiStore: GoogleApiStore
+	) {}
 
-	readonly calendarApiLoaded$ = this.googleApiService.waitForGapi$.pipe(
+	private readonly calendarApiLoaded$ = this.googleApiService.waitForGapi$.pipe(
 		switchMap(() => {
 			return new Observable((observer) => {
 				gapi.client.load('calendar', 'v3', () => {
@@ -26,7 +29,7 @@ export class CalendarApiService {
 		shareReplay({ refCount: true, bufferSize: 1 })
 	);
 
-	fetchCalendarList(): Observable<Calendar[]> {
+	fetchCalendars(): Observable<Calendar[]> {
 		return this.calendarApiLoaded$.pipe(
 			switchMap(() => {
 				return new Observable<Calendar[]>((observer) => {
@@ -37,7 +40,8 @@ export class CalendarApiService {
 							observer.complete();
 						});
 				});
-			})
+			}),
+			tap((calendars) => this.googleApiStore.update({ calendars }))
 		);
 	}
 
@@ -54,7 +58,6 @@ export class CalendarApiService {
 						orderBy: 'startTime',
 					}) as Promise<any>
 			),
-			tap((_) => console.log(_)),
 			map(({ result }: any): Serialized<CalendarEventsData> => result),
 			map(
 				(data): CalendarEventsData => ({
@@ -89,7 +92,11 @@ export class CalendarApiService {
 						})
 					),
 				})
-			)
+			),
+			tap((data) => {
+				const { items: calendarEvents, ...calendarEventsData } = data;
+				this.googleApiStore.update({ calendarEvents, calendarEventsData });
+			})
 		);
 	}
 }

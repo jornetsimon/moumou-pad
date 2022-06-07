@@ -1,4 +1,4 @@
-<div class="my-2" *ngIf="calendars | async as calendars; else loadingTpl">
+<div class="my-2" *ngIf="calendars$ | async as calendars; else loadingTpl">
 	<div>{{ calendars.length }} calendars</div>
 	<div class="flex flex-wrap items-start gap-2">
 		<div
@@ -23,7 +23,15 @@
 			[style.background-color]="event.calendar.backgroundColor"
 			[style.color]="event.calendar.foregroundColor"
 		>
-			{{ event.summary }}
+			<div class="flex gap-3">
+				<span>
+					{{ event.start.dateTime | date: "HH'h'mm" }}
+				</span>
+				{{ event.summary }}
+				<span class="border rounded px-1 py-0.5 text-sm">
+					{{ event.end.dateTime | date: "HH'h'mm" }}
+				</span>
+			</div>
 			<pre>{{ events | json }}</pre>
 		</div>
 	</div>
