@@ -1,53 +1,54 @@
-<!--
-<div *ngIf="firebaseUser$ | async as user">
-	<div class="featurettes" *ngIf="isHome$ | async">
-		<div class="weather" *ngIf="weatherIconUrl$ | async as weatherIconUrl">
-			<img
-				class="weather-icon"
-				[src]="weatherIconUrl"
-				alt="weather"
-				[matTooltip]="(weatherTooltip$ | async) || ''"
-			/>
-		</div>
-		<button mat-icon-button color="primary" matTooltip="Programme TV" (click)="showTvProgram()">
-			<mat-icon>tv</mat-icon>
-		</button>
-		<button mat-icon-button color="primary" matTooltip="Recherche" (click)="openSearchDialog()">
-			<mat-icon>search</mat-icon>
-		</button>
-	</div>
-	<img
-		class="avatar"
-		[class.has-photo]="user.photoURL"
-		[src]="user.photoURL || 'assets/user-icon-placeholder.png'"
-		alt="User photo"
-		[matMenuTriggerFor]="userMenu"
-	/>
-	<mat-menu #userMenu="matMenu">
-		<div class="mat-menu-item" disabled style="height: auto">
-			<div>{{ user.displayName }}</div>
-			<div *ngIf="family$ | async as family">
-				<span>
-					Famille <span class="family-name">{{ family }}</span>
-				</span>
+<div class="relative">
+	<div class="absolute flex justify-between w-full mt-1" *ngIf="firebaseUser$ | async as user">
+		<!--<div class="featurettes" *ngIf="isHome$ | async">
+			<div class="weather" *ngIf="weatherIconUrl$ | async as weatherIconUrl">
+				<img
+					class="weather-icon"
+					[src]="weatherIconUrl"
+					alt="weather"
+					[matTooltip]="(weatherTooltip$ | async) || ''"
+				/>
 			</div>
+			<button mat-icon-button color="primary" matTooltip="Programme TV" (click)="showTvProgram()">
+				<mat-icon>tv</mat-icon>
+			</button>
+			<button mat-icon-button color="primary" matTooltip="Recherche" (click)="openSearchDialog()">
+				<mat-icon>search</mat-icon>
+			</button>
+		</div>-->
+		<div class="grow-1"></div>
+		<div class="grow-1">
+			<img
+				class="avatar"
+				[class.has-photo]="user.photoURL"
+				[src]="user.photoURL || 'assets/user-icon-placeholder.png'"
+				alt="User photo"
+				[matMenuTriggerFor]="userMenu"
+			/>
+			<mat-menu #userMenu="matMenu">
+				<div class="mat-menu-item" disabled style="height: auto">
+					<div>{{ user.displayName }}</div>
+					<div *ngIf="family$ | async as family">
+						<span>
+							Famille <span class="family-name">{{ family }}</span>
+						</span>
+					</div>
+				</div>
+				<button mat-menu-item routerLink="/settings">
+					<mat-icon>settings</mat-icon>
+					<span>Préférences</span>
+				</button>
+				<button mat-menu-item (click)="logout()">
+					<mat-icon>logout</mat-icon>
+					<span>Déconnexion</span>
+				</button>
+			</mat-menu>
 		</div>
-		<button mat-menu-item routerLink="/settings">
-			<mat-icon>settings</mat-icon>
-			<span>Préférences</span>
-		</button>
-		<button mat-menu-item (click)="logout()">
-			<mat-icon>logout</mat-icon>
-			<span>Déconnexion</span>
-		</button>
-	</mat-menu>
+	</div>
 </div>
-<div>
-	<router-outlet></router-outlet>
-</div>
+
+<router-outlet></router-outlet>
 
 <ng-template #swUpdateTpl>
 	<div (click)="reloadApp()" class="cursor-pointer">Une mise à jour est disponible !</div>
 </ng-template>
--->
-<router-outlet></router-outlet>
