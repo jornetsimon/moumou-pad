@@ -2,9 +2,12 @@ import { Injectable } from '@angular/core';
 import { Calendar, CalendarEvent, CalendarEventsData } from './types/calendar.model';
 import { map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { Serialized } from '../../../../functions/src/helpers/serialized';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { GoogleApiService } from './google-api.service';
 import { GoogleApiStore } from './google-api.store';
+import { environment } from '../../../environments/environment';
+import { mockCalendars } from './mock-data/calendars.json';
+import { mockEvents } from './mock-data/events';
 
 declare const gapi: any;
 
@@ -30,7 +33,7 @@ export class CalendarApiService {
 	);
 
 	fetchCalendars(): Observable<Calendar[]> {
-		return this.calendarApiLoaded$.pipe(
+		const prodData$: Observable<Calendar[]> = this.calendarApiLoaded$.pipe(
 			switchMap(() => {
 				return new Observable<Calendar[]>((observer) => {
 					gapi.client.calendar.calendarList
@@ -40,13 +43,15 @@ export class CalendarApiService {
 							observer.complete();
 						});
 				});
-			}),
-			tap((calendars) => this.googleApiStore.update({ calendars }))
+			})
 		);
+		const mockData$: Observable<Calendar[]> = of(mockCalendars);
+		const source$ = environment.production ? prodData$ : mockData$;
+		return source$.pipe(tap((calendars) => this.googleApiStore.update({ calendars })));
 	}
 
 	fetchEvents(): Observable<CalendarEventsData> {
-		return this.calendarApiLoaded$.pipe(
+		const prodData$: Observable<Serialized<CalendarEventsData>> = this.calendarApiLoaded$.pipe(
 			switchMap(
 				() =>
 					gapi.client.calendar.events.list({
@@ -58,7 +63,24 @@ export class CalendarApiService {
 						orderBy: 'startTime',
 					}) as Promise<any>
 			),
-			map(({ result }: any): Serialized<CalendarEventsData> => result),
+			map(({ result }: any) => result as Serialized<CalendarEventsData>)
+		);
+		const mockData$: Observable<Serialized<CalendarEventsData>> = of(mockEvents).pipe(
+			map(
+				(items): Serialized<CalendarEventsData> => ({
+					items,
+					kind: 'calendar#events',
+					accessRole: '',
+					defaultReminders: [],
+					updated: `${new Date()}`,
+					nextPageToken: '',
+					summary: '',
+					timeZone: '',
+				})
+			)
+		);
+		const source$ = environment.production ? prodData$ : mockData$;
+		return source$.pipe(
 			map(
 				(data): CalendarEventsData => ({
 					...data,

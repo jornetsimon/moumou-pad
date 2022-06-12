@@ -65,7 +65,6 @@ export class SettingsComponent {
 	save() {
 		this.appService.setConfig(this.form.value).then(() => {
 			this.toastService.success('Préférences enregistrées');
-			this.router.navigateByUrl('/');
 		});
 	}
 

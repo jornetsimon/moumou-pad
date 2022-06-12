@@ -1,0 +1,18 @@
+<div class="my-2" *ngIf="calendars$ | async as calendars">
+	<div class="text-gray-500">{{ (selectedCalendars$ | async)?.length }} agendas sélectionnés</div>
+	<div class="flex flex-wrap items-start gap-2 max-w-2xl overflow-y-scroll my-2">
+		<div
+			*ngFor="let calendar of calendars"
+			class="rounded p-2"
+			[style.background-color]="calendar.backgroundColor"
+			[style.color]="calendar.foregroundColor"
+		>
+			<mat-checkbox
+				[checked]="calendar.selected"
+				(change)="toggleCalendar(calendar.id, $event.checked)"
+			>
+				{{ calendar.summary }}
+			</mat-checkbox>
+		</div>
+	</div>
+</div>

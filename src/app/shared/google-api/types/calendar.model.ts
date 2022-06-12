@@ -1,7 +1,6 @@
 export interface CalendarEventsData {
 	accessRole: string;
 	defaultReminders: unknown[];
-	etag: string;
 	items: CalendarEvent[];
 	kind: 'calendar#events';
 	nextPageToken: string;
@@ -12,26 +11,23 @@ export interface CalendarEventsData {
 
 export interface Calendar {
 	kind: 'calendar#calendarListEntry';
-	etag: unknown;
 	id: string;
 	summary: string;
-	description: string;
-	location: string;
+	description?: string;
+	location?: string;
 	timeZone: string;
-	summaryOverride: string;
+	summaryOverride?: string;
 	colorId: string;
 	backgroundColor: string;
 	foregroundColor: string;
-	hidden: boolean;
+	hidden?: boolean;
 	selected: boolean;
 	accessRole: string;
-	defaultReminders: [
-		{
-			method: string;
-			minutes: number;
-		}
-	];
-	notificationSettings: {
+	defaultReminders: Array<{
+		method: string;
+		minutes: number;
+	}>;
+	notificationSettings?: {
 		notifications: [
 			{
 				type: string;
@@ -39,8 +35,8 @@ export interface Calendar {
 			}
 		];
 	};
-	primary: boolean;
-	deleted: boolean;
+	primary?: boolean;
+	deleted?: boolean;
 	conferenceProperties: {
 		allowedConferenceSolutionTypes: [string];
 	};
@@ -48,7 +44,6 @@ export interface Calendar {
 
 export interface CalendarEvent {
 	kind: 'calendar#event';
-	etag: unknown;
 	id: string;
 	status: string;
 	htmlLink: string;
@@ -59,24 +54,24 @@ export interface CalendarEvent {
 	location: string;
 	colorId: string;
 	creator: {
-		id: string;
-		email: string;
-		displayName: string;
-		self: boolean;
+		id?: string;
+		email?: string;
+		displayName?: string;
+		self?: boolean;
 	};
 	organizer: {
-		id: string;
+		id?: string;
 		email: string;
-		displayName: string;
-		self: boolean;
+		displayName?: string;
+		self?: boolean;
 	};
 	start: {
-		date: Date | undefined;
+		date?: Date;
 		dateTime: Date;
 		timeZone: string;
 	};
 	end: {
-		date: Date | undefined;
+		date?: Date;
 		dateTime: Date;
 		timeZone: string;
 	};
@@ -84,7 +79,7 @@ export interface CalendarEvent {
 	recurrence: [string];
 	recurringEventId: string;
 	originalStartTime?: {
-		date: Date | undefined;
+		date?: Date;
 		dateTime: Date;
 		timeZone: string;
 	};
@@ -163,12 +158,10 @@ export interface CalendarEvent {
 	locked: boolean;
 	reminders: {
 		useDefault: boolean;
-		overrides: [
-			{
-				method: string;
-				minutes: number;
-			}
-		];
+		overrides: Array<{
+			method: string;
+			minutes: number;
+		}>;
 	};
 	source: {
 		url: string;

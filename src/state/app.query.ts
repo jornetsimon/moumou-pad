@@ -11,11 +11,14 @@ export class AppQuery extends Query<AppState> {
 		super(store);
 	}
 
-	userConfig$: Observable<UserConfig | undefined> = this.select().pipe(
+	readonly userConfig$: Observable<UserConfig | undefined> = this.select().pipe(
 		map((state) => state.userData?.config)
 	);
+	readonly userCalendars$ = this.select('userData').pipe(
+		map((userData) => userData?.calendars || [])
+	);
 
-	targetPath$ = this.select().pipe(map(AppQuery.extractTargetPath));
+	readonly targetPath$ = this.select().pipe(map(AppQuery.extractTargetPath));
 
 	getTargetPath(): string {
 		return AppQuery.extractTargetPath(this.getValue());

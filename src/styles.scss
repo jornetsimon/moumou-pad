@@ -78,3 +78,7 @@ a {
 	position: inherit !important;
 	margin: 15px 0;
 }
+
+.header {
+	@apply text-2xl pb-2 mb-4 mt-10 border-b;
+}

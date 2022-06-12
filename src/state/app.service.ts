@@ -9,6 +9,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { doc, docData, Firestore, updateDoc } from '@angular/fire/firestore';
 import { DocumentReference } from 'rxfire/firestore/interfaces';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { Calendar } from '../app/shared/google-api/types/calendar.model';
 
 export type ShiftDirection = 'previous' | 'next';
 
@@ -33,6 +34,12 @@ export class AppService {
 		const uid = this.appStore.getValue().user!.uid;
 		const userDoc = doc(this.firestore, `/users/${uid}`) as DocumentReference<UserData>;
 		return updateDoc(userDoc, { config });
+	}
+
+	setCalendars(calendars: Calendar[]) {
+		const uid = this.appStore.getValue().user!.uid;
+		const userDoc = doc(this.firestore, `/users/${uid}`) as DocumentReference<UserData>;
+		return updateDoc(userDoc, { calendars });
 	}
 
 	shiftSchedule(direction: ShiftDirection) {

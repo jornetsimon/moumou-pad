@@ -5,7 +5,7 @@
 	</button>
 </div>
 
-<h2>Général</h2>
+<h2 class="header">Général</h2>
 <form [formGroup]="form" (ngSubmit)="save()">
 	<mat-form-field appearance="fill" class="width-100">
 		<mat-label>Jour de début de semaine</mat-label>
@@ -22,9 +22,10 @@
 	<button mat-raised-button color="primary" type="submit">Enregistrer</button>
 </form>
 
-<mat-divider></mat-divider>
+<h2 class="header">Agendas</h2>
+<cb-calendar-selection></cb-calendar-selection>
 
-<h2>Famille</h2>
+<h2 class="header">Famille</h2>
 <form [formGroup]="familyForm" (ngSubmit)="joinFamily(familyForm.value)">
 	<mat-form-field appearance="fill" class="width-100">
 		<mat-label>Créer ou rejoindre une famille</mat-label>
