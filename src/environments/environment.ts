@@ -10,4 +10,5 @@ export const environment = {
 	},
 	GAPI_CLIENT_ID: '377875750295-gdgro2bk7b7r0dp6evuc7ag94l02r4dj.apps.googleusercontent.com',
 	useEmulators: true,
+	useMockGoogleApiData: false,
 };

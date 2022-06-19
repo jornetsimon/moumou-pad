@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { CalendarApiService } from '../shared/google-api';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { tap } from 'rxjs/operators';
 import { CalendarService } from './calendar.service';
+import { debugObservable } from '../../../debug-observable';
+import { CalendarEvent } from '../shared/google-api/types/calendar.model';
 
 @UntilDestroy()
 @Component({
@@ -16,11 +17,13 @@ export class CalendarComponent {
 		private calendarApiService: CalendarApiService,
 		private calendarService: CalendarService
 	) {
-		//this.calendarApiService.fetchCalendars().pipe(untilDestroyed(this)).subscribe();
-		this.calendarApiService.fetchEvents().pipe(untilDestroyed(this)).subscribe();
+		this.calendarService
+			.fetchEventsForSelectedCalendars()
+			.pipe(untilDestroyed(this))
+			.subscribe();
 	}
 
-	readonly events$ = this.calendarService.eventsWithCalendars$.pipe(
-		tap((_) => console.log({ events: _ }))
-	);
+	readonly trackByEvent: TrackByFunction<CalendarEvent> = (index, event) => event.id;
+
+	readonly events$ = this.calendarService.eventsWithCalendars$.pipe(debugObservable('events'));
 }
