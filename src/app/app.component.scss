@@ -1,4 +1,5 @@
 @import '../styles/colors';
+@import '../styles/theme';
 
 .avatar {
 	$avatar-size: 35px;
@@ -7,18 +8,12 @@
 	border-radius: 50%;
 	object-fit: cover;
 
-	cursor: pointer;
-	border: 1px solid white;
-	float: right;
+	@apply outline-primary-400 outline-double outline-[5px] cursor-pointer;
 	margin: 0 5px;
-
-	&:not(.has-photo) {
-		border: 1px solid #9b9a93;
-	}
 
 	transition: box-shadow 0.25s;
 	&:hover {
-		box-shadow: 0 0 7px 0 rgb(0 0 0 / 25%);
+		box-shadow: 0 0 17px 2px $primary-300;
 	}
 }
 

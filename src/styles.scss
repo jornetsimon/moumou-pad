@@ -23,18 +23,20 @@ body {
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
 		'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
 		'Noto Color Emoji';
+}
 
-	/*display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: stretch;*/
-
+.main-container {
 	@media (min-width: 600px) {
 		padding: 0 5vw;
 	}
 	@media (min-width: 1024px) {
 		margin: auto;
 	}
+}
+
+.app-title {
+	@apply font-bold text-[3rem] text-accent-400 dark:text-accent-500 text-center cursor-pointer;
+	font-family: 'Dancing Script', cursive;
 }
 
 .page-title {

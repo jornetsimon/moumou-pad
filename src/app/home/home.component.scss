@@ -1,7 +1,3 @@
 :host {
 	@apply text-black dark:text-white;
 }
-.app-title {
-	@apply font-bold text-[3rem] text-accent-200 dark:text-accent-600 text-center cursor-pointer;
-	font-family: 'Dancing Script', cursive;
-}
