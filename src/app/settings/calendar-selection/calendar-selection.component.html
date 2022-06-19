@@ -1,5 +1,23 @@
 <div class="my-2" *ngIf="calendars$ | async as calendars">
-	<div class="text-gray-500">{{ (selectedCalendars$ | async)?.length }} agendas sélectionnés</div>
+	<div
+		class="text-gray-500 flex gap-4 items-center"
+		*ngIf="selectedCalendars$ | async as selectedCalendars"
+	>
+		<span [ngPlural]="selectedCalendars.length">
+			<ng-template ngPluralCase="=0"> Aucun agenda sélectionné </ng-template>
+			<ng-template ngPluralCase="other">
+				{{ selectedCalendars.length }} agendas sélectionnés
+			</ng-template>
+		</span>
+		<span class="text-gray-400 cursor-pointer text-sm">
+			<ng-container *ngIf="selectedCalendars.length === calendars.length; else checkAllTpl">
+				<span (click)="toggleCalendars(false)">Tout désélectionner</span>
+			</ng-container>
+			<ng-template #checkAllTpl>
+				<span (click)="toggleCalendars(true)">Tout sélectionner</span>
+			</ng-template>
+		</span>
+	</div>
 	<div class="flex flex-wrap items-start gap-2 max-w-2xl overflow-y-scroll my-2">
 		<div
 			*ngFor="let calendar of calendars"
@@ -9,7 +27,7 @@
 		>
 			<mat-checkbox
 				[checked]="calendar.selected"
-				(change)="toggleCalendar(calendar.id, $event.checked)"
+				(change)="toggleCalendars([{ calendarId: calendar.id, selected: $event.checked }])"
 			>
 				{{ calendar.summary }}
 			</mat-checkbox>

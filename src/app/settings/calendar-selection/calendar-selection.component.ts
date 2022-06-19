@@ -38,15 +38,23 @@ export class CalendarSelectionComponent {
 		)
 	);
 
-	toggleCalendar(calendarId: string, selected: boolean) {
+	toggleCalendars(selection: Array<{ calendarId: string; selected: boolean }> | true | false) {
 		this.calendars$
 			.pipe(
 				first(),
 				map((calendars) => {
-					const index = calendars.findIndex((c) => c.id === calendarId);
-					calendars[index].selected = selected;
-					return calendars.filter((c) => c.selected);
-				})
+					if (typeof selection === 'boolean') {
+						return calendars.map((calendar) => ({ ...calendar, selected: selection }));
+					}
+					return calendars.map((calendar) => {
+						const match = selection.find((s) => s.calendarId === calendar.id);
+						return {
+							...calendar,
+							selected: match !== undefined ? match.selected : calendar.selected,
+						};
+					});
+				}),
+				map((calendars) => calendars.filter((c) => c.selected))
 			)
 			.subscribe({ next: (newValue) => this.appService.setCalendars(newValue) });
 	}
