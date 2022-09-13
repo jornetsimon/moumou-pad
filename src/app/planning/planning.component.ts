@@ -113,6 +113,7 @@ export class PlanningComponent {
 
 	getMealAnimation() {
 		if (this.isXSmall) {
+			return '';
 			return 'swing-in-top-fwd';
 		}
 		return 'slide-in-blurred-bottom';

@@ -171,7 +171,7 @@ export class MealComponent implements AfterViewInit {
 			.pipe(
 				distinctUntilChanged(),
 				filter((isNext) => isNext),
-				delay(1200),
+				delay(500),
 				untilDestroyed(this)
 			)
 			.subscribe(() => {
