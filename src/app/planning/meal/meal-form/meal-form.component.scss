@@ -1,3 +1,5 @@
+@import '../../../../styles/colors.scss';
+
 .clear-icon {
 	&:hover {
 		cursor: pointer;
@@ -14,6 +16,7 @@
 
 .suggestions {
 	padding: 5px 0;
+	color: grey;
 
 	mat-chip {
 		font-size: smaller;
@@ -63,7 +66,7 @@ $selected-recipe-border-radius: 16px;
 }
 .selected-recipe {
 	border-radius: 0 0 $selected-recipe-border-radius $selected-recipe-border-radius;
-	color: white;
+	color: $primary;
 	text-align: center;
 	.preview {
 		max-width: 250px;

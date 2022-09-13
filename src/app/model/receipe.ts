@@ -21,11 +21,17 @@ export interface Recipe {
 	createdAt: Date;
 	updatedAt: Date;
 	__v: number;
-	backgroundColor: string;
+	backgroundColor?: string;
+	backgroundPattern: {
+		color: string;
+		imageUrl: string;
+	};
 	description: string;
 	videoUrl: string;
 	imageUrl: string;
-	posterUrl: string;
+	posterUrl?: string;
+	imageWithBackgroundPatternUrl?: string;
+	editorialPictureUrl?: string;
 	isVisible: boolean;
 	availabilityZones: string[];
 	additionalConstituents: AdditionalConstituent[];

@@ -3,7 +3,8 @@
 }
 ::ng-deep .mat-dialog-content {
 	max-height: 85vh;
-	overflow: scroll;
+	padding: 0;
+	margin: 0;
 }
 .card {
 	max-width: 400px;

@@ -27,7 +27,10 @@ export class JowService {
 		return from(callable({ term })).pipe(map((res) => res.data));
 	}
 
-	constructAssetUrl(asset: string) {
+	constructAssetUrl(asset: string|undefined): string {
+		if (!asset) {
+			return '';
+		}
 		return `https://static.jow.fr/${asset}`;
 	}
 	constructRecipeUrl(recipeId: string) {
