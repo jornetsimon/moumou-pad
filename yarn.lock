@@ -2234,6 +2234,13 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
   integrity sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==
 
+"@types/jwt-decode@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@types/jwt-decode/-/jwt-decode-3.1.0.tgz#eb1b24f436962b8857beaf8addfd542de56670a2"
+  integrity sha512-tthwik7TKkou3mVnBnvVuHnHElbjtdbM63pdBCbZTirCt3WAdM73Y79mOri7+ljsS99ZVwUFZHLMxJuJnv/z1w==
+  dependencies:
+    jwt-decode "*"
+
 "@types/lodash-es@^4.17.4":
   version "4.17.5"
   resolved "https://registry.yarnpkg.com/@types/lodash-es/-/lodash-es-4.17.5.tgz#1c3fdd16849d84aea43890b1c60da379fb501353"
@@ -6829,6 +6836,11 @@ jws@^4.0.0:
   dependencies:
     jwa "^2.0.0"
     safe-buffer "^5.0.1"
+
+jwt-decode@*, jwt-decode@^3.1.2:
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/jwt-decode/-/jwt-decode-3.1.2.tgz#3fb319f3675a2df0c2895c8f5e9fa4b67b04ed59"
+  integrity sha512-UfpWE/VZn0iP50d8cz9NrZLM9lSWhcJ+0Gt/nm4by88UL+J1SiKN8/5dkjMmbEzwL2CAe+67GsegCbIKtbp75A==
 
 karma-chrome-launcher@~3.1.0:
   version "3.1.0"

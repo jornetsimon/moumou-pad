@@ -22,6 +22,8 @@ import {
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { SearchModule } from './search/search.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { GoogleApiInterceptor } from './shared/google-api/google-api.interceptor';
 
 registerLocaleData(fr);
 
@@ -69,5 +71,6 @@ registerLocaleData(fr);
 		SearchModule,
 	],
 	bootstrap: [AppComponent],
+	providers: [{ provide: HTTP_INTERCEPTORS, useClass: GoogleApiInterceptor, multi: true }],
 })
 export class AppModule {}

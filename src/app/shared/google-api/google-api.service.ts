@@ -1,26 +1,47 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { first, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { StorageMap } from '@ngx-pwa/local-storage';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import {
+	catchError,
+	distinctUntilChanged,
+	first,
+	shareReplay,
+	switchMap,
+	tap,
+} from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
 
 declare const gapi: any;
+declare const google: any;
 
 @Injectable({
 	providedIn: 'root',
 })
 export class GoogleApiService {
-	constructor() {
-		gapi.load('client', () => {
-			gapi.client.init({
-				apiKey: environment.firebaseConfig.apiKey,
-				clientId: environment.googleClientId,
-				discoveryDocs: ['https://calendar.googleapis.com/$discovery/rest'],
-				scope: 'https://www.googleapis.com/auth/calendar.readonly \
-                  https://www.googleapis.com/auth/calendar.events.readonly',
-				plugin_name: 'moumou-pad',
-			});
+	constructor(private storage: StorageMap) {}
+
+	readonly token_client: any = google.accounts.oauth2.initTokenClient({
+		client_id: environment.googleClientId,
+		scope: 'https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly',
+		callback: (response: any) => {
+			console.log('initTokenClient response', response);
+			if (!response.access_token) {
+				this.setAccessToken(undefined);
+			}
+			this.setAccessToken(response.access_token);
 			this.gapiClientLoaded$$.next(true);
-		});
+		},
+	});
+
+	readonly accessToken$ = this.storage
+		.watch<string | undefined>(ACCESS_TOKEN_DB_KEY, { type: 'string' })
+		.pipe(
+			catchError(() => of(undefined)),
+			distinctUntilChanged()
+		);
+
+	setAccessToken(token: string | undefined) {
+		this.storage.set(ACCESS_TOKEN_DB_KEY, token).subscribe();
 	}
 
 	private readonly gapiClientLoaded$$ = new BehaviorSubject(false);
@@ -33,9 +54,9 @@ export class GoogleApiService {
 		first(),
 		shareReplay({ refCount: true, bufferSize: 1 })
 	);
-	readonly waitForGapi$ = combineLatest([this.waitForGapiClient$, this.waitForGapiAuth$]).pipe(
-		first()
-	);
+	readonly waitForGapi$ = combineLatest([
+		this.waitForGapiClient$ /*, this.waitForGapiAuth$*/,
+	]).pipe(first());
 
 	readonly authInstance$: Observable<any> = this.waitForGapiClient$.pipe(
 		switchMap(() => gapi.auth2.getAuthInstance()),
@@ -52,3 +73,5 @@ export class GoogleApiService {
 		return undefined;
 	}
 }
+
+const ACCESS_TOKEN_DB_KEY = 'google_api_access_token';

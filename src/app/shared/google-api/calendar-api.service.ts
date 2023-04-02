@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Calendar, CalendarEvent, CalendarEventsData } from './types/calendar.model';
-import { first, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Serialized } from '../../../../functions/src/helpers/serialized';
-import { combineLatest, from, Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { GoogleApiService } from './google-api.service';
 import { GoogleApiStore } from './google-api.store';
 import { environment } from '../../../environments/environment';
@@ -11,6 +11,8 @@ import { mockEvents } from './mock-data/events';
 import { flattenDepth } from 'lodash-es';
 import { addDays } from 'date-fns';
 import { TinyColor } from '@ctrl/tinycolor';
+import { HttpClient } from '@angular/common/http';
+import { debugObservable } from '../../../../debug-observable';
 
 declare const gapi: any;
 
@@ -20,38 +22,21 @@ declare const gapi: any;
 export class CalendarApiService {
 	constructor(
 		private googleApiService: GoogleApiService,
-		private googleApiStore: GoogleApiStore
+		private googleApiStore: GoogleApiStore,
+		private http: HttpClient
 	) {}
 
-	private readonly calendarApiLoaded$ = this.googleApiService.waitForGapi$.pipe(
-		switchMap(() => {
-			return new Observable((observer) => {
-				gapi.client.load('calendar', 'v3', () => {
-					observer.next();
-					observer.complete();
-				});
-			});
-		}),
-		shareReplay({ refCount: true, bufferSize: 1 })
-	);
-
 	fetchCalendars(): Observable<Calendar[]> {
-		const prodData$: Observable<Calendar[]> = this.calendarApiLoaded$.pipe(
-			switchMap(() => {
-				return new Observable<Calendar[]>((observer) => {
-					gapi.client.calendar.calendarList
-						.list()
-						.execute((data: { items: Calendar[] }) => {
-							observer.next(data.items);
-							observer.complete();
-						});
-				});
-			})
-		);
+		const prodData$: Observable<Calendar[]> = this.http
+			.get<{ items: Calendar[] }>(
+				'https://www.googleapis.com/calendar/v3/users/me/calendarList'
+			)
+			.pipe(map(({ items }) => items));
 		const mockData$: Observable<Calendar[]> = of(mockCalendars);
 		const source$ =
 			!environment.production && environment.useMockGoogleApiData ? mockData$ : prodData$;
 		return source$.pipe(
+			debugObservable('prod'),
 			map((calendars) => calendars.map(CalendarApiService.unserializeCalendar)),
 			tap((calendars) => this.googleApiStore.update({ calendars }))
 		);
@@ -61,29 +46,30 @@ export class CalendarApiService {
 		if (!calendarIds.length) {
 			return of([]);
 		}
-		const prodData$: Observable<Array<Serialized<CalendarEventsData>>> =
-			this.calendarApiLoaded$.pipe(
-				switchMap(() =>
-					combineLatest(
-						calendarIds.map((calendarId) =>
-							from(
-								gapi.client.calendar.events.list({
-									calendarId,
-									timeMin: new Date().toISOString(),
-									timeMax: addDays(new Date(), 7).toISOString(),
-									showDeleted: false,
-									singleEvents: true,
-									maxResults: 10,
-									orderBy: 'startTime',
-								}) as Promise<any>
-							).pipe(
-								map(({ result }: any) => result as Serialized<CalendarEventsData>)
-							)
-						)
-					)
-				),
-				first()
-			);
+		const prodData$: Observable<Array<Serialized<CalendarEventsData>>> = combineLatest(
+			calendarIds
+				.filter((c) => !c.includes('#'))
+				.map((calendarId) => {
+					return this.http.get<Serialized<CalendarEventsData>>(
+						encodeURI(
+							`https://www.googleapis.com/calendar/v3/calendars/${calendarId.replace(
+								'#',
+								'%23'
+							)}/events`
+						),
+						{
+							params: {
+								timeMin: new Date().toISOString(),
+								timeMax: addDays(new Date(), 7).toISOString(),
+								showDeleted: false,
+								singleEvents: true,
+								maxResults: 10,
+								orderBy: 'startTime',
+							},
+						}
+					);
+				})
+		);
 		const mockData$: Observable<Array<Serialized<CalendarEventsData>>> = of(mockEvents).pipe(
 			map(
 				(items): Array<Serialized<CalendarEventsData>> => [
