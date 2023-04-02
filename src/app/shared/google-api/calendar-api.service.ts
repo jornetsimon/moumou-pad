@@ -12,9 +12,6 @@ import { flattenDepth } from 'lodash-es';
 import { addDays } from 'date-fns';
 import { TinyColor } from '@ctrl/tinycolor';
 import { HttpClient } from '@angular/common/http';
-import { debugObservable } from '../../../../debug-observable';
-
-declare const gapi: any;
 
 @Injectable({
 	providedIn: 'root',
@@ -36,7 +33,6 @@ export class CalendarApiService {
 		const source$ =
 			!environment.production && environment.useMockGoogleApiData ? mockData$ : prodData$;
 		return source$.pipe(
-			debugObservable('prod'),
 			map((calendars) => calendars.map(CalendarApiService.unserializeCalendar)),
 			tap((calendars) => this.googleApiStore.update({ calendars }))
 		);
