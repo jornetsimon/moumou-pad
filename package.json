@@ -64,6 +64,7 @@
     "@angular/cli": "~13.0.2",
     "@angular/compiler-cli": "~13.0.1",
     "@datorama/akita-ngdevtools": "^6.0.0",
+    "@types/google-one-tap": "^1.2.2",
     "@types/jasmine": "~3.6.0",
     "@types/lodash-es": "^4.17.4",
     "@types/node": "^12.11.1",

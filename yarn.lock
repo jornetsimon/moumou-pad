@@ -2212,6 +2212,11 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/google-one-tap@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@types/google-one-tap/-/google-one-tap-1.2.2.tgz#366d7252e867fbbac440eefd7482ab547d6f99be"
+  integrity sha512-7uAOjukbJnzJ5P8fKPSy7QDrbLbCEyUrSH/M4K+8wnk+cbSxE3t2MmrLPX7ejUl8rDZv3oUl0/uwQRlIIrLMBA==
+
 "@types/http-proxy@^1.17.5":
   version "1.17.7"
   resolved "https://registry.yarnpkg.com/@types/http-proxy/-/http-proxy-1.17.7.tgz#30ea85cc2c868368352a37f0d0d3581e24834c6f"

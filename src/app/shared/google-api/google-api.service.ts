@@ -13,7 +13,7 @@ export class GoogleApiService {
 		gapi.load('client', () => {
 			gapi.client.init({
 				apiKey: environment.firebaseConfig.apiKey,
-				clientId: environment.GAPI_CLIENT_ID,
+				clientId: environment.googleClientId,
 				discoveryDocs: ['https://calendar.googleapis.com/$discovery/rest'],
 				scope: 'https://www.googleapis.com/auth/calendar.readonly \
                   https://www.googleapis.com/auth/calendar.events.readonly',

@@ -3,14 +3,24 @@
 		<img src="assets/logo.svg" alt="MoumouPad logo" width="140px" height="140px" />
 		MoumouPad
 	</div>
-	<div class="google-btn" (click)="login()">
-		<div class="google-icon-wrapper">
-			<img
-				class="google-icon"
-				alt="Google logo"
-				src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-			/>
-		</div>
-		<div class="btn-text">Se connecter avec Google</div>
-	</div>
+	<div
+		id="g_id_onload"
+		data-client_id="377875750295-gdgro2bk7b7r0dp6evuc7ag94l02r4dj.apps.googleusercontent.com"
+		data-context="signin"
+		data-ux_mode="popup"
+		data-callback="login()"
+		data-auto_prompt="false"
+	></div>
+
+	<div
+		#googleSignInButton
+		class="g_id_signin"
+		data-type="standard"
+		data-shape="pill"
+		data-theme="filled_blue"
+		data-text="signin_with"
+		data-size="large"
+		data-locale="fr"
+		data-logo_alignment="left"
+	></div>
 </div>

@@ -121,7 +121,7 @@ export class AppComponent implements AfterViewInit {
 
 	logout() {
 		this.authService.logout().subscribe(() => {
-			this.toastService.show('Déconnecté', {
+			this.toastService.success('Déconnecté', {
 				duration: 3000,
 			});
 			this.router.navigateByUrl('/login');
