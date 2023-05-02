@@ -13,9 +13,7 @@ import { addDays } from 'date-fns';
 import { TinyColor } from '@ctrl/tinycolor';
 import { HttpClient } from '@angular/common/http';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class CalendarApiService {
 	constructor(
 		private googleApiService: GoogleApiService,

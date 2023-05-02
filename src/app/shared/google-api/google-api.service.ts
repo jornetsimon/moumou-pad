@@ -8,9 +8,7 @@ declare const google: any;
 
 const ACCESS_TOKEN_DB_KEY = 'google_api_access_token';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class GoogleApiService {
 	constructor(private storage: StorageMap) {}
 

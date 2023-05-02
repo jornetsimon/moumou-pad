@@ -22,9 +22,6 @@
 	<button mat-raised-button color="primary" type="submit">Enregistrer</button>
 </form>
 
-<h2 class="header">Agendas</h2>
-<cb-calendar-selection></cb-calendar-selection>
-
 <h2 class="header">Famille</h2>
 <form [formGroup]="familyForm" (ngSubmit)="joinFamily(familyForm.value)">
 	<mat-form-field appearance="fill" class="width-100">
