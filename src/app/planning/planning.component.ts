@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { MealQuery } from './meal/state/meal.query';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, timer } from 'rxjs';
 import { Meal } from './meal/state/meal.model';
 import { DragDropService } from './meal/drag-drop.service';
 import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
@@ -50,6 +50,13 @@ export class PlanningComponent {
 	);
 	scheduleOverlapsTwoMonths$: Observable<boolean> = this.currentSchedule$.pipe(
 		map((schedule) => !isSameMonth(schedule.from, schedule.to))
+	);
+
+	readonly showMoumouEscapeHint$: Observable<boolean> = timer(0, 60000).pipe(
+		map(() => {
+			const moumouEscapeDay = new Date(2023, 7, 19);
+			return isSameDay(Date.now(), moumouEscapeDay);
+		})
 	);
 
 	trackByFn: TrackByFunction<Meal> = (index, item) => item.id;
