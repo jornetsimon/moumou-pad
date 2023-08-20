@@ -13,6 +13,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CroquettesService } from '../croquettes.service';
 import { HotToastService } from '@ngneat/hot-toast';
 
+const moumouEscapeDay = new Date(2023, 7, 20);
+
 @Component({
 	selector: 'cb-planning',
 	templateUrl: './planning.component.html',
@@ -54,7 +56,6 @@ export class PlanningComponent {
 
 	readonly showMoumouEscapeHint$: Observable<boolean> = timer(0, 60000).pipe(
 		map(() => {
-			const moumouEscapeDay = new Date(2023, 7, 19);
 			return isSameDay(Date.now(), moumouEscapeDay);
 		})
 	);
