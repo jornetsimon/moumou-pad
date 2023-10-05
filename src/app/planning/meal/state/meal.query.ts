@@ -70,6 +70,29 @@ export class MealQuery extends QueryEntity<MealState> {
 			shareReplay(1)
 		);
 
+	mostUsedRecipes$: Observable<Array<Recipe & { useCount: number }>> =
+		this.appQuery.targetPath$.pipe(
+			switchMap((targetPath) =>
+				collectionData(
+					query(
+						collection(
+							this.firestore,
+							`${targetPath}/most-used-recipes`
+						) as CollectionReference<{
+							recipe: Recipe;
+							count: number;
+						}>,
+						where('count', '>', 0),
+						orderBy('count', 'desc'),
+						limit(30)
+					)
+				)
+			),
+
+			map((elements) => elements.map((s) => ({ ...s.recipe, useCount: s.count }))),
+			shareReplay(1)
+		);
+
 	getMealDays(period: Period) {
 		const days = eachDayOfInterval({
 			start: period.from,

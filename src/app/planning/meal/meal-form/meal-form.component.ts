@@ -61,7 +61,7 @@ export class MealFormComponent implements OnChanges {
 			suggestions.filter((s) => normalizeString(s).includes(normalizeString(inputName)))
 		)
 	);
-	alreadyUsedRecipeSuggestions$ = this.mealQuery.lessUsedRecipes$.pipe(
+	alreadyUsedRecipeSuggestions$ = this.mealQuery.mostUsedRecipes$.pipe(
 		map((recipes): Array<Recipe & { useCount: number }> => shuffle(recipes).slice(0, 3))
 	);
 	recipeIdeas$ = combineLatest([
