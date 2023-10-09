@@ -18,14 +18,14 @@
 	</mat-form-field>
 
 	<ng-container *ngIf="jowRecipe">
-		<div class="selected-recipe-intro" [style.background-color]="jowRecipe.backgroundColor">
+		<div class="selected-recipe-intro" [style.background-color]="jowRecipe.smartColor">
 			Recette sélectionnée
 		</div>
 		<mat-card class="selected-recipe">
 			<div
 				fxLayout="column"
 				fxLayoutAlign="start center"
-				[style.color]="jowRecipe.backgroundColor"
+				[style.color]="jowRecipe.smartColor"
 			>
 				<img
 					class="preview"
@@ -58,7 +58,7 @@
 					mat-raised-button
 					type="button"
 					(click)="openRecipeModal(jowRecipe)"
-					[style.color]="jowRecipe.backgroundColor"
+					[style.color]="jowRecipe.smartColor"
 				>
 					Voir plus
 				</button>
@@ -66,7 +66,7 @@
 					mat-icon-button
 					type="button"
 					title="Retirer la recette"
-					[style.color]="jowRecipe.backgroundColor"
+					[style.color]="jowRecipe.smartColor"
 					(click)="onRecipeRemoved()"
 					*ngIf="!isReadonly"
 				>
@@ -158,7 +158,7 @@
 										jowService.constructAssetUrl(recipe.imageUrl) +
 										'\')'
 									"
-									[style.background-color]="recipe.backgroundColor"
+									[style.background-color]="recipe.smartColor"
 								>
 									<div class="title">
 										<div>{{ recipe.title }}</div>
@@ -191,7 +191,7 @@
 								[style.background-image]="
 									'url(\'' + jowService.constructAssetUrl(recipe.imageUrl) + '\')'
 								"
-								[style.background-color]="recipe.backgroundColor"
+								[style.background-color]="recipe.smartColor"
 							>
 								<div class="title">{{ recipe.title }}</div>
 							</mat-chip>

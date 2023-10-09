@@ -25,7 +25,7 @@
 				[class.waiting-for-swap]="dragDropService.dragging$ | async"
 				[class.cannot-drop]="cannotDropHere$ | async"
 				[matTooltip]="
-					showFullDateInTopper ? '' : (meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'
+					showFullDateInTopper ? '' : (meal.date | date : 'EEEE dd MMMM') || '🤷‍♂️'
 				"
 				cdkDrag
 				[cdkDragData]="meal"
@@ -35,10 +35,10 @@
 				cdkDragPreviewContainer="parent"
 			>
 				<ng-container *ngIf="showFullDateInTopper; else defaultTopperDateTpl">
-					{{ meal.date | date: 'EEEE dd MMMM' | titlecase }}&nbsp;
+					{{ meal.date | date : 'EEEE dd MMMM' | titlecase }}&nbsp;
 				</ng-container>
 				<ng-template #defaultTopperDateTpl>
-					{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;
+					{{ meal.date | date : 'EEEE' | titlecase }}&nbsp;
 				</ng-template>
 				<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900">
 					light_mode
@@ -63,14 +63,12 @@
 		[class.has-theme-background]="!!(themeBackgroundImage$ | async)"
 		[class.open]="(editMode$ | async) || editMode"
 		[style.background-image]="themeBackgroundImage$ | async"
-		[style.background-color]="meal.jowRecipe?.backgroundColor || (mealTheme$ | async)?.color"
+		[style.background-color]="meal.jowRecipe?.smartColor || (mealTheme$ | async)?.color"
 		[style.box-shadow]="themeBoxShadow$ | async"
 	>
 		<div
 			class="color-overlay"
-			[style.background-color]="
-				meal.jowRecipe?.backgroundColor || (mealTheme$ | async)?.color
-			"
+			[style.background-color]="meal.jowRecipe?.smartColor || (mealTheme$ | async)?.color"
 		></div>
 		<div class="overlay"></div>
 		<div fxLayoutAlign (click)="toggleEdit()" ngxVibration="10" matRipple>

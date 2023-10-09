@@ -12,22 +12,33 @@ export class JowService {
 
 	fetchFeatured() {
 		const callable = httpsCallable<{}, Recipe[]>(this.fns, 'jowFeaturedRecipes');
-		from(callable({})).subscribe((res) => {
-			this.jowStore.update({ featured: res.data });
-		});
+		from(callable({}))
+			.pipe(
+				map((res) => res.data),
+				map((recipes) => recipes.map(this.adaptRecipe))
+			)
+			.subscribe((recipes) => {
+				this.jowStore.update({ featured: recipes });
+			});
 	}
 
 	getRecipe(id: string): Observable<Recipe> {
 		const callable = httpsCallable<{ id: string }, Recipe>(this.fns, 'jowRecipe');
-		return from(callable({ id })).pipe(map((res) => res.data));
+		return from(callable({ id })).pipe(
+			map((res) => res.data),
+			map((recipe) => this.adaptRecipe(recipe))
+		);
 	}
 
 	search(term: string): Observable<Recipe[]> {
 		const callable = httpsCallable<{ term: string }, Recipe[]>(this.fns, 'jowRecipeSearch');
-		return from(callable({ term })).pipe(map((res) => res.data));
+		return from(callable({ term })).pipe(
+			map((res) => res.data),
+			map((recipes) => recipes.map(this.adaptRecipe))
+		);
 	}
 
-	constructAssetUrl(asset: string|undefined): string {
+	constructAssetUrl(asset: string | undefined): string {
 		if (!asset) {
 			return '';
 		}
@@ -35,5 +46,13 @@ export class JowService {
 	}
 	constructRecipeUrl(recipeId: string) {
 		return `https://app.jow.com/nf5e/?action=recipe&recipeId=${recipeId}`;
+	}
+
+	private adaptRecipe(recipe: Recipe): Recipe {
+		const smartColor =
+			recipe.backgroundColor && recipe.backgroundColor.toLowerCase() !== '#ffffff'
+				? recipe.backgroundColor
+				: recipe.backgroundPattern.color;
+		return { ...recipe, smartColor };
 	}
 }

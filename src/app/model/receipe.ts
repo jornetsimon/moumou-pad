@@ -54,6 +54,9 @@ export interface Recipe {
 	negativeFeedbacks: number;
 	totalFeedbacks: number;
 	aggregateRating: number;
+
+	// custom
+	smartColor: string;
 }
 
 export interface AdditionalConstituent {
