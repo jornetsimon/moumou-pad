@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { weekdays } from '../model/weekday';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { AppService } from '../../state/app.service';
@@ -20,12 +20,12 @@ import { isEqual } from 'lodash-es';
 })
 export class SettingsComponent {
 	weekdays = Object.entries(weekdays).map(([key, value]) => ({ label: key, value }));
-	form = new FormGroup({
-		startWeekOn: new FormControl(undefined, Validators.required),
-		city: new FormControl(undefined),
+	form = new UntypedFormGroup({
+		startWeekOn: new UntypedFormControl(undefined, Validators.required),
+		city: new UntypedFormControl(undefined),
 	});
-	familyForm = new FormGroup({
-		name: new FormControl('', [Validators.required, Validators.minLength(2)]),
+	familyForm = new UntypedFormGroup({
+		name: new UntypedFormControl('', [Validators.required, Validators.minLength(2)]),
 	});
 
 	userData$ = this.appQuery.select('userData');

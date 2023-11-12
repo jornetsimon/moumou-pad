@@ -16,7 +16,7 @@ import {
 import { CollectionReference } from '@firebase/firestore';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { AppService } from '../../../../state/app.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, firstValueFrom } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
@@ -61,12 +61,12 @@ export class MealService {
 			throw new Error('id is required');
 		}
 
-		return this.collectionRef$
-			.pipe(
+		return firstValueFrom(
+			this.collectionRef$.pipe(
 				switchMap((collectionRef) => setDoc(doc(collectionRef, entity.id), entity)),
 				map(() => id)
 			)
-			.toPromise();
+		);
 	}
 
 	update(id: string, entity: Partial<Meal>): Promise<void> {

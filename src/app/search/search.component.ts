@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { SearchService } from './search.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, filter, switchMap } from 'rxjs/operators';
 
 @Component({
 	selector: 'cb-search',
@@ -11,13 +11,15 @@ import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
 export class SearchComponent {
 	constructor(private searchService: SearchService) {}
 
-	termFc = new FormControl(undefined, [Validators.minLength(2)]);
+	termFc = new FormControl<string | undefined>(undefined, {
+		nonNullable: true,
+		validators: [Validators.minLength(2)],
+	});
 	form = new FormGroup({ term: this.termFc });
 
 	searchResults$ = this.termFc.valueChanges.pipe(
 		debounceTime(500),
-		filter(() => this.termFc.valid),
-		tap((_) => console.log('term', _)),
-		switchMap((term: string) => this.searchService.search(term))
+		filter((term): term is string => this.termFc.valid && !!term),
+		switchMap((term) => this.searchService.search(term))
 	);
 }

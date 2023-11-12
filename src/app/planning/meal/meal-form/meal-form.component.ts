@@ -8,7 +8,7 @@ import {
 	Output,
 	SimpleChanges,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, UntypedFormGroup } from '@angular/forms';
 import { MealService } from '../state/meal.service';
 import { createMeal, Meal } from '../state/meal.model';
 import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
@@ -36,19 +36,19 @@ export class MealFormComponent implements OnChanges {
 	@Output() mealSaved = new EventEmitter<void>();
 	loadingSearchResults = false;
 
-	extrasFg = new FormGroup({
-		croquettes: new FormControl(false),
-		freezer: new FormControl(false),
-		outOfHome: new FormControl(false),
-		prepared: new FormControl(false),
+	extrasFg = new UntypedFormGroup({
+		croquettes: new FormControl<boolean>(false, { nonNullable: true }),
+		freezer: new FormControl<boolean>(false, { nonNullable: true }),
+		outOfHome: new FormControl<boolean>(false, { nonNullable: true }),
+		prepared: new FormControl<boolean>(false, { nonNullable: true }),
 	});
-	form = new FormGroup({
-		name: new FormControl(undefined),
-		searchTerm: new FormControl(undefined),
+	form = new UntypedFormGroup({
+		name: new FormControl<string | undefined>(undefined, { nonNullable: true }),
+		searchTerm: new FormControl<string | undefined>(undefined, { nonNullable: true }),
 		extras: this.extrasFg,
-		alternateDish: new FormGroup({
-			name: new FormControl(undefined),
-			show: new FormControl(false),
+		alternateDish: new UntypedFormGroup({
+			name: new FormControl<string | undefined>(undefined, { nonNullable: true }),
+			show: new FormControl<boolean>(false, { nonNullable: true }),
 		}),
 	});
 
