@@ -70,13 +70,13 @@ export class MealService {
 	}
 
 	update(id: string, entity: Partial<Meal>): Promise<void> {
-		return this.collectionRef$
-			.pipe(
+		return firstValueFrom(
+			this.collectionRef$.pipe(
 				switchMap((collectionRef) =>
 					setDoc(doc(collectionRef, id), entity, { merge: true })
 				)
 			)
-			.toPromise();
+		);
 	}
 
 	get path() {
@@ -84,23 +84,35 @@ export class MealService {
 	}
 
 	swapMeals(from: Meal, to: Meal) {
-		const batch = writeBatch(this.firestore);
-		const destination = {
-			...to,
-			name: from.name || null,
-			jowRecipe: from.jowRecipe || null,
-			extras: mapUndefinedToNull({ ...from.extras, croquettes: to.extras?.croquettes }),
-			alternateDish: from.alternateDish,
-		};
-		const source = {
-			...from,
-			name: to.name || null,
-			jowRecipe: to.jowRecipe || null,
-			extras: mapUndefinedToNull({ ...to.extras, croquettes: from.extras?.croquettes }),
-			alternateDish: to.alternateDish,
-		};
-		batch.set(doc(this.firestore, to.id), mapUndefinedToNull(destination));
-		batch.set(doc(this.firestore, from.id), mapUndefinedToNull(source));
-		return batch.commit();
+		return firstValueFrom(
+			this.collectionRef$.pipe(
+				map((collectionRef) => {
+					const batch = writeBatch(this.firestore);
+					const destination = {
+						...to,
+						name: from.name || null,
+						jowRecipe: from.jowRecipe || null,
+						extras: mapUndefinedToNull({
+							...from.extras,
+							croquettes: to.extras?.croquettes,
+						}),
+						alternateDish: from.alternateDish,
+					};
+					const source = {
+						...from,
+						name: to.name || null,
+						jowRecipe: to.jowRecipe || null,
+						extras: mapUndefinedToNull({
+							...to.extras,
+							croquettes: from.extras?.croquettes,
+						}),
+						alternateDish: to.alternateDish,
+					};
+					batch.set(doc(collectionRef, to.id), mapUndefinedToNull(destination));
+					batch.set(doc(collectionRef, from.id), mapUndefinedToNull(source));
+					return batch.commit();
+				})
+			)
+		);
 	}
 }
