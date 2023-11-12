@@ -1,14 +1,12 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { weekdays } from '../model/weekday';
-import { Title } from '@angular/platform-browser';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
-import { distinctUntilChanged, finalize, first, map } from 'rxjs/operators';
+import { distinctUntilChanged, finalize, map } from 'rxjs/operators';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Router } from '@angular/router';
-import { MealService } from '../planning/meal/state/meal.service';
 import { SettingsService } from './settings.service';
 import { BehaviorSubject, combineLatest, from, Observable } from 'rxjs';
 import { Functions, httpsCallable } from '@angular/fire/functions';
@@ -39,13 +37,11 @@ export class SettingsComponent {
 	loadingSubject = new BehaviorSubject(false);
 
 	constructor(
-		private title: Title,
 		private appService: AppService,
 		private appQuery: AppQuery,
 		private toastService: HotToastService,
 		private router: Router,
 		private fns: Functions,
-		private mealService: MealService,
 		private settingsService: SettingsService
 	) {
 		this.userData$.pipe(distinctUntilChanged((a, b) => isEqual(a, b))).subscribe((userData) => {
@@ -77,14 +73,11 @@ export class SettingsComponent {
 			.subscribe({
 				next: () => {
 					this.toastService.success(
-						`Vous avez bien rejoint la famille ${formValues.name}`
+						`Vous avez bien rejoint la famille ${formValues.name}. L'application va se recharger pour prendre en compte les changements.`
 					);
-					this.mealService
-						.syncCollection({
-							reset: true,
-						})
-						.pipe(first())
-						.subscribe();
+					setTimeout(() => {
+						window.location.reload();
+					}, 5000);
 				},
 				error: (err) => {
 					console.error(err);

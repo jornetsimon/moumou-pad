@@ -11,7 +11,7 @@ export class MealsStore extends EntityStore<MealState> {
 		super();
 	}
 
-	akitaPreAddEntity(meal: Meal) {
+	akitaPreUpdate(meal: Meal) {
 		return addDateToMeal(meal);
 	}
 }

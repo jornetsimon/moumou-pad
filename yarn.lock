@@ -2637,13 +2637,6 @@ ajv@^8.0.0, ajv@^8.8.0:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-akita-ng-fire@^7.0.0-beta.3:
-  version "7.0.0-beta.3"
-  resolved "https://registry.yarnpkg.com/akita-ng-fire/-/akita-ng-fire-7.0.0-beta.3.tgz#b38690c887bf90f9f83293e5b5af72201e4f04be"
-  integrity sha512-Ti69GXlIhjtEIs7VqvhgqBYp8i6CfT3hNyVIp1hSAWwcFt1ddhCz2wtYzNStPDKAWG2C/gwYP5muqPE9U5Xj1w==
-  dependencies:
-    tslib "^2.2.0"
-
 angular-animations@^0.11.0:
   version "0.11.0"
   resolved "https://registry.yarnpkg.com/angular-animations/-/angular-animations-0.11.0.tgz#1c36cad9e280c0d9b4ad5fe61a1ddeee517a6a6e"

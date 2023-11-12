@@ -12,7 +12,6 @@ import { UntilDestroy } from '@ngneat/until-destroy';
 import { filter, first, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
-import { MealService } from './planning/meal/state/meal.service';
 import { JowService } from './jow/state/jow.service';
 import { AppQuery } from '../state/app.query';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,7 +23,6 @@ import { Observable } from 'rxjs';
 import { CityWeather } from './weather/model/cityWeather';
 import { isNotNullOrUndefined } from './shared/utilities';
 import { Auth } from '@angular/fire/auth';
-import { where } from '@angular/fire/firestore';
 import { SearchComponent } from './search/search.component';
 
 @UntilDestroy()
@@ -46,7 +44,6 @@ export class AppComponent implements AfterViewInit {
 		private appStore: AppStore,
 		private appService: AppService,
 		private appQuery: AppQuery,
-		private mealService: MealService,
 		private jowService: JowService,
 		private dialog: MatDialog,
 		private bottomSheet: MatBottomSheet,
@@ -57,20 +54,6 @@ export class AppComponent implements AfterViewInit {
 				user: user || undefined,
 			});
 		});
-		// Fetch user config
-		this.firebaseUser$
-			.pipe(
-				filter((user) => !!user),
-				switchMap((user) => this.appService.fetchConfig(user!.uid)),
-				switchMap(() => this.appQuery.select('syncFromDate')),
-				switchMap((syncFromDate) => {
-					return this.mealService.syncCollection([
-						where('timestamp', '>=', syncFromDate.getTime() / 1000),
-					]);
-				})
-			)
-			.subscribe();
-
 		this.jowService.fetchFeatured();
 
 		// TV program shortcut
