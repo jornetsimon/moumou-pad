@@ -32,7 +32,10 @@ export class MealQuery extends QueryEntity<MealState> {
 
 	nameSuggestions$: Observable<string[]> = this.appQuery.targetPath$.pipe(
 		switchMap((targetPath) =>
-			collectionData(
+			collectionData<{
+				name: string;
+				count: number;
+			}>(
 				query(
 					collection(this.firestore, `${targetPath}/most-used`) as CollectionReference<{
 						name: string;
@@ -51,7 +54,10 @@ export class MealQuery extends QueryEntity<MealState> {
 	lessUsedRecipes$: Observable<Array<Recipe & { useCount: number }>> =
 		this.appQuery.targetPath$.pipe(
 			switchMap((targetPath) =>
-				collectionData(
+				collectionData<{
+					recipe: Recipe;
+					count: number;
+				}>(
 					query(
 						collection(
 							this.firestore,
@@ -73,7 +79,10 @@ export class MealQuery extends QueryEntity<MealState> {
 	mostUsedRecipes$: Observable<Array<Recipe & { useCount: number }>> =
 		this.appQuery.targetPath$.pipe(
 			switchMap((targetPath) =>
-				collectionData(
+				collectionData<{
+					recipe: Recipe;
+					count: number;
+				}>(
 					query(
 						collection(
 							this.firestore,

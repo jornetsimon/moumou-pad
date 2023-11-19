@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 })
 export class MealThemeService {
 	constructor(private firestore: Firestore) {}
-	mealThemes$: Observable<MealThemeEntry[]> = collectionData(
+	mealThemes$: Observable<MealThemeEntry[]> = collectionData<MealThemeEntry>(
 		collection(this.firestore, '/meal-themes') as CollectionReference<MealThemeEntry>
 	);
 }

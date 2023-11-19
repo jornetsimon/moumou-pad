@@ -47,7 +47,7 @@ export class MealService {
 
 		return combineLatest([this.collectionRef$, syncFromDate$]).pipe(
 			switchMap(([collectionRef, syncFromDate]) =>
-				collectionData(
+				collectionData<Meal>(
 					query(collectionRef, where('timestamp', '>=', syncFromDate.getTime() / 1000))
 				)
 			),
