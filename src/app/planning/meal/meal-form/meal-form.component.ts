@@ -15,7 +15,7 @@ import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 import { pickBy, shuffle } from 'lodash-es';
 import { Recipe } from '../../../model/receipe';
 import { JowQuery } from '../../../jow/state/jow.query';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
 import { combineLatest, Observable, of } from 'rxjs';
 import { JowService } from '../../../jow/state/jow.service';

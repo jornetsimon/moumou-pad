@@ -14,7 +14,7 @@ import { AppService } from '../state/app.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { JowService } from './jow/state/jow.service';
 import { AppQuery } from '../state/app.query';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { TvComponent } from './tv/tv.component';
 import { fadeInOnEnterAnimation } from 'angular-animations';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
