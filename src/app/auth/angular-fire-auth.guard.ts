@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-	ActivatedRouteSnapshot,
-	CanActivate,
-	Router,
-	RouterStateSnapshot,
-	UrlTree,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, of, pipe, UnaryFunction } from 'rxjs';
 import { first, map, switchMap } from 'rxjs/operators';
 import { User } from 'firebase/auth';
@@ -22,7 +16,7 @@ export const loggedIn: AuthPipe = map((user) => !!user);
 @Injectable({
 	providedIn: 'any',
 })
-export class AngularFireAuthGuard implements CanActivate {
+export class AngularFireAuthGuard  {
 	constructor(private router: Router, private readonly appQuery: AppQuery) {}
 
 	canActivate(
