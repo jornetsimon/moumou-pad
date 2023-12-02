@@ -118,7 +118,11 @@
 							<span style="font-size: 14px">{{ recipe.title }}</span>
 							<small *ngIf="recipe.difficulty >= 2">
 								|
-								<ng-container *ngForRepeat="recipe.difficulty">💪️</ng-container>
+								<ng-container
+									*ngFor="let x of getArrayForNumber(recipe.difficulty)"
+								>
+									💪
+								</ng-container>
 							</small>
 						</mat-option>
 					</mat-autocomplete>
@@ -276,8 +280,8 @@
 						: 'Marquer comme préparé'
 				"
 				(click)="extrasFg.get('prepared')!.setValue(!extrasFg.get('prepared')!.value)"
-				[ngxVibration]="[10, 200, 50, 100, 50]"
 			>
+				<!--[ngxVibration]="[10, 200, 50, 100, 50]"-->
 				<mat-icon>task_alt</mat-icon>
 			</button>
 		</div>

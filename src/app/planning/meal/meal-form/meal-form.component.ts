@@ -209,4 +209,9 @@ export class MealFormComponent implements OnChanges {
 			this.cd.detectChanges();
 		});
 	}
+
+	getArrayForNumber(number: number) {
+		// TODO: replace with NgForRepeat
+		return new Array(number);
+	}
 }

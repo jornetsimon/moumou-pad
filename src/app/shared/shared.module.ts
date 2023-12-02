@@ -16,13 +16,11 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
-import { NgForRepeatModule } from 'ng-for-repeat';
 import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
 import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { NgxVibrationModule } from 'ngx-vibration';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
 import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
@@ -37,8 +35,6 @@ const modules = [
 	ReactiveFormsModule,
 	HttpClientModule,
 	FlexLayoutModule,
-	NgForRepeatModule,
-	NgxVibrationModule,
 	MatTooltipModule,
 	MatCardModule,
 	MatRippleModule,

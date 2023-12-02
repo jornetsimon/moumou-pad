@@ -1,7 +1,6 @@
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { environment } from '../environments/environment';
 import { PlanningModule } from './planning/planning.module';
 import { SharedModule } from './shared/shared.module';
@@ -12,7 +11,6 @@ import { RecipeModalComponent } from './jow/recipe-modal/recipe-modal.component'
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AuthModule } from './auth/auth.module';
 import { AppRoutingModule } from './app-routing.module';
-import { HotToastModule } from '@ngneat/hot-toast';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import {
 	connectFirestoreEmulator,
@@ -23,6 +21,7 @@ import {
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { SearchModule } from './search/search.module';
+import { provideHotToastConfig } from '@ngneat/hot-toast';
 
 registerLocaleData(fr);
 
@@ -30,7 +29,6 @@ registerLocaleData(fr);
 	declarations: [AppComponent, RecipeModalComponent],
 	imports: [
 		BrowserModule,
-		environment.production ? [] : AkitaNgDevtools.forRoot(),
 		provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
 		provideFirestore(() => {
 			const firestore = getFirestore();
@@ -59,9 +57,6 @@ registerLocaleData(fr);
 		BrowserAnimationsModule,
 		SharedModule,
 		AppRoutingModule,
-		HotToastModule.forRoot({
-			position: 'bottom-center',
-		}),
 		ServiceWorkerModule.register('ngsw-worker.js', {
 			enabled: environment.production,
 			// Register the ServiceWorker as soon as the app is stable
@@ -70,7 +65,12 @@ registerLocaleData(fr);
 		}),
 		SearchModule,
 	],
-	providers: [{ provide: LOCALE_ID, useValue: 'fr' }],
+	providers: [
+		{ provide: LOCALE_ID, useValue: 'fr' },
+		provideHotToastConfig({
+			position: 'bottom-center',
+		}),
+	],
 	bootstrap: [AppComponent],
 })
 export class AppModule {}

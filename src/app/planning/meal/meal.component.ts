@@ -21,7 +21,6 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
 import { delay, distinctUntilChanged, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
-import { NgxVibrationService } from 'ngx-vibration';
 import { MealThemeModel } from './theme/meal-theme.model';
 import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../../shared/utilities';
 import * as tinycolor from 'tinycolor2';
@@ -159,7 +158,7 @@ export class MealComponent implements AfterViewInit {
 		public jowService: JowService,
 		public dragDropService: DragDropService,
 		private dialog: MatDialog,
-		private vibrationService: NgxVibrationService,
+		/*private vibrationService: NgxVibrationService,*/
 		private mealThemeService: MealThemeService,
 		private router: Router,
 		private route: ActivatedRoute
@@ -242,6 +241,6 @@ export class MealComponent implements AfterViewInit {
 	}
 
 	onEnter() {
-		this.vibrationService.vibrate([25]);
+		/*this.vibrationService.vibrate([25]);*/
 	}
 }

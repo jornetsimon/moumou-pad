@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, of, pipe, UnaryFunction } from 'rxjs';
-import { first, map, switchMap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { User } from 'firebase/auth';
-import { AppQuery } from '../../state/app.query';
+import { Auth, authState, getAuth } from '@angular/fire/auth';
 
 export type AuthPipeGenerator = (
 	next: ActivatedRouteSnapshot,
@@ -16,8 +16,14 @@ export const loggedIn: AuthPipe = map((user) => !!user);
 @Injectable({
 	providedIn: 'any',
 })
-export class AngularFireAuthGuard  {
-	constructor(private router: Router, private readonly appQuery: AppQuery) {}
+export class AngularFireAuthGuard {
+	private readonly auth: Auth;
+	private user$: Observable<User | null>;
+
+	constructor(private router: Router) {
+		this.auth = getAuth();
+		this.user$ = authState(this.auth);
+	}
 
 	canActivate(
 		next: ActivatedRouteSnapshot,
@@ -25,8 +31,9 @@ export class AngularFireAuthGuard  {
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		const authPipeFactory = (next.data.authGuardPipe as AuthPipeGenerator) || (() => loggedIn);
 
-		return this.appQuery.select('user').pipe(
-			first(Boolean),
+		return this.user$.pipe(
+			map((user) => user ?? null),
+			take(1),
 			authPipeFactory(next, state),
 			map((can) => {
 				if (typeof can === 'boolean') {

@@ -4,7 +4,6 @@ import { combineLatest, Observable, of } from 'rxjs';
 import { Meal } from './meal/state/meal.model';
 import { DragDropService } from './meal/drag-drop.service';
 import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
-import { NgxVibrationService } from 'ngx-vibration';
 import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
 import { generateSchedule, Period } from '../model/period';
@@ -70,7 +69,7 @@ export class PlanningComponent {
 	constructor(
 		private mealQuery: MealQuery,
 		private dragDropService: DragDropService,
-		private vibrationService: NgxVibrationService,
+		/*private vibrationService: NgxVibrationService,*/
 		private appQuery: AppQuery,
 		private appService: AppService,
 		private breakpointObserver: BreakpointObserver,
@@ -92,14 +91,14 @@ export class PlanningComponent {
 				}
 			);
 			croquettesToastRef.afterClosed.subscribe(() => {
-				this.vibrationService.vibrate([75]);
+				/*this.vibrationService.vibrate([75]);*/
 				this.croquettesService.markAsDisplayed();
 			});
 		});
 	}
 
 	onDrop() {
-		this.vibrationService.vibrate([150]);
+		/*this.vibrationService.vibrate([150]);*/
 	}
 
 	shiftSchedule(direction: 'previous' | 'next') {
