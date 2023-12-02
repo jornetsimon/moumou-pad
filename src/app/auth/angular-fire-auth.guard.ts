@@ -7,9 +7,9 @@ import {
 	UrlTree,
 } from '@angular/router';
 import { Observable, of, pipe, UnaryFunction } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
-import { Auth, authState, getAuth } from '@angular/fire/auth';
-import { User } from '@firebase/auth';
+import { first, map, switchMap } from 'rxjs/operators';
+import { User } from 'firebase/auth';
+import { AppQuery } from '../../state/app.query';
 
 export type AuthPipeGenerator = (
 	next: ActivatedRouteSnapshot,
@@ -23,13 +23,7 @@ export const loggedIn: AuthPipe = map((user) => !!user);
 	providedIn: 'any',
 })
 export class AngularFireAuthGuard implements CanActivate {
-	private readonly auth: Auth;
-	private user$: Observable<User | null>;
-
-	constructor(private router: Router) {
-		this.auth = getAuth();
-		this.user$ = authState(this.auth);
-	}
+	constructor(private router: Router, private readonly appQuery: AppQuery) {}
 
 	canActivate(
 		next: ActivatedRouteSnapshot,
@@ -37,8 +31,8 @@ export class AngularFireAuthGuard implements CanActivate {
 	): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 		const authPipeFactory = (next.data.authGuardPipe as AuthPipeGenerator) || (() => loggedIn);
 
-		return this.user$.pipe(
-			take(1),
+		return this.appQuery.select('user').pipe(
+			first(Boolean),
 			authPipeFactory(next, state),
 			map((can) => {
 				if (typeof can === 'boolean') {
