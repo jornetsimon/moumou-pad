@@ -113,7 +113,10 @@
         },
         "deploy": {
           "builder": "@angular/fire:deploy",
-          "options": {}
+          "options": {
+            "version": 2,
+            "browserTarget": "moumou-pad:build:production"
+          }
         }
       }
     }
