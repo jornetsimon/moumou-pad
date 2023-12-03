@@ -9351,10 +9351,10 @@ ng-for-repeat@^1.0.1:
   dependencies:
     tslib "^2.0.0"
 
-ngx-vibration@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/ngx-vibration/-/ngx-vibration-1.1.1.tgz#ec6215871735926110f897daecf8d91b8d06411a"
-  integrity sha512-vVaxgd7+6tIvluAb4/6NiVg0PwXuckpUNIyT+Kp34uN6UrR1GMFTe3ToxM7wM9eN40R/yqdo1i/USFPPGVtYiQ==
+ngx-vibration@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/ngx-vibration/-/ngx-vibration-1.2.0.tgz#157a00ca125838373d3bef15fb7631f756a8398f"
+  integrity sha512-tro7fI9CULimkyfi1Xw7p5y3zthuviBX+TmEQUWt1BJw5RWSWa0JVisIpMbF8CEDb2A6WYkqYA14Sg1P3JSZrg==
   dependencies:
     tslib "^2.0.0"
 

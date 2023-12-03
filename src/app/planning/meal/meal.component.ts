@@ -27,6 +27,7 @@ import * as tinycolor from 'tinycolor2';
 import { MealThemeService } from './theme/meal-theme.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { NgxVibrationService } from 'ngx-vibration';
 
 @UntilDestroy()
 @Component({
@@ -158,7 +159,7 @@ export class MealComponent implements AfterViewInit {
 		public jowService: JowService,
 		public dragDropService: DragDropService,
 		private dialog: MatDialog,
-		/*private vibrationService: NgxVibrationService,*/
+		private vibrationService: NgxVibrationService,
 		private mealThemeService: MealThemeService,
 		private router: Router,
 		private route: ActivatedRoute
@@ -241,6 +242,6 @@ export class MealComponent implements AfterViewInit {
 	}
 
 	onEnter() {
-		/*this.vibrationService.vibrate([25]);*/
+		this.vibrationService.vibrate([25]);
 	}
 }

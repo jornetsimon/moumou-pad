@@ -11,6 +11,7 @@ import { addDays, isBefore, isSameDay, isSameMonth, startOfDay } from 'date-fns/
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CroquettesService } from '../croquettes.service';
 import { HotToastService } from '@ngneat/hot-toast';
+import { NgxVibrationService } from 'ngx-vibration';
 
 const moumouEscapeDay = new Date(2023, 7, 20);
 
@@ -69,7 +70,7 @@ export class PlanningComponent {
 	constructor(
 		private mealQuery: MealQuery,
 		private dragDropService: DragDropService,
-		/*private vibrationService: NgxVibrationService,*/
+		private vibrationService: NgxVibrationService,
 		private appQuery: AppQuery,
 		private appService: AppService,
 		private breakpointObserver: BreakpointObserver,
@@ -91,14 +92,14 @@ export class PlanningComponent {
 				}
 			);
 			croquettesToastRef.afterClosed.subscribe(() => {
-				/*this.vibrationService.vibrate([75]);*/
+				this.vibrationService.vibrate([75]);
 				this.croquettesService.markAsDisplayed();
 			});
 		});
 	}
 
 	onDrop() {
-		/*this.vibrationService.vibrate([150]);*/
+		this.vibrationService.vibrate([150]);
 	}
 
 	shiftSchedule(direction: 'previous' | 'next') {

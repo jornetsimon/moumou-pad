@@ -71,8 +71,7 @@
 			[style.background-color]="meal.jowRecipe?.smartColor || (mealTheme$ | async)?.color"
 		></div>
 		<div class="overlay"></div>
-		<div fxLayoutAlign (click)="toggleEdit()" matRipple>
-			<!--ngxVibration="10"-->
+		<div fxLayoutAlign (click)="toggleEdit()" ngxVibration="10" matRipple>
 			<div
 				class="header-container"
 				*ngFor="
