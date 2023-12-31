@@ -1,10 +1,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { HotToastService } from '@ngneat/hot-toast';
 import { Auth, GoogleAuthProvider, signInWithPopup, signInWithRedirect } from '@angular/fire/auth';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { HotToastService } from '@ngneat/hot-toast';
 
+@UntilDestroy()
 @Component({
 	selector: 'cb-login',
+	standalone: true,
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss'],
 })

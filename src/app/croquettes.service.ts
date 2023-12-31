@@ -11,9 +11,10 @@ import { isNotNullOrUndefined } from './shared/utilities';
 	providedIn: 'root',
 })
 export class CroquettesService {
-	constructor(private storage: StorageMap, private mealQuery: MealQuery) {
-		this.storage.watch(this.LOCAL_DB_KEY).subscribe(console.log);
-	}
+	constructor(
+		private storage: StorageMap,
+		private mealQuery: MealQuery
+	) {}
 
 	private LOCAL_DB_KEY = 'croquettes_last_display_date';
 

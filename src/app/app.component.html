@@ -1,3 +1,4 @@
+<tui-root>
 <div *ngIf="firebaseUser$ | async as user">
 	<div class="featurettes" *ngIf="isHome$ | async">
 		<div class="weather" *ngIf="weatherIconUrl$ | async as weatherIconUrl">
@@ -48,3 +49,5 @@
 <ng-template #swUpdateTpl>
 	<div (click)="reloadApp()" class="cursor-pointer">Une mise à jour est disponible !</div>
 </ng-template>
+
+</tui-root>

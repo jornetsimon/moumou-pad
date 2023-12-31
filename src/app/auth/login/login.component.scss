@@ -3,18 +3,9 @@ $google-blue: #4285f4;
 $button-active-blue: #1669f2;
 
 .app-name {
-	margin: 0.75em 15px;
 	font-family: 'Dancing Script', cursive;
-	font-size: 72px;
-	text-decoration: underline;
-	text-underline-offset: 12px;
-	text-decoration-thickness: 4px;
-	text-align: center;
-
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
+	font-size: 100px;
+	line-height: 1em;
 }
 
 .google-btn {

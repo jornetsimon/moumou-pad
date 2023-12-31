@@ -102,7 +102,7 @@ export class AppComponent implements AfterViewInit {
 
 	logout() {
 		this.angularFireAuth.signOut().then(() => {
-			this.toastService.show('Déconnecté', {
+			this.toastService.info('Déconnecté', {
 				duration: 3000,
 			});
 			this.router.navigateByUrl('/login');

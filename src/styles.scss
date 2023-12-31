@@ -1,19 +1,23 @@
-@import 'styles/utilities';
 @import 'styles/fonts';
 @import 'styles/colors';
 @import 'styles/animations';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html,
 body {
 	/*height: 100%;*/
 }
 
-html {
-	background-color: #fffef0;
+html,
+body {
+	background-color: #fffef0 !important;
 }
 
 body {
-	margin: 0;
+	margin: auto !important;
 	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
 		'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
 		'Noto Color Emoji';
@@ -51,28 +55,9 @@ body {
 	display: none;
 }
 
-.mat-tooltip-handset {
-	margin: 12px 24px !important;
+.aligner {
+	@apply flex justify-center items-center;
 }
-
-.mat-card-actions .mat-button,
-.mat-card-actions .mat-raised-button,
-.mat-card-actions .mat-stroked-button {
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-a {
-	cursor: pointer;
-	transition: color 0.3s;
-
-	&:hover {
-		color: $primary;
-	}
-}
-
-.mat-divider.inline {
-	position: inherit !important;
-	margin: 15px 0;
+.aligner-col {
+	@apply aligner flex-col;
 }
