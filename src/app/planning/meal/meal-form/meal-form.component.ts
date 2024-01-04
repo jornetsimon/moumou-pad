@@ -92,7 +92,7 @@ export class MealFormComponent implements OnChanges {
 	);
 	displayWithFn = (recipe: Recipe | undefined) => recipe?.title || '';
 	jowRecipe: Recipe | null = null;
-	recipeMemo: string | null = null;
+	recipeMemo: string | null | undefined;
 
 	constructor(
 		private mealQuery: MealQuery,
@@ -137,7 +137,7 @@ export class MealFormComponent implements OnChanges {
 			jowRecipe: this.jowRecipe,
 			extras: this.extrasFg.value,
 			alternateDish: this.form.value.alternateDish,
-			recipeMemo: this.recipeMemo || this.meal?.recipeMemo,
+			recipeMemo: this.getRecipeMemo(),
 		};
 		if (this.meal?.name) {
 			this.mealService.update(
@@ -208,5 +208,9 @@ export class MealFormComponent implements OnChanges {
 			this.recipeMemo = note || null;
 			this.cd.detectChanges();
 		});
+	}
+
+	getRecipeMemo() {
+		return this.recipeMemo !== undefined ? this.recipeMemo : this.meal?.recipeMemo;
 	}
 }

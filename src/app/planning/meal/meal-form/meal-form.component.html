@@ -207,8 +207,8 @@
 
 	<div
 		class="memo"
-		*ngIf="recipeMemo || meal?.recipeMemo"
-		[innerHTML]="sanitizerService.render(recipeMemo || meal?.recipeMemo || '')"
+		*ngIf="getRecipeMemo()"
+		[innerHTML]="sanitizerService.render(getRecipeMemo() || '')"
 		(click)="openNoteDialog()"
 	></div>
 
@@ -259,7 +259,7 @@
 			<button
 				mat-icon-button
 				type="button"
-				*ngIf="!(recipeMemo || meal?.recipeMemo)"
+				*ngIf="!getRecipeMemo()"
 				matTooltip="Ajouter un mémo"
 				(click)="openNoteDialog()"
 			>

@@ -25,7 +25,7 @@
 				[class.waiting-for-swap]="dragDropService.dragging$ | async"
 				[class.cannot-drop]="cannotDropHere$ | async"
 				[matTooltip]="
-					showFullDateInTopper ? '' : (meal.date | date : 'EEEE dd MMMM') || '🤷‍♂️'
+					showFullDateInTopper ? '' : (meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'
 				"
 				cdkDrag
 				[cdkDragData]="meal"
@@ -35,10 +35,10 @@
 				cdkDragPreviewContainer="parent"
 			>
 				<ng-container *ngIf="showFullDateInTopper; else defaultTopperDateTpl">
-					{{ meal.date | date : 'EEEE dd MMMM' | titlecase }}&nbsp;
+					{{ meal.date | date: 'EEEE dd MMMM' | titlecase }}&nbsp;
 				</ng-container>
 				<ng-template #defaultTopperDateTpl>
-					{{ meal.date | date : 'EEEE' | titlecase }}&nbsp;
+					{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;
 				</ng-template>
 				<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900">
 					light_mode
@@ -50,7 +50,7 @@
 		</div>
 		<div fxFlex="33%" fxLayoutAlign="end center" fxLayoutGap="10px" class="icons">
 			<div *ngIf="meal.extras?.prepared" matTooltip="Repas préparé">✅</div>
-			<div *ngIf="meal.recipeMemo" matTooltip="Note">📝</div>
+			<div *ngIf="meal.recipeMemo" [matTooltip]="meal.recipeMemo">📝</div>
 			<div *ngIf="meal.extras?.croquettes" matTooltip="Jour de croquettes">🐱</div>
 		</div>
 	</div>
