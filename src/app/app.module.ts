@@ -1,4 +1,11 @@
-import { TuiAlertModule, TuiDialogModule, TuiRootModule } from '@taiga-ui/core';
+import {
+	TuiAlertModule,
+	TuiDataListModule,
+	TuiDialogModule,
+	TuiHostedDropdownModule,
+	TuiRootModule,
+	TuiSvgModule,
+} from '@taiga-ui/core';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
@@ -23,11 +30,13 @@ import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angul
 import { SearchModule } from './search/search.module';
 import { LoginComponent } from './auth/login/login.component';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
+import { HeaderComponent } from './header/header.component';
+import { TuiAvatarModule, TuiSelectModule } from '@taiga-ui/kit';
 
 registerLocaleData(fr);
 
 @NgModule({
-	declarations: [AppComponent, RecipeModalComponent],
+	declarations: [AppComponent, RecipeModalComponent, HeaderComponent],
 	imports: [
 		BrowserModule,
 		provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -68,6 +77,11 @@ registerLocaleData(fr);
 		TuiRootModule,
 		TuiDialogModule,
 		TuiAlertModule,
+		TuiAvatarModule,
+		TuiHostedDropdownModule,
+		TuiDataListModule,
+		TuiSvgModule,
+		TuiSelectModule,
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'fr' },
