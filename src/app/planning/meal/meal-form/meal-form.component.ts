@@ -15,7 +15,6 @@ import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
 import { pickBy, shuffle } from 'lodash-es';
 import { Recipe } from '../../../model/receipe';
 import { JowQuery } from '../../../jow/state/jow.query';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
 import { combineLatest, Observable, of } from 'rxjs';
 import { JowService } from '../../../jow/state/jow.service';
@@ -23,6 +22,7 @@ import { NoteComponent } from './note/note.component';
 import { RenderService } from '../../../shared/render.service';
 import { MealQuery } from '../state/meal.query';
 import { normalizeString } from '../../../../../functions/src/helpers/normalize-string';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
 	selector: 'cb-meal-form',

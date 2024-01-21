@@ -17,7 +17,6 @@ import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { MealService } from './state/meal.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { DragDropService } from './drag-drop.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
 import { distinctUntilChanged, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
@@ -28,6 +27,7 @@ import { MealThemeService } from './theme/meal-theme.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { NgxVibrationService } from 'ngx-vibration';
+import { MatDialog } from '@angular/material/dialog';
 
 @UntilDestroy()
 @Component({
