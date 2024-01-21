@@ -3,7 +3,7 @@ import { map, withLatestFrom } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CityWeather } from '../weather/model/cityWeather';
 import { HotToastService } from '@ngneat/hot-toast';
-import { Auth } from '@angular/fire/auth';
+import { Auth, user } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { AppQuery } from '../../state/app.query';
 import { WeatherService } from '../weather/weather.service';
@@ -49,4 +49,6 @@ export class HeaderComponent {
 			this.router.navigateByUrl('/login');
 		});
 	}
+
+	protected readonly user = user;
 }
