@@ -4,8 +4,15 @@ $button-active-blue: #1669f2;
 
 .app-name {
 	font-family: 'Dancing Script', cursive;
-	font-size: 100px;
+	font-size: clamp(0px, 100px, 15vw);
 	line-height: 1em;
+}
+
+.app-logo {
+	$defaultLogoSize: 140px;
+	$maxLogoSize: 35vw;
+	width: clamp(0px, $defaultLogoSize, $maxLogoSize);
+	height: clamp(0px, $defaultLogoSize, $maxLogoSize);
 }
 
 .google-btn {

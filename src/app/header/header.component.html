@@ -1,11 +1,11 @@
-<div class="flex justify-center p-2.5 relative">
+<div class="flex justify-center p-4 relative">
 	<a class="app-title" routerLink="/">
 		<img src="assets/logo.svg" alt="MoumouPad logo" width="20px" height="20px" />
 		<div class="font-dancing-script">MoumouPad</div>
 	</a>
 
 	<ng-container *ngIf="firebaseUser$ | async as user">
-		<div class="absolute right-2">
+		<div class="absolute right-2 top-3">
 			<tui-hosted-dropdown [content]="content">
 				<tui-avatar
 					size="s"
