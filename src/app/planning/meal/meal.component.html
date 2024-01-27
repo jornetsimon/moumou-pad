@@ -21,13 +21,13 @@
 				[class.waiting-for-swap]="dragDropService.dragging$ | async"
 				[class.cannot-drop]="cannotDropHere$ | async"
 				[tuiHint]="showFullDateInTopper ? '' : (meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'"
-				cdkDrag
+			>
+				<!--cdkDrag
 				[cdkDragData]="meal"
 				(cdkDragStarted)="onDragStart()"
 				(cdkDragEnded)="onDragEnd()"
 				cdkDragPreviewClass="dragging"
-				cdkDragPreviewContainer="parent"
-			>
+				cdkDragPreviewContainer="parent"-->
 				<ng-container *ngIf="showFullDateInTopper; else defaultTopperDateTpl">
 					{{ meal.date | date: 'EEEE dd MMMM' | titlecase }}&nbsp;
 				</ng-container>
@@ -43,9 +43,9 @@
 			</div>
 		</div>
 		<div fxFlex="33%" fxLayoutAlign="end center" fxLayoutGap="10px" class="icons">
-			<div *ngIf="meal.extras?.prepared" matTooltip="Repas préparé">✅</div>
-			<div *ngIf="meal.recipeMemo" matTooltip="Note">📝</div>
-			<div *ngIf="meal.extras?.croquettes" matTooltip="Jour de croquettes">🐱</div>
+			<div *ngIf="meal.extras?.prepared" tuiHint="Repas préparé">✅</div>
+			<div *ngIf="meal.recipeMemo" tuiHint="Note">📝</div>
+			<div *ngIf="meal.extras?.croquettes" tuiHint="Jour de croquettes">🐱</div>
 		</div>
 	</div>
 	<div
@@ -65,7 +65,7 @@
 			[style.background-color]="meal.jowRecipe?.smartColor || (mealTheme$ | async)?.color"
 		></div>
 		<div class="overlay"></div>
-		<div fxLayoutAlign (click)="toggleEdit()" ngxVibration="10" matRipple>
+		<div fxLayoutAlign (click)="toggleEdit()" ngxVibration="10" tuiRipple="skyblue">
 			<div
 				class="header-container"
 				*ngFor="

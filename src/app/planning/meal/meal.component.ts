@@ -10,14 +10,11 @@ import {
 	ViewChild,
 } from '@angular/core';
 import { Dish, isNextMeal, Meal } from './state/meal.model';
-import { MealQuery } from './state/meal.query';
 import { collapseOnLeaveAnimation, expandOnEnterAnimation } from 'angular-animations';
 import { JowService } from '../../jow/state/jow.service';
-import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { MealService } from './state/meal.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { DragDropService } from './drag-drop.service';
-import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
 import { distinctUntilChanged, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
 import { MealThemeModel } from './theme/meal-theme.model';
@@ -26,13 +23,14 @@ import * as tinycolor from 'tinycolor2';
 import { MealThemeService } from './theme/meal-theme.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { NgxVibrationService } from 'ngx-vibration';
-import { MatDialog } from '@angular/material/dialog';
-import { TuiAccordionModule } from '@taiga-ui/kit';
+import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
+import { TuiAccordionModule, TuiIslandModule } from '@taiga-ui/kit';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexModule } from '@angular/flex-layout';
 import { TuiButtonModule, TuiHintModule } from '@taiga-ui/core';
+import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
+import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 
 @UntilDestroy()
 @Component({
@@ -54,9 +52,11 @@ import { TuiButtonModule, TuiHintModule } from '@taiga-ui/core';
 		TuiAccordionModule,
 		MatIconModule,
 		FlexModule,
-		CdkDrag,
 		TuiHintModule,
 		TuiButtonModule,
+		NgxVibrationModule,
+		TuiIslandModule,
+		TuiRippleModule,
 	],
 })
 export class MealComponent implements AfterViewInit {
@@ -168,12 +168,10 @@ export class MealComponent implements AfterViewInit {
 	};
 
 	constructor(
-		private mealQuery: MealQuery,
 		private mealService: MealService,
 		private toastService: HotToastService,
 		public jowService: JowService,
 		public dragDropService: DragDropService,
-		private dialog: MatDialog,
 		private vibrationService: NgxVibrationService,
 		private mealThemeService: MealThemeService,
 		private router: Router,
@@ -228,24 +226,15 @@ export class MealComponent implements AfterViewInit {
 			return;
 		}
 
-		const dialogRef = this.dialog.open(MealSwapDialogComponent, {
-			data: { from: originMeal, to: destinationMeal },
-			panelClass: 'meal-swap-dialog',
-		});
-
-		dialogRef.afterClosed().subscribe((confirm: boolean | undefined) => {
-			if (confirm) {
-				this.mealService.swapMeals(originMeal, destinationMeal).then(
-					() => {
-						this.toastService.success('Menus échangés');
-					},
-					(error) => {
-						console.error(error);
-						this.toastService.error(`Erreur lors de l'échange de repas`);
-					}
-				);
+		this.mealService.swapMeals(originMeal, destinationMeal).then(
+			() => {
+				this.toastService.success('Menus échangés');
+			},
+			(error) => {
+				console.error(error);
+				this.toastService.error(`Erreur lors de l'échange de repas`);
 			}
-		});
+		);
 	}
 
 	onDragStart() {

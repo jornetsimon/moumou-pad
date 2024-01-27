@@ -3628,6 +3628,13 @@
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
   integrity sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==
 
+"@taiga-ui/addon-mobile@^3.62.0":
+  version "3.63.0"
+  resolved "https://registry.yarnpkg.com/@taiga-ui/addon-mobile/-/addon-mobile-3.63.0.tgz#6aa377662c9107a97ff10efb5066f0b0898f92b4"
+  integrity sha512-fwywBhUplB/znZj2YcAoFSousK86aSSWgZXB2o7DvaT5S3fKNOU2FHa1wp+52NARw5j3GuaQfx9sclRatbYMRg==
+  dependencies:
+    tslib "2.6.2"
+
 "@taiga-ui/cdk@^3.62.0":
   version "3.62.0"
   resolved "https://registry.yarnpkg.com/@taiga-ui/cdk/-/cdk-3.62.0.tgz#8309556ec65c0da2f55b84363a3ad41dd36009fc"
@@ -3682,12 +3689,12 @@
   resolved "https://registry.yarnpkg.com/@taiga-ui/styles/-/styles-3.62.0.tgz#cc9ab1fb41e9abb2a1914d2c5bdb3557bca322d6"
   integrity sha512-vybg+v1B9dAx6IzeWoHP//I7VPLKtQ8+u9gf7f9KnHakFEi75eU6hWuxIS48VIBMYOyDODXLSxX7Mqmu0rYLCg==
 
-"@tinkoff/ng-dompurify@3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@tinkoff/ng-dompurify/-/ng-dompurify-3.0.0.tgz#71338db56c047b9de67f05dc9f58c4080e6b4e4b"
-  integrity sha512-Gx153lEakv4nEDZXFd2vW2zK8fI7fJMu8ZaRaPgGcq1wrAe0ps/mCZdg9KXNdyLUvwTu3WFsJXj5CwCG6Zfucg==
+"@tinkoff/ng-dompurify@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@tinkoff/ng-dompurify/-/ng-dompurify-4.0.0.tgz#f6930e136e698d89c4169c443e8baeb8330df9bf"
+  integrity sha512-BjKUweWLrOx8UOZw+Tl+Dae5keYuSbeMkppcXQdsvwASMrPfmP7d3Q206Q6HDqOV2WnpnFqGUB95IMbLAeRRuw==
   dependencies:
-    tslib "^1.9.0"
+    tslib "^2.0.0"
 
 "@tinkoff/ng-event-plugins@3.1.0":
   version "3.1.0"
@@ -3776,10 +3783,10 @@
   resolved "https://registry.yarnpkg.com/@types/cors/-/cors-2.8.12.tgz#6b2c510a7ad7039e98e7b8d3d6598f4359e5c080"
   integrity sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==
 
-"@types/dompurify@2.2.3":
-  version "2.2.3"
-  resolved "https://registry.yarnpkg.com/@types/dompurify/-/dompurify-2.2.3.tgz#6e89677a07902ac1b6821c345f34bd85da239b08"
-  integrity sha512-CLtc2mZK8+axmrz1JqtpklO/Kvn38arGc8o1l3UVopZaXXuer9ONdZwJ/9f226GrhRLtUmLr9WrvZsRSNpS8og==
+"@types/dompurify@3.0.5":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@types/dompurify/-/dompurify-3.0.5.tgz#02069a2fcb89a163bacf1a788f73cb415dd75cb7"
+  integrity sha512-1Wg0g3BtQF7sSb27fJQAKck1HECM6zV1EB66j8JH9i3LCjYabJa0FSdiSgsD5K/RbrsR0SiraKacLB+T8ZVYAg==
   dependencies:
     "@types/trusted-types" "*"
 
@@ -5794,10 +5801,10 @@ domhandler@^5.0.2, domhandler@^5.0.3:
   dependencies:
     domelementtype "^2.3.0"
 
-dompurify@2.2.9:
-  version "2.2.9"
-  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.2.9.tgz#4b42e244238032d9286a0d2c87b51313581d9624"
-  integrity sha512-+9MqacuigMIZ+1+EwoEltogyWGFTJZWU3258Rupxs+2CGs4H914G9er6pZbsme/bvb5L67o2rade9n21e4RW/w==
+dompurify@3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-3.0.6.tgz#925ebd576d54a9531b5d76f0a5bef32548351dae"
+  integrity sha512-ilkD8YEnnGh1zJ240uJsW7AzE+2qpbOUYjacomn3AvJ6J4JhKGSZ2nh4wUIXPZrEPppaCLx5jFe8T89Rk8tQ7w==
 
 domutils@^3.0.1:
   version "3.1.0"

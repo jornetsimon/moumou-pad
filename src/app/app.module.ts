@@ -1,11 +1,5 @@
-import {
-	TuiAlertModule,
-	TuiDataListModule,
-	TuiDialogModule,
-	TuiHostedDropdownModule,
-	TuiRootModule,
-	TuiSvgModule,
-} from '@taiga-ui/core';
+import { NgDompurifySanitizer } from "@tinkoff/ng-dompurify";
+import { TuiAlertModule, TuiDataListModule, TuiDialogModule, TuiHostedDropdownModule, TuiRootModule, TuiSvgModule, TUI_SANITIZER } from '@taiga-ui/core';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
@@ -85,7 +79,8 @@ registerLocaleData(fr);
 		provideHotToastConfig({
 			position: 'bottom-center',
 		}),
-	],
+        {provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}
+    ],
 	bootstrap: [AppComponent],
 	exports: [],
 })
