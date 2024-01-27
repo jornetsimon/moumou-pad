@@ -4,14 +4,29 @@ import { Observable } from 'rxjs';
 import { CityWeather } from '../weather/model/cityWeather';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Auth, user } from '@angular/fire/auth';
-import { Router } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AppQuery } from '../../state/app.query';
 import { WeatherService } from '../weather/weather.service';
+import { TuiDataListModule, TuiHostedDropdownModule, TuiSvgModule } from '@taiga-ui/core';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { TuiAvatarModule } from '@taiga-ui/kit';
 
 @Component({
 	selector: 'cb-header',
 	templateUrl: './header.component.html',
 	styleUrls: ['./header.component.scss'],
+	standalone: true,
+	imports: [
+		TuiSvgModule,
+		CommonModule,
+		TuiDataListModule,
+		RouterLink,
+		RouterLinkActive,
+		MatIconModule,
+		TuiHostedDropdownModule,
+		TuiAvatarModule,
+	],
 })
 export class HeaderComponent {
 	constructor(

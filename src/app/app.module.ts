@@ -30,13 +30,12 @@ import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angul
 import { SearchModule } from './search/search.module';
 import { LoginComponent } from './auth/login/login.component';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
-import { HeaderComponent } from './header/header.component';
 import { TuiAvatarModule, TuiSelectModule } from '@taiga-ui/kit';
 
 registerLocaleData(fr);
 
 @NgModule({
-	declarations: [AppComponent, RecipeModalComponent, HeaderComponent],
+	declarations: [AppComponent, RecipeModalComponent],
 	imports: [
 		BrowserModule,
 		provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -90,5 +89,6 @@ registerLocaleData(fr);
 		}),
 	],
 	bootstrap: [AppComponent],
+	exports: [],
 })
 export class AppModule {}
