@@ -9,24 +9,18 @@
 		<div fxFlex="33%" class="relative">
 			<span class="is-next" *ngIf="isNext$ | async">prochain</span>
 		</div>
-		<div
-			fxFlex="1 0 auto"
-			fxLayout="row-reverse"
-			fxLayoutAlign="center"
-			cdkDropList
+		<div fxFlex="1 0 auto" fxLayout="row-reverse" fxLayoutAlign="center">
+			<!--cdkDropList
 			#dropListRef="cdkDropList"
 			[cdkDropListData]="meal"
 			[cdkDropListEnterPredicate]="canEnter"
 			(cdkDropListDropped)="onDrop($event)"
-			(cdkDropListEntered)="onEnter()"
-		>
+			(cdkDropListEntered)="onEnter()"-->
 			<div
 				class="day"
 				[class.waiting-for-swap]="dragDropService.dragging$ | async"
 				[class.cannot-drop]="cannotDropHere$ | async"
-				[matTooltip]="
-					showFullDateInTopper ? '' : (meal.date | date : 'EEEE dd MMMM') || '🤷‍♂️'
-				"
+				[tuiHint]="showFullDateInTopper ? '' : (meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'"
 				cdkDrag
 				[cdkDragData]="meal"
 				(cdkDragStarted)="onDragStart()"
@@ -35,10 +29,10 @@
 				cdkDragPreviewContainer="parent"
 			>
 				<ng-container *ngIf="showFullDateInTopper; else defaultTopperDateTpl">
-					{{ meal.date | date : 'EEEE dd MMMM' | titlecase }}&nbsp;
+					{{ meal.date | date: 'EEEE dd MMMM' | titlecase }}&nbsp;
 				</ng-container>
 				<ng-template #defaultTopperDateTpl>
-					{{ meal.date | date : 'EEEE' | titlecase }}&nbsp;
+					{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;
 				</ng-template>
 				<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900">
 					light_mode
@@ -54,7 +48,7 @@
 			<div *ngIf="meal.extras?.croquettes" matTooltip="Jour de croquettes">🐱</div>
 		</div>
 	</div>
-	<mat-card
+	<div
 		class="meal"
 		[class.empty]="!meal.name"
 		[class.out-of-home]="!!meal.extras?.outOfHome"
@@ -80,15 +74,15 @@
 					trackBy: trackByIndex
 				"
 			>
-				<mat-card-header
+				<div
 					class="header"
 					[class.has-jow-recipe]="header?.jowRecipe"
 					[class.has-theme]="!!(mealTheme$ | async)"
 					fxLayoutAlign="space-between center"
 				>
-					<mat-card-title>
+					<div>
 						<div fxLayout="column">
-							<div>
+							<div class="tui-text_body-l tui-text_bold">
 								<ng-container *ngIf="header?.name; else noMealTpl">
 									{{ header?.name }}
 								</ng-container>
@@ -100,31 +94,33 @@
 								</ng-template>
 							</div>
 						</div>
-					</mat-card-title>
+					</div>
 					<div
 						fxLayoutAlign="end center"
 						fxLayoutGap="10px"
 						fxFlex="noshrink"
 						class="icons"
 					>
-						<div *ngIf="meal.extras?.freezer">❄️</div>
-						<button mat-icon-button *ngIf="!meal.name">
+						@if (meal.extras?.freezer) {
+							<div>❄️</div>
+						}
+						@if (!meal.name) {
 							<mat-icon>add_circle</mat-icon>
-						</button>
+						}
 					</div>
-				</mat-card-header>
+				</div>
 			</div>
 		</div>
-		<mat-card-content>
+		<div>
 			<div *ngIf="(editMode$ | async) || editMode" [@expandOnEnter] [@collapseOnLeave]>
 				<div class="form-container">
-					<cb-meal-form
+					<!--<cb-meal-form
 						[meal]="meal"
 						[isReadonly]="isReadonly"
 						(mealSaved)="afterSave()"
-					></cb-meal-form>
+					></cb-meal-form>-->
 				</div>
 			</div>
-		</mat-card-content>
-	</mat-card>
+		</div>
+	</div>
 </div>

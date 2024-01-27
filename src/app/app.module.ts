@@ -10,7 +10,6 @@ import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
-import { PlanningModule } from './planning/planning.module';
 import { SharedModule } from './shared/shared.module';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
@@ -62,7 +61,6 @@ registerLocaleData(fr);
 			return functions;
 		}),
 		LoginComponent,
-		PlanningModule,
 		BrowserAnimationsModule,
 		SharedModule,
 		AppRoutingModule,

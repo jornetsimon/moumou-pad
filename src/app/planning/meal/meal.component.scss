@@ -41,7 +41,7 @@ $meal-color: $primary;
 	flex-direction: column;
 	justify-content: center;
 	@media (min-width: 600px) {
-		min-height: 50px;
+		min-height: 70px;
 	}
 
 	background-color: $meal-color;
@@ -161,7 +161,9 @@ $meal-color: $primary;
 		width: $size;
 	}
 
-	transition: background-color 0.25s ease-out, filter 0.25s ease-out;
+	transition:
+		background-color 0.25s ease-out,
+		filter 0.25s ease-out;
 
 	&.waiting-for-swap {
 	}

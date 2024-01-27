@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map, withLatestFrom } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { CityWeather } from '../weather/model/cityWeather';
@@ -27,6 +27,7 @@ import { TuiAvatarModule } from '@taiga-ui/kit';
 		TuiHostedDropdownModule,
 		TuiAvatarModule,
 	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
 	constructor(

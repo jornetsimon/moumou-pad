@@ -12,6 +12,10 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CroquettesService } from '../croquettes.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { NgxVibrationService } from 'ngx-vibration';
+import { SharedModule } from '../shared/shared.module';
+import { TvModule } from '../tv/tv.module';
+import { MealModule } from './meal/meal.module';
+import { MealComponent } from './meal/meal.component';
 
 const moumouEscapeDay = new Date(2023, 7, 20);
 
@@ -20,6 +24,8 @@ const moumouEscapeDay = new Date(2023, 7, 20);
 	templateUrl: './planning.component.html',
 	styleUrls: ['./planning.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	standalone: true,
+	imports: [SharedModule, TvModule, MealModule, MealComponent],
 })
 export class PlanningComponent {
 	meals$: Observable<Meal[]> = combineLatest([

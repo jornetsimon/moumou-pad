@@ -28,6 +28,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { NgxVibrationService } from 'ngx-vibration';
 import { MatDialog } from '@angular/material/dialog';
+import { TuiAccordionModule } from '@taiga-ui/kit';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { FlexModule } from '@angular/flex-layout';
+import { TuiButtonModule, TuiHintModule } from '@taiga-ui/core';
 
 @UntilDestroy()
 @Component({
@@ -35,6 +40,7 @@ import { MatDialog } from '@angular/material/dialog';
 	templateUrl: './meal.component.html',
 	styleUrls: ['./meal.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	standalone: true,
 	animations: [
 		collapseOnLeaveAnimation({
 			duration: 250,
@@ -42,6 +48,15 @@ import { MatDialog } from '@angular/material/dialog';
 		expandOnEnterAnimation({
 			duration: 400,
 		}),
+	],
+	imports: [
+		CommonModule,
+		TuiAccordionModule,
+		MatIconModule,
+		FlexModule,
+		CdkDrag,
+		TuiHintModule,
+		TuiButtonModule,
 	],
 })
 export class MealComponent implements AfterViewInit {
