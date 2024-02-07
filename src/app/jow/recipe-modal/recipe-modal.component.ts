@@ -1,8 +1,12 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { Recipe } from '../../model/receipe';
 import { JowService } from '../state/jow.service';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { constructAssetUrl, constructRecipeUrl } from '../util';
+import { TuiButtonModule, TuiDialogContext } from '@taiga-ui/core';
+import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
+import { CommonModule } from '@angular/common';
+import { TuiLetModule } from '@taiga-ui/cdk';
+import { MatIconModule } from '@angular/material/icon';
 
 export interface RecipeModalData {
 	recipe: Recipe;
@@ -14,21 +18,22 @@ export interface RecipeModalData {
 	templateUrl: './recipe-modal.component.html',
 	styleUrls: ['./recipe-modal.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [CommonModule, TuiLetModule, MatIconModule, TuiButtonModule],
+	standalone: true,
 })
 export class RecipeModalComponent {
 	constructor(
-		public dialogRef: MatDialogRef<RecipeModalComponent, RecipeModalData>,
-		@Inject(MAT_DIALOG_DATA) public data: RecipeModalData,
+		@Inject(POLYMORPHEUS_CONTEXT)
+		private readonly context: TuiDialogContext<Recipe | undefined, RecipeModalData>,
 		@Inject(JowService) public jowService: JowService
 	) {}
 
+	readonly data = this.context.data;
+
 	protected readonly constructAssetUrl = constructAssetUrl;
-
-	addToMeal() {}
-
-	closeModal() {
-		this.dialogRef.close();
-	}
-
 	protected readonly constructRecipeUrl = constructRecipeUrl;
+
+	addToMeal() {
+		this.context.completeWith(this.data.recipe);
+	}
 }

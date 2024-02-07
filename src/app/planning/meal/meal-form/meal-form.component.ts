@@ -3,6 +3,8 @@ import {
 	ChangeDetectorRef,
 	Component,
 	EventEmitter,
+	Inject,
+	Injector,
 	Input,
 	OnChanges,
 	Output,
@@ -29,6 +31,7 @@ import {
 } from '@taiga-ui/kit';
 import {
 	TuiButtonModule,
+	TuiDialogService,
 	TuiErrorModule,
 	TuiHintModule,
 	TuiTextfieldControllerModule,
@@ -39,7 +42,11 @@ import { constructAssetUrl } from '../../../jow/util';
 import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { RecipeExplorerComponent } from './recipe-explorer/recipe-explorer.component';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { tap } from 'rxjs/operators';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
 	selector: 'cb-meal-form',
 	templateUrl: './meal-form.component.html',
@@ -71,7 +78,9 @@ export class MealFormComponent implements OnChanges {
 		private readonly jowService: JowService,
 		private readonly dialog: MatDialog,
 		private readonly cd: ChangeDetectorRef,
-		public readonly sanitizerService: RenderService
+		public readonly sanitizerService: RenderService,
+		@Inject(Injector) private readonly injector: Injector,
+		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
 	) {}
 
 	@Input() meal: Meal | undefined;
@@ -151,19 +160,25 @@ export class MealFormComponent implements OnChanges {
 	}
 
 	openRecipeModal(recipe: Recipe) {
-		const dialogRef = this.dialog.open(RecipeModalComponent, {
-			data: {
-				recipe,
-				isSelected: this.jowRecipe && this.jowRecipe._id === recipe._id,
-			},
-			autoFocus: false,
-		});
-
-		dialogRef.afterClosed().subscribe((result: Recipe | undefined) => {
-			if (result) {
-				this.onRecipeSelected(result);
-			}
-		});
+		this.dialogs
+			.open<Recipe | undefined>(
+				new PolymorpheusComponent(RecipeModalComponent, this.injector),
+				{
+					data: {
+						recipe,
+						isSelected: !!(this.jowRecipe && this.jowRecipe._id === recipe._id),
+					},
+				}
+			)
+			.pipe(
+				tap((recipe) => {
+					if (recipe) {
+						this.onRecipeSelected(recipe);
+					}
+				}),
+				untilDestroyed(this)
+			)
+			.subscribe();
 	}
 
 	onRecipeSelected(recipe: Recipe) {

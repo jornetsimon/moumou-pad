@@ -1,5 +1,13 @@
-import { NgDompurifySanitizer } from "@tinkoff/ng-dompurify";
-import { TuiAlertModule, TuiDataListModule, TuiDialogModule, TuiHostedDropdownModule, TuiRootModule, TuiSvgModule, TUI_SANITIZER } from '@taiga-ui/core';
+import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
+import {
+	TUI_SANITIZER,
+	TuiAlertModule,
+	TuiDataListModule,
+	TuiDialogModule,
+	TuiHostedDropdownModule,
+	TuiRootModule,
+	TuiSvgModule,
+} from '@taiga-ui/core';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
@@ -8,7 +16,6 @@ import { SharedModule } from './shared/shared.module';
 import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RecipeModalComponent } from './jow/recipe-modal/recipe-modal.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AppRoutingModule } from './app-routing.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -28,7 +35,7 @@ import { TuiAvatarModule, TuiSelectModule } from '@taiga-ui/kit';
 registerLocaleData(fr);
 
 @NgModule({
-	declarations: [AppComponent, RecipeModalComponent],
+	declarations: [AppComponent],
 	imports: [
 		BrowserModule,
 		provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
@@ -79,8 +86,8 @@ registerLocaleData(fr);
 		provideHotToastConfig({
 			position: 'bottom-center',
 		}),
-        {provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}
-    ],
+		{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer },
+	],
 	bootstrap: [AppComponent],
 	exports: [],
 })

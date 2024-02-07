@@ -1,61 +1,49 @@
-<mat-dialog-content>
-	<mat-card class="card" *ngIf="data.recipe as recipe">
-		<img
-			mat-card-image
-			[src]="constructAssetUrl(recipe.posterUrl || recipe.editorialPictureUrl)"
-			class="header-image"
-		/>
-		<div style="padding: 0 10px">
-			<mat-card-content>
-				<div class="title">{{ recipe.title }}</div>
-				<div class="description">
-					{{ recipe.description }}
-				</div>
-				<mat-card-actions>
-					<a
-						mat-stroked-button
-						color="primary"
-						[href]="constructRecipeUrl(recipe._id)"
-						target="_blank"
-					>
-						Consulter sur Jow
-					</a>
-					<button
-						*ngIf="!data.isSelected"
-						mat-raised-button
-						color="accent"
-						(click)="addToMeal()"
-						[mat-dialog-close]="recipe"
-					>
-						Ajouter au menu
-					</button>
-				</mat-card-actions>
-				<div class="separator"></div>
-				<div class="ingredients">
-					<div *ngFor="let constituent of recipe.constituents">
-						<img
-							[src]="constructAssetUrl(constituent.ingredient.imageUrl)"
-							[alt]="constituent.ingredient.name"
-						/>
-						<div>
-							{{ constituent.ingredient.name }}
-						</div>
-					</div>
-				</div>
-				<div class="properties" [style.color]="recipe.smartColor">
-					<div matTooltip="Préparation">
-						<mat-icon>blender</mat-icon>
-						<div>
-							{{ recipe.preparationTime + recipe.preparationExtraTimePerCover * 2 }}
-							min
-						</div>
-					</div>
-					<div matTooltip="Cuisson">
-						<mat-icon>microwave</mat-icon>
-						<div>{{ recipe.cookingTime }} min</div>
-					</div>
-				</div>
-			</mat-card-content>
+<ng-container *tuiLet="data.recipe as recipe">
+	<img
+		[src]="constructAssetUrl(recipe.posterUrl || recipe.editorialPictureUrl)"
+		class="rounded-2xl"
+	/>
+	<div style="padding: 0 10px">
+		<div class="tui-text_h2">{{ recipe.title }}</div>
+		<div class="tui-text_body-l">
+			{{ recipe.description }}
 		</div>
-	</mat-card>
-</mat-dialog-content>
+
+		<div class="aligner gap-4">
+			<a tuiButton [href]="constructRecipeUrl(recipe._id)" target="_blank">
+				Consulter sur Jow
+			</a>
+
+			@if (!data.isSelected) {
+				<button tuiButton appearance="accent" (click)="addToMeal()">Ajouter au menu</button>
+			}
+		</div>
+
+		<div class="separator"></div>
+
+		<div class="ingredients">
+			<div *ngFor="let constituent of recipe.constituents">
+				<img
+					[src]="constructAssetUrl(constituent.ingredient.imageUrl)"
+					[alt]="constituent.ingredient.name"
+				/>
+				<div>
+					{{ constituent.ingredient.name }}
+				</div>
+			</div>
+		</div>
+		<div class="properties" [style.color]="recipe.smartColor">
+			<div matTooltip="Préparation">
+				<mat-icon>blender</mat-icon>
+				<div>
+					{{ recipe.preparationTime + recipe.preparationExtraTimePerCover * 2 }}
+					min
+				</div>
+			</div>
+			<div matTooltip="Cuisson">
+				<mat-icon>microwave</mat-icon>
+				<div>{{ recipe.cookingTime }} min</div>
+			</div>
+		</div>
+	</div>
+</ng-container>
