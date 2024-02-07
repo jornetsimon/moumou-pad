@@ -82,7 +82,7 @@
 				>
 					<div>
 						<div fxLayout="column">
-							<div class="tui-text_body-l tui-text_bold">
+							<div class="tui-text_body-l tui-text_bold text-[20px]">
 								<ng-container *ngIf="header?.name; else noMealTpl">
 									{{ header?.name }}
 								</ng-container>
@@ -114,11 +114,11 @@
 		<div>
 			<div *ngIf="(editMode$ | async) || editMode" [@expandOnEnter] [@collapseOnLeave]>
 				<div class="form-container">
-					<!--<cb-meal-form
+					<cb-meal-form
 						[meal]="meal"
 						[isReadonly]="isReadonly"
 						(mealSaved)="afterSave()"
-					></cb-meal-form>-->
+					></cb-meal-form>
 				</div>
 			</div>
 		</div>

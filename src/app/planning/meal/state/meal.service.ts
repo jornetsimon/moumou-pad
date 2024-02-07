@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MealsStore } from './meals.store';
 import { AppQuery } from '../../../../state/app.query';
 import { Meal } from './meal.model';
-import { mapUndefinedToNull } from '../../../../utils/mapUndefinedToNull';
+import { mapUndefinedToNull } from '../../../../utils/map-undefined-to-null';
 import {
 	collection,
 	collectionData,

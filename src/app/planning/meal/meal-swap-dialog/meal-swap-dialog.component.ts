@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { Meal } from '../state/meal.model';
-import { JowService } from '../../../jow/state/jow.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { constructAssetUrl } from '../../../jow/util';
 
 @Component({
 	selector: 'cb-meal-swap-dialog',
@@ -11,9 +11,10 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class MealSwapDialogComponent {
 	constructor(
 		public dialogRef: MatDialogRef<MealSwapDialogComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: { from: Meal; to: Meal },
-		public jowService: JowService
+		@Inject(MAT_DIALOG_DATA) public data: { from: Meal; to: Meal }
 	) {}
+
+	protected readonly constructAssetUrl = constructAssetUrl;
 
 	cancel() {
 		this.dialogRef.close();

@@ -1,0 +1,111 @@
+<tui-island>
+	<div class="flex flex-col gap-4">
+		<div class="flex justify-between items-center">
+			<div class="grow">
+				<tui-input
+					[formControl]="searchCtrl"
+					[tuiTextfieldCleaner]="true"
+					[tuiTextfieldIconLeft]="iconContent"
+					*tuiLet="recipeSearchResults$ | async as recipeSearchResults"
+				>
+					Rechercher une recette sur Jow
+					<input placeholder="Mot-clé" tuiTextfield autocomplete="off" />
+
+					@if (recipeSearchResults?.length) {
+						<tui-data-list *tuiDataList [emptyContent]="emptyContent$ | async">
+							<button
+								*ngFor="let item of recipeSearchResults"
+								tuiOption
+								size="xs"
+								[value]="item"
+								(click)="selectRecipe.next(item)"
+							>
+								<div class="recipe-option">
+									<img
+										alt="Recipe preview"
+										class="recipe-option-image"
+										[src]="constructAssetUrl(item.imageUrl)"
+									/>
+									<span>{{ item.title }}</span>
+								</div>
+							</button>
+						</tui-data-list>
+					}
+				</tui-input>
+
+				<ng-template #iconContent>
+					<tui-loader [showLoader]="(isLoadingSearchResults$ | async) ?? false">
+						@if (!(isLoadingSearchResults$ | async)) {
+							<tui-svg [src]="'tuiIconSearchLarge'"></tui-svg>
+						}
+					</tui-loader>
+				</ng-template>
+			</div>
+
+			<tui-svg
+				src="assets/jow-logo.svg"
+				style="height: 32px; width: 32px; margin-left: 15px"
+			></tui-svg>
+		</div>
+
+		<div>
+			<div class="text-lg text-[#737373] mb-[10px]">Quelques idées de recettes</div>
+
+			<div class="suggestion-section flex items-stretch gap-[10px]">
+				<div class="suggestions flex flex-wrap gap-[10px]">
+					@if (alreadyUsedRecipeSuggestions$ | async; as suggestions) {
+						<tui-chip
+							*ngFor="let recipe of suggestions"
+							appearance=""
+							(click)="openRecipeModal.next(recipe)"
+							[style.background-image]="
+								'url(\'' + constructAssetUrl(recipe.imageUrl) + '\')'
+							"
+							[style.background-color]="recipe.smartColor"
+						>
+							<div class="title">
+								<div>{{ recipe.title }}</div>
+								<div class="recipe-use-note">essayé {{ recipe.useCount }} fois</div>
+							</div>
+						</tui-chip>
+					} @else {
+						<ng-container *ngTemplateOutlet="suggestionSkeleton"></ng-container>
+					}
+				</div>
+				<div class="flex-none flex justify-end items-center">
+					<span>On remet ça</span>
+				</div>
+			</div>
+
+			<div style="margin: 8px 0"></div>
+
+			<div class="suggestion-section flex items-stretch gap-[10px]">
+				<div class="suggestions flex flex-wrap gap-[10px]">
+					@if (recipeIdeas$ | async; as recipeIdeas) {
+						<tui-chip
+							*ngFor="let recipe of recipeIdeas"
+							appearance=""
+							(click)="openRecipeModal.next(recipe)"
+							[style.background-image]="
+								'url(\'' + constructAssetUrl(recipe.imageUrl) + '\')'
+							"
+							[style.background-color]="recipe.smartColor"
+						>
+							<div class="title">{{ recipe.title }}</div>
+						</tui-chip>
+					} @else {
+						<ng-container *ngTemplateOutlet="suggestionSkeleton"></ng-container>
+					}
+				</div>
+				<div class="flex-none flex justify-end items-center">
+					<span>Nouvelles recettes</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</tui-island>
+
+<ng-template #suggestionSkeleton>
+	<tui-chip class="tui-skeleton tui-skeleton_text w-full">This is mock recipe</tui-chip>
+	<tui-chip class="tui-skeleton tui-skeleton_text">This is mock recipe</tui-chip>
+</ng-template>

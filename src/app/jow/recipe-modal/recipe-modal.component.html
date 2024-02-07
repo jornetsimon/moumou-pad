@@ -2,7 +2,7 @@
 	<mat-card class="card" *ngIf="data.recipe as recipe">
 		<img
 			mat-card-image
-			[src]="jowService.constructAssetUrl(recipe.posterUrl || recipe.editorialPictureUrl)"
+			[src]="constructAssetUrl(recipe.posterUrl || recipe.editorialPictureUrl)"
 			class="header-image"
 		/>
 		<div style="padding: 0 10px">
@@ -15,7 +15,7 @@
 					<a
 						mat-stroked-button
 						color="primary"
-						[href]="jowService.constructRecipeUrl(recipe._id)"
+						[href]="constructRecipeUrl(recipe._id)"
 						target="_blank"
 					>
 						Consulter sur Jow
@@ -34,7 +34,7 @@
 				<div class="ingredients">
 					<div *ngFor="let constituent of recipe.constituents">
 						<img
-							[src]="jowService.constructAssetUrl(constituent.ingredient.imageUrl)"
+							[src]="constructAssetUrl(constituent.ingredient.imageUrl)"
 							[alt]="constituent.ingredient.name"
 						/>
 						<div>

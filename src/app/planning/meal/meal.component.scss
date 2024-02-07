@@ -129,7 +129,7 @@ $meal-color: $primary;
 
 	.form-container {
 		border-radius: 5px;
-		padding: 30px;
+		padding: 30px 30px 15px 30px;
 		margin: 10px 0 0 0;
 		background-color: lighten($meal-color, 50%);
 	}

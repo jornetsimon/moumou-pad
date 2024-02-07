@@ -1,0 +1,59 @@
+<div class="selected-recipe-intro" [style.background-color]="jowRecipe.smartColor">
+	Recette sélectionnée
+</div>
+<div class="selected-recipe" [style.border-color]="jowRecipe.smartColor">
+	<div fxLayout="column" fxLayoutAlign="start center" [style.color]="jowRecipe.smartColor">
+		<img
+			class="preview"
+			[src]="constructAssetUrl(jowRecipe.imageUrl)"
+			[alt]="jowRecipe.title"
+			tuiRipple
+			(click)="openRecipeModal.next()"
+		/>
+		<div class="title">{{ jowRecipe.title }}</div>
+		<div class="description">{{ jowRecipe.description }}</div>
+		<div class="properties">
+			<div tuiHint="Préparation">
+				<mat-icon>blender</mat-icon>
+				<div>
+					{{ jowRecipe.preparationTime + jowRecipe.preparationExtraTimePerCover * 2 }}
+					min
+				</div>
+			</div>
+			<div tuiHint="Cuisson">
+				<mat-icon>microwave</mat-icon>
+				<div>{{ jowRecipe.cookingTime }} min</div>
+			</div>
+		</div>
+	</div>
+
+	<hr class="my-4" />
+
+	<div class="aligner gap-2 py-2">
+		<button
+			appearance="custom"
+			tuiButton
+			type="button"
+			size="s"
+			class="!rounded-[5px] !font-bold"
+			style="border: 1px solid"
+			[style.border-color]="jowRecipe.smartColor"
+			[style.color]="jowRecipe.smartColor"
+			(click)="openRecipeModal.next()"
+		>
+			Voir plus
+		</button>
+		<button
+			*ngIf="!isReadonly"
+			appearance="custom"
+			tuiHint="Retirer la recette"
+			tuiIconButton
+			type="button"
+			size="s"
+			[style.color]="jowRecipe.smartColor"
+			(click)="removeRecipe.next()"
+		>
+			<mat-icon>delete</mat-icon>
+		</button>
+	</div>
+</div>

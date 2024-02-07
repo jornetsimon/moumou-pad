@@ -1,0 +1,70 @@
+.jow-recipe-search-field {
+	width: 100%;
+
+	::ng-deep .mat-form-field-flex {
+		padding: 0;
+	}
+}
+
+.recipe-option {
+	@apply flex items-center;
+	font-size: 14px;
+
+	img {
+		vertical-align: middle;
+		margin-right: 8px;
+		height: 40px;
+	}
+}
+
+.suggestions {
+	padding: 5px 0;
+	color: grey;
+
+	tui-chip {
+		color: white;
+		font-size: smaller;
+		font-weight: 500;
+		line-height: 1.1em;
+		text-align: center;
+		padding: 7px 12px;
+
+		background-repeat: no-repeat, no-repeat !important;
+		background-position: left -30px center;
+		background-size: 90px;
+
+		height: auto;
+
+		&:hover {
+			cursor: pointer;
+		}
+
+		.title {
+			@apply text-balance;
+			text-align: left;
+			margin-left: 50px;
+		}
+		.recipe-use-note {
+			font-size: 0.8em;
+			font-weight: normal;
+		}
+	}
+}
+
+.suggestion-section {
+	.suggestions {
+		border-right: 1px solid #e3e3e3;
+		border-radius: 15px;
+		padding: 5px 15px 5px 0;
+	}
+
+	& > *:last-child {
+		span {
+			font-size: 0.85em;
+			border: 1px solid #e3e3e3;
+			color: #ababab;
+			border-radius: 5px;
+			padding: 0.2em 0.5em;
+		}
+	}
+}

@@ -6,104 +6,7 @@
 	}
 }
 
-.jow-recipe-search-field {
-	width: 100%;
-
-	::ng-deep .mat-form-field-flex {
-		padding: 0;
-	}
-}
-
-.suggestions {
-	padding: 5px 0;
-	color: grey;
-
-	mat-chip {
-		font-size: smaller;
-		line-height: 1.1em;
-		text-align: center;
-
-		background-repeat: no-repeat, no-repeat !important;
-		background-position: left -30px center;
-		background-size: 90px;
-
-		height: auto;
-
-		&:hover {
-			cursor: pointer;
-		}
-
-		.title {
-			text-align: left;
-			margin-left: 50px;
-		}
-		.recipe-use-note {
-			font-size: 0.8em;
-			font-weight: normal;
-		}
-	}
-}
-
-.recipe-option-image {
-	vertical-align: middle;
-	margin-right: 8px;
-	height: 40px;
-}
-
-$selected-recipe-border-radius: 16px;
-.selected-recipe-intro {
-	width: 100%;
-	background: #6edea2;
-	color: white;
-	border-radius: $selected-recipe-border-radius $selected-recipe-border-radius 0 0;
-	padding: 0.5em 0;
-	text-align: center;
-	font-weight: 500;
-	text-transform: uppercase;
-	font-size: smaller;
-	box-shadow: 0 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%),
-		0px 1px 3px 0px rgb(0 0 0 / 12%);
-}
-.selected-recipe {
-	border-radius: 0 0 $selected-recipe-border-radius $selected-recipe-border-radius;
-	color: $primary;
-	text-align: center;
-	.preview {
-		max-width: 250px;
-		&:hover {
-			cursor: pointer;
-		}
-	}
-	.title {
-		font-weight: bold;
-		font-size: large;
-		margin-bottom: 0.75em;
-	}
-	.properties {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin-top: 15px;
-		font-size: 12px;
-
-		& > div {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-
-			&:not(:last-child) {
-				margin-right: 15px;
-			}
-		}
-	}
-	.actions {
-		margin: 10px 0;
-	}
-}
-
 .extras {
-	margin: 20px 0;
-
 	mat-chip {
 		user-select: none;
 
@@ -114,15 +17,15 @@ $selected-recipe-border-radius: 16px;
 		}
 	}
 
+	tui-chip {
+		font-weight: 500;
+	}
+
 	.mat-standard-chip:focus::after {
 		opacity: 0;
 	}
 
 	.buttons {
-		$extraButtonColor: grey;
-		margin-top: 15px;
-		color: $extraButtonColor;
-
 		button,
 		::ng-deep .mat-button-wrapper {
 			display: flex;
@@ -139,13 +42,20 @@ $selected-recipe-border-radius: 16px;
 			}
 		}
 
-		button {
-			border: 1px solid rgba($extraButtonColor, 0.25);
+		tui-chip {
+			font-size: 12px;
+			padding: 0.5em;
 			border-radius: 5px;
-			transition: background-color 0.5s, color 0.5s;
+			box-shadow: none;
 
-			&:hover {
-				background-color: rgba($extraButtonColor, 0.1);
+			input {
+				border-radius: 5px;
+			}
+
+			mat-icon {
+				font-size: 18px;
+				height: 1em;
+				width: 1em;
 			}
 
 			&.enabled {
@@ -160,31 +70,23 @@ $selected-recipe-border-radius: 16px;
 	}
 }
 
-.actions {
-	margin-top: 15px;
-	padding-top: 15px;
-	border-top: 1px solid rgb(0 0 0 / 10%);
-}
-
 .form-actions {
 	position: sticky;
 	bottom: 0;
 	left: 0;
 	width: 100%;
 	padding-top: 15px;
+	padding-bottom: 15px;
 	box-shadow: 0 2px 0 2px ghostwhite;
 	background: ghostwhite;
 	z-index: 2;
-}
 
-.alternate-dish .mat-divider {
-	margin-bottom: 20px;
-	position: initial;
+	border-top: 1px solid;
+	@apply mt-6 mb-2 border-gray-200;
 }
 
 .memo {
 	$color: #f5e56b;
-	margin: 25px 10% 35px 10%;
 	padding: 20px 30px;
 	background-color: $color;
 	transform: rotate(359deg);
@@ -207,23 +109,5 @@ $selected-recipe-border-radius: 16px;
 
 	&:hover {
 		background-color: darken($color, 10%);
-	}
-}
-
-.suggestion-section {
-	.suggestions {
-		border-right: 1px solid #e3e3e3;
-		border-radius: 15px;
-		padding: 5px 15px 5px 0;
-	}
-
-	& > *:last-child {
-		span {
-			font-size: 0.85em;
-			border: 1px solid #e3e3e3;
-			color: #ababab;
-			border-radius: 5px;
-			padding: 0.2em 0.5em;
-		}
 	}
 }

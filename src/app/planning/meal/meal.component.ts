@@ -31,6 +31,8 @@ import { FlexModule } from '@angular/flex-layout';
 import { TuiButtonModule, TuiHintModule } from '@taiga-ui/core';
 import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
+import { MealFormComponent } from './meal-form/meal-form.component';
+import { constructAssetUrl } from '../../jow/util';
 
 @UntilDestroy()
 @Component({
@@ -57,6 +59,7 @@ import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 		NgxVibrationModule,
 		TuiIslandModule,
 		TuiRippleModule,
+		MealFormComponent,
 	],
 })
 export class MealComponent implements AfterViewInit {
@@ -137,7 +140,7 @@ export class MealComponent implements AfterViewInit {
 		map(([theme, meal]) => {
 			let url;
 			if (meal.jowRecipe?.imageUrl) {
-				url = this.jowService.constructAssetUrl(meal.jowRecipe!.imageUrl);
+				url = constructAssetUrl(meal.jowRecipe!.imageUrl);
 			} else {
 				if (theme?.backgroundImage) {
 					url = theme.backgroundImage;

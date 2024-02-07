@@ -3628,6 +3628,13 @@
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
   integrity sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==
 
+"@taiga-ui/addon-commerce@^3.63.0":
+  version "3.63.0"
+  resolved "https://registry.yarnpkg.com/@taiga-ui/addon-commerce/-/addon-commerce-3.63.0.tgz#4194e27e292074276ba97a40eb0f863018ae4838"
+  integrity sha512-7SBbKzhjeJtOpPW55UU2+TZFj5HxZ0JcZqFP71zfqH0TcbY5LxAoX0nxZPcaDMRv8tGxsQyJVrW1P7fXyjWnhA==
+  dependencies:
+    tslib "2.6.2"
+
 "@taiga-ui/addon-mobile@^3.62.0":
   version "3.63.0"
   resolved "https://registry.yarnpkg.com/@taiga-ui/addon-mobile/-/addon-mobile-3.63.0.tgz#6aa377662c9107a97ff10efb5066f0b0898f92b4"
@@ -3656,6 +3663,13 @@
   integrity sha512-yNqIFvoSGedEaVpbmLRJe7ccDoGgCcqutfQLerFrLuncCGIyWj8qnkD86u7UUIB716c9Mb0I0BeFqImyAGQwRQ==
   dependencies:
     "@taiga-ui/i18n" "^3.62.0"
+    tslib "2.6.2"
+
+"@taiga-ui/experimental@^3.63.0":
+  version "3.63.0"
+  resolved "https://registry.yarnpkg.com/@taiga-ui/experimental/-/experimental-3.63.0.tgz#e9f37c96e2068dceafe4329e6f4b7b50dadcc378"
+  integrity sha512-qparJVad9YxsehQLSCVVh+rlLZT0TbJaY3503t1SuRle4grP96hK84mwKgn14DvRRAxTliLU7fD+4kPF8RDkog==
+  dependencies:
     tslib "2.6.2"
 
 "@taiga-ui/i18n@^3.62.0":

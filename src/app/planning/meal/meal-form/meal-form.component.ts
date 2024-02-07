@@ -8,101 +8,97 @@ import {
 	Output,
 	SimpleChanges,
 } from '@angular/core';
-import { FormControl, UntypedFormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MealService } from '../state/meal.service';
 import { createMeal, Meal } from '../state/meal.model';
-import { debounceTime, filter, map, switchMap, tap } from 'rxjs/operators';
-import { pickBy, shuffle } from 'lodash-es';
+import { pickBy } from 'lodash-es';
 import { Recipe } from '../../../model/receipe';
 import { JowQuery } from '../../../jow/state/jow.query';
-import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
-import { combineLatest, Observable, of } from 'rxjs';
 import { JowService } from '../../../jow/state/jow.service';
 import { NoteComponent } from './note/note.component';
 import { RenderService } from '../../../shared/render.service';
 import { MealQuery } from '../state/meal.query';
-import { normalizeString } from '../../../../../functions/src/helpers/normalize-string';
+import { SharedModule } from '../../../shared/shared.module';
+import { CommonModule } from '@angular/common';
+import {
+	TuiDataListWrapperModule,
+	TuiFieldErrorPipeModule,
+	TuiFilterByInputPipeModule,
+	TuiInputModule,
+	TuiIslandModule,
+} from '@taiga-ui/kit';
+import {
+	TuiButtonModule,
+	TuiErrorModule,
+	TuiHintModule,
+	TuiTextfieldControllerModule,
+} from '@taiga-ui/core';
+import { TuiChipModule } from '@taiga-ui/experimental';
+import { RecipeCardComponent } from './recipe-card/recipe-card.component';
+import { constructAssetUrl } from '../../../jow/util';
+import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
 import { MatDialog } from '@angular/material/dialog';
+import { RecipeExplorerComponent } from './recipe-explorer/recipe-explorer.component';
 
 @Component({
 	selector: 'cb-meal-form',
 	templateUrl: './meal-form.component.html',
 	styleUrls: ['./meal-form.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	standalone: true,
+	imports: [
+		CommonModule,
+		SharedModule,
+		TuiInputModule,
+		TuiErrorModule,
+		TuiFieldErrorPipeModule,
+		TuiTextfieldControllerModule,
+		TuiDataListWrapperModule,
+		TuiFilterByInputPipeModule,
+		TuiIslandModule,
+		TuiButtonModule,
+		TuiHintModule,
+		TuiChipModule,
+		RecipeCardComponent,
+		RecipeExplorerComponent,
+	],
 })
 export class MealFormComponent implements OnChanges {
+	constructor(
+		private readonly mealQuery: MealQuery,
+		private readonly mealService: MealService,
+		private readonly jowQuery: JowQuery,
+		private readonly jowService: JowService,
+		private readonly dialog: MatDialog,
+		private readonly cd: ChangeDetectorRef,
+		public readonly sanitizerService: RenderService
+	) {}
+
 	@Input() meal: Meal | undefined;
 	@Input() isReadonly = false;
 	@Output() mealSaved = new EventEmitter<void>();
-	loadingSearchResults = false;
 
-	extrasFg = new UntypedFormGroup({
+	extrasFg = new FormGroup({
 		croquettes: new FormControl<boolean>(false, { nonNullable: true }),
 		freezer: new FormControl<boolean>(false, { nonNullable: true }),
 		outOfHome: new FormControl<boolean>(false, { nonNullable: true }),
 		prepared: new FormControl<boolean>(false, { nonNullable: true }),
 	});
-	form = new UntypedFormGroup({
+	form = new FormGroup({
 		name: new FormControl<string | undefined>(undefined, { nonNullable: true }),
-		searchTerm: new FormControl<string | undefined>(undefined, { nonNullable: true }),
 		extras: this.extrasFg,
-		alternateDish: new UntypedFormGroup({
-			name: new FormControl<string | undefined>(undefined, { nonNullable: true }),
+		alternateDish: new FormGroup({
+			name: new FormControl<string | null>(null, { nonNullable: true }),
 			show: new FormControl<boolean>(false, { nonNullable: true }),
 		}),
 	});
 
 	nameSuggestions$ = this.mealQuery.nameSuggestions$;
-	filteredNameSuggestion$ = combineLatest([
-		this.nameSuggestions$,
-		this.form.get('name')!.valueChanges,
-	]).pipe(
-		map(([suggestions, inputName]) =>
-			suggestions.filter((s) => normalizeString(s).includes(normalizeString(inputName)))
-		)
-	);
-	alreadyUsedRecipeSuggestions$ = this.mealQuery.mostUsedRecipes$.pipe(
-		map((recipes): Array<Recipe & { useCount: number }> => shuffle(recipes).slice(0, 3))
-	);
-	recipeIdeas$ = combineLatest([
-		this.jowQuery.select('featured'),
-		this.alreadyUsedRecipeSuggestions$,
-	]).pipe(
-		map(([featuredRecipes, alreadyUsedRecipeSuggestions]): Recipe[] =>
-			shuffle(
-				featuredRecipes.filter(
-					(recipe) => !alreadyUsedRecipeSuggestions.find((r) => r._id === recipe._id)
-				)
-			).splice(0, 2)
-		)
-	);
 
-	recipeSearchResults$: Observable<Recipe[]> = this.form.get('searchTerm')!.valueChanges.pipe(
-		filter((term) => typeof term === 'string'),
-		debounceTime(500),
-		tap(() => {
-			this.loadingSearchResults = true;
-			this.cd.detectChanges();
-		}),
-		switchMap((term) => (term ? this.jowService.search(term) : of([]))),
-		tap(() => {
-			this.loadingSearchResults = false;
-			this.cd.detectChanges();
-		})
-	);
-	displayWithFn = (recipe: Recipe | undefined) => recipe?.title || '';
 	jowRecipe: Recipe | null = null;
 	recipeMemo: string | null = null;
 
-	constructor(
-		private mealQuery: MealQuery,
-		private mealService: MealService,
-		private jowQuery: JowQuery,
-		public dialog: MatDialog,
-		public jowService: JowService,
-		private cd: ChangeDetectorRef,
-		public sanitizerService: RenderService
-	) {}
+	readonly constructAssetUrl = constructAssetUrl;
 
 	ngOnChanges(changes: SimpleChanges) {
 		this.initializeForm();
@@ -120,7 +116,6 @@ export class MealFormComponent implements OnChanges {
 	initializeForm() {
 		this.form.patchValue({
 			name: this.meal?.name || '',
-			searchTerm: '',
 			extras: this.meal?.extras,
 			alternateDish: {
 				name: this.meal?.alternateDish?.name || null,
@@ -179,21 +174,7 @@ export class MealFormComponent implements OnChanges {
 
 	onRecipeRemoved() {
 		this.jowRecipe = null;
-		this.form.get('searchTerm')!.reset();
 		this.form.get('name')?.setValue('');
-	}
-
-	toggleExtra(formControlName: string) {
-		const control = this.extrasFg.get(formControlName);
-		if (!control) {
-			return;
-		}
-		const currentValue = !!control.value;
-		control.setValue(!currentValue);
-	}
-
-	showAlternateDish() {
-		this.form.get('alternateDish')!.get('show')?.setValue(true);
 	}
 
 	openNoteDialog() {
@@ -208,10 +189,5 @@ export class MealFormComponent implements OnChanges {
 			this.recipeMemo = note || null;
 			this.cd.detectChanges();
 		});
-	}
-
-	getArrayForNumber(number: number) {
-		// TODO: replace with NgForRepeat
-		return new Array(number);
 	}
 }

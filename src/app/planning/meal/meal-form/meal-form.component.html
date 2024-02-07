@@ -1,325 +1,127 @@
 <form [formGroup]="form" (ngSubmit)="saveMeal()">
-	<mat-form-field appearance="fill" class="width-100">
-		<mat-label>Nom du plat</mat-label>
-		<input
-			matInput
-			placeholder="Poulet poivrons, huevos rotos..."
-			formControlName="name"
-			autocomplete="off"
-			[disabled]="isReadonly"
-			[matAutocomplete]="nameSuggestionsAutocomplete"
-		/>
-		<mat-autocomplete #nameSuggestionsAutocomplete="matAutocomplete">
-			<mat-option *ngFor="let option of filteredNameSuggestion$ | async" [value]="option">
-				{{ option }}
-			</mat-option>
-		</mat-autocomplete>
-		<mat-icon matSuffix class="clear-icon" (click)="form.get('name')?.reset()">clear</mat-icon>
-	</mat-form-field>
+	<div class="flex flex-col gap-6">
+		<tui-input formControlName="name" [tuiTextfieldCleaner]="true">
+			Nom du plat
+			<input placeholder="Poulet poivrons, huevos rotos..." tuiTextfield autocomplete="off" />
 
-	<ng-container *ngIf="jowRecipe">
-		<div class="selected-recipe-intro" [style.background-color]="jowRecipe.smartColor">
-			Recette sélectionnée
-		</div>
-		<mat-card class="selected-recipe">
-			<div
-				fxLayout="column"
-				fxLayoutAlign="start center"
-				[style.color]="jowRecipe.smartColor"
-			>
-				<img
-					class="preview"
-					[src]="jowService.constructAssetUrl(jowRecipe.imageUrl)"
-					[alt]="jowRecipe.title"
-					mat-ripple
-					(click)="openRecipeModal(jowRecipe)"
-				/>
-				<div class="title">{{ jowRecipe.title }}</div>
-				<div class="description">{{ jowRecipe.description }}</div>
-				<div class="properties">
-					<div matTooltip="Préparation">
-						<mat-icon>blender</mat-icon>
-						<div>
-							{{
-								jowRecipe.preparationTime +
-									jowRecipe.preparationExtraTimePerCover * 2
-							}}
-							min
-						</div>
-					</div>
-					<div matTooltip="Cuisson">
-						<mat-icon>microwave</mat-icon>
-						<div>{{ jowRecipe.cookingTime }} min</div>
-					</div>
-				</div>
-			</div>
-			<mat-card-actions class="actions">
-				<button
-					mat-raised-button
-					type="button"
-					(click)="openRecipeModal(jowRecipe)"
-					[style.color]="jowRecipe.smartColor"
-				>
-					Voir plus
-				</button>
-				<button
-					mat-icon-button
-					type="button"
-					title="Retirer la recette"
-					[style.color]="jowRecipe.smartColor"
-					(click)="onRecipeRemoved()"
-					*ngIf="!isReadonly"
-				>
-					<mat-icon>delete</mat-icon>
-				</button>
-			</mat-card-actions>
-		</mat-card>
-	</ng-container>
+			<tui-data-list-wrapper
+				*tuiDataList
+				emptyContent="Aucun résultat"
+				size="xs"
+				[items]="(nameSuggestions$ | async) ?? [] | tuiFilterByInput"
+			></tui-data-list-wrapper>
+		</tui-input>
 
-	<mat-card *ngIf="!jowRecipe && !isReadonly">
-		<mat-card-content>
-			<div [fxLayoutAlign]="jowRecipe ? 'space-between center' : 'space-between start'">
-				<mat-form-field appearance="standard" class="jow-recipe-search-field">
-					<mat-label>
-						<ng-container *ngIf="!jowRecipe">
-							Rechercher une recette sur Jow
-						</ng-container>
-						<ng-container *ngIf="jowRecipe">
-							Trouver une autre recette Jow
-						</ng-container>
-					</mat-label>
-					<input
-						matInput
-						aria-label="State"
-						[matAutocomplete]="auto"
-						formControlName="searchTerm"
-						placeholder="Mot-clé"
-					/>
-					<mat-icon matSuffix>
-						<ng-container *ngIf="loadingSearchResults">
-							<mat-spinner [diameter]="20"></mat-spinner>
-						</ng-container>
-						<ng-container *ngIf="!loadingSearchResults"> search </ng-container>
-					</mat-icon>
-					<mat-autocomplete
-						#auto="matAutocomplete"
-						[displayWith]="displayWithFn"
-						(optionSelected)="onRecipeSelected($event.option.value)"
-					>
-						<mat-option
-							*ngFor="let recipe of recipeSearchResults$ | async"
-							[value]="recipe"
-						>
-							<img
-								alt="Recipe preview"
-								class="recipe-option-image"
-								[src]="jowService.constructAssetUrl(recipe.imageUrl)"
-							/>
-							<span style="font-size: 14px">{{ recipe.title }}</span>
-							<small *ngIf="recipe.difficulty >= 2">
-								|
-								<ng-container
-									*ngFor="let x of getArrayForNumber(recipe.difficulty)"
-								>
-									💪
-								</ng-container>
-							</small>
-						</mat-option>
-					</mat-autocomplete>
-				</mat-form-field>
-				<mat-icon
-					svgIcon="jow"
-					style="height: 32px; width: 32px; margin-left: 15px"
-				></mat-icon>
-			</div>
-			<div *ngIf="!form.get('name')!.value" style="margin-top: 10px">
-				<div style="font-size: medium; color: #737373; margin-bottom: 10px">
-					Quelques idées de recettes
-				</div>
-				<ng-container
-					*ngIf="alreadyUsedRecipeSuggestions$ | async as suggestions; else spinnerTpl"
-				>
-					<div
-						class="suggestion-section"
-						fxLayoutAlign="start stretch"
-						fxLayoutGap="10px"
-						*ngIf="suggestions.length"
-					>
-						<div
-							class="suggestions"
-							fxLayout="row wrap"
-							fxLayoutAlign="center center"
-							fxLayoutGap="10px"
-						>
-							<mat-chip-list>
-								<mat-chip
-									*ngFor="let recipe of suggestions"
-									color="accent"
-									selected
-									(click)="openRecipeModal(recipe)"
-									[style.background-image]="
-										'url(\'' +
-										jowService.constructAssetUrl(recipe.imageUrl) +
-										'\')'
-									"
-									[style.background-color]="recipe.smartColor"
-								>
-									<div class="title">
-										<div>{{ recipe.title }}</div>
-										<div class="recipe-use-note">
-											essayé {{ recipe.useCount }} fois
-										</div>
-									</div>
-								</mat-chip>
-							</mat-chip-list>
-						</div>
-						<div fxFlex="none" fxLayoutAlign="end center">
-							<span>On remet ça</span>
-						</div>
-					</div>
-				</ng-container>
-				<div style="margin: 8px 0"></div>
-				<div class="suggestion-section" fxLayoutAlign="start stretch" fxLayoutGap="10px">
-					<div
-						class="suggestions"
-						fxLayout="row wrap"
-						fxLayoutAlign="center center"
-						fxLayoutGap="10px"
-					>
-						<mat-chip-list *ngIf="recipeIdeas$ | async as recipeIdeas; else spinnerTpl">
-							<mat-chip
-								*ngFor="let recipe of recipeIdeas"
-								color="accent"
-								selected
-								(click)="openRecipeModal(recipe)"
-								[style.background-image]="
-									'url(\'' + jowService.constructAssetUrl(recipe.imageUrl) + '\')'
-								"
-								[style.background-color]="recipe.smartColor"
-							>
-								<div class="title">{{ recipe.title }}</div>
-							</mat-chip>
-						</mat-chip-list>
-					</div>
-					<div fxFlex="none" fxLayoutAlign="end center">
-						<span>Nouvelles recettes</span>
-					</div>
-				</div>
-			</div>
-		</mat-card-content>
-	</mat-card>
+		@if (jowRecipe) {
+			<cb-recipe-card
+				[jowRecipe]="jowRecipe"
+				[isReadonly]="isReadonly"
+				(openRecipeModal)="openRecipeModal(jowRecipe)"
+				(removeRecipe)="onRecipeRemoved()"
+			></cb-recipe-card>
+		}
 
-	<div
-		class="memo"
-		*ngIf="recipeMemo || meal?.recipeMemo"
-		[innerHTML]="sanitizerService.render(recipeMemo || meal?.recipeMemo || '')"
-		(click)="openNoteDialog()"
-	></div>
+		@if (!jowRecipe && !isReadonly) {
+			<cb-recipe-explorer
+				(selectRecipe)="onRecipeSelected($event)"
+				(openRecipeModal)="openRecipeModal($event)"
+			></cb-recipe-explorer>
+		}
 
-	<div
-		class="extras"
-		fxLayout="column"
-		fxLayoutAlign="start center"
-		formGroupName="extras"
-		[class.eyes-only-strict]="isReadonly"
-	>
-		<div>
-			<mat-chip-list multiple>
-				<mat-chip
-					color="accent"
-					(click)="toggleExtra('freezer')"
-					[selected]="extrasFg.get('freezer')!.value"
-				>
+		<div
+			class="memo mx-8 my-2"
+			*ngIf="recipeMemo || meal?.recipeMemo"
+			[innerHTML]="sanitizerService.render(recipeMemo || meal?.recipeMemo || '')"
+			(click)="openNoteDialog()"
+		></div>
+
+		<div
+			class="extras aligner-col gap-4"
+			formGroupName="extras"
+			[class.eyes-only-strict]="isReadonly"
+		>
+			<div class="aligner gap-2">
+				<tui-chip [appearance]="extrasFg.controls.freezer.value ? 'primary' : ''">
 					Congel ❄️
-				</mat-chip>
-				<mat-chip
-					color="accent"
-					(click)="toggleExtra('croquettes')"
-					[selected]="extrasFg.get('croquettes')!.value"
-				>
+					<input tuiChip type="checkbox" [formControl]="extrasFg.controls.freezer" />
+				</tui-chip>
+
+				<tui-chip [appearance]="extrasFg.controls.croquettes.value ? 'primary' : ''">
 					Croquettes 🐱
-				</mat-chip>
-			</mat-chip-list>
+					<input tuiChip type="checkbox" [formControl]="extrasFg.controls.croquettes" />
+				</tui-chip>
+			</div>
+			<div class="buttons aligner gap-[10px]">
+				<tui-chip
+					[class.out-of-home-enabled]="extrasFg.controls.outOfHome.value"
+					tuiHint="En dehors de la maison"
+					appearance=""
+				>
+					<mat-icon>location_city</mat-icon>
+					<input tuiChip type="checkbox" [formControl]="extrasFg.controls.outOfHome" />
+				</tui-chip>
+
+				<tui-chip
+					*ngIf="!form.controls.alternateDish.controls.show.value"
+					tuiHint="Ajouter un second plat"
+					appearance=""
+				>
+					<mat-icon>restaurant_menu</mat-icon>
+					<input
+						tuiChip
+						type="checkbox"
+						[formControl]="form.controls.alternateDish.controls.show"
+					/>
+				</tui-chip>
+
+				<tui-chip
+					*ngIf="!(recipeMemo || meal?.recipeMemo)"
+					tuiHint="Ajouter un mémo"
+					appearance=""
+					(click)="openNoteDialog()"
+				>
+					<mat-icon>edit_note</mat-icon>
+					<input tuiChip type="checkbox" />
+				</tui-chip>
+
+				<tui-chip
+					*ngIf="meal?.name"
+					[class.enabled]="extrasFg.controls.prepared.value"
+					appearance=""
+					[tuiHint]="
+						extrasFg.controls.prepared.value
+							? 'Marquer comme non préparé'
+							: 'Marquer comme préparé'
+					"
+				>
+					<mat-icon>task_alt</mat-icon>
+					<input
+						tuiChip
+						type="checkbox"
+						[formControl]="extrasFg.controls.prepared"
+						[ngxVibration]="[10, 200, 50, 100, 50]"
+					/>
+				</tui-chip>
+			</div>
 		</div>
-		<div class="buttons" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="10px">
-			<button
-				mat-icon-button
-				type="button"
-				matTooltip="En dehors de la maison"
-				[class.out-of-home-enabled]="extrasFg.get('outOfHome')!.value"
-				(click)="extrasFg.get('outOfHome')!.setValue(!extrasFg.get('outOfHome')!.value)"
+
+		@if (form.controls.alternateDish.controls.show.value) {
+			<tui-input
+				[formControl]="form.controls.alternateDish.controls.name"
+				[tuiTextfieldCleaner]="true"
 			>
-				<mat-icon>location_city</mat-icon>
-			</button>
-			<button
-				mat-icon-button
-				type="button"
-				*ngIf="!form.get('alternateDish')!.get('show')?.value"
-				matTooltip="Ajouter un second plat"
-				(click)="showAlternateDish()"
-			>
-				<mat-icon>restaurant_menu</mat-icon>
-			</button>
-			<button
-				mat-icon-button
-				type="button"
-				*ngIf="!(recipeMemo || meal?.recipeMemo)"
-				matTooltip="Ajouter un mémo"
-				(click)="openNoteDialog()"
-			>
-				<mat-icon>edit_note</mat-icon>
-			</button>
-			<button
-				mat-icon-button
-				type="button"
-				*ngIf="meal?.name"
-				[class.enabled]="extrasFg.get('prepared')!.value"
-				[matTooltip]="
-					extrasFg.get('prepared')!.value
-						? 'Marquer comme non préparé'
-						: 'Marquer comme préparé'
-				"
-				(click)="extrasFg.get('prepared')!.setValue(!extrasFg.get('prepared')!.value)"
-				[ngxVibration]="[10, 200, 50, 100, 50]"
-			>
-				<mat-icon>task_alt</mat-icon>
-			</button>
-		</div>
+				Second plat
+				<input
+					tuiTextfield
+					autocomplete="off"
+					placeholder="Poulet poivrons, huevos rotos..."
+					[disabled]="isReadonly"
+				/>
+			</tui-input>
+		}
 	</div>
 
-	<div
-		class="alternate-dish"
-		*ngIf="form.get('alternateDish')!.get('show')?.value"
-		fxLayout="column"
-		fxLayoutAlign="start center"
-		formGroupName="alternateDish"
-	>
-		<mat-divider></mat-divider>
-		<mat-form-field appearance="fill" class="width-100">
-			<mat-label>Nom du second plat</mat-label>
-			<input
-				matInput
-				placeholder="Poulet poivrons, huevos rotos..."
-				formControlName="name"
-				[disabled]="isReadonly"
-			/>
-			<mat-icon
-				matSuffix
-				class="clear-icon"
-				(click)="form.get('alternateDish')?.get('name')?.reset()"
-			>
-				clear
-			</mat-icon>
-		</mat-form-field>
-	</div>
-
-	<div fxLayoutAlign="center" class="actions form-actions" *ngIf="!isReadonly">
-		<button type="submit" mat-raised-button color="primary" [disabled]="form.invalid">
-			Enregistrer mon menu
-		</button>
+	<div class="form-actions aligner" *ngIf="!isReadonly">
+		<button tuiButton type="submit" [disabled]="form.invalid">Enregistrer mon menu</button>
 	</div>
 </form>
-
-<ng-template #spinnerTpl>
-	<mat-spinner [diameter]="30"></mat-spinner>
-</ng-template>
