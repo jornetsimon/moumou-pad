@@ -3,46 +3,54 @@
 		[src]="constructAssetUrl(recipe.posterUrl || recipe.editorialPictureUrl)"
 		class="rounded-2xl"
 	/>
-	<div style="padding: 0 10px">
-		<div class="tui-text_h2">{{ recipe.title }}</div>
-		<div class="tui-text_body-l">
-			{{ recipe.description }}
+	<div class="flex flex-col gap-4 px-4">
+		<div>
+			<div class="tui-text_h3 my-4">{{ recipe.title }}</div>
+			<div class="text-xl">
+				{{ recipe.description }}
+			</div>
 		</div>
 
-		<div class="aligner gap-4">
-			<a tuiButton [href]="constructRecipeUrl(recipe._id)" target="_blank">
-				Consulter sur Jow
+		<div class="aligner gap-4 my-4">
+			<a [href]="constructRecipeUrl(recipe._id)" target="_blank">
+				<button tuiButton appearance="secondary" iconLeft="tuiIconBookOpen">
+					Consulter sur Jow
+				</button>
 			</a>
 
 			@if (!data.isSelected) {
-				<button tuiButton appearance="accent" (click)="addToMeal()">Ajouter au menu</button>
+				<button tuiButton appearance="accent" iconLeft="tuiIconPlus" (click)="addToMeal()">
+					Ajouter au menu
+				</button>
 			}
 		</div>
 
-		<div class="separator"></div>
+		<hr />
 
-		<div class="ingredients">
-			<div *ngFor="let constituent of recipe.constituents">
-				<img
-					[src]="constructAssetUrl(constituent.ingredient.imageUrl)"
-					[alt]="constituent.ingredient.name"
-				/>
-				<div>
-					{{ constituent.ingredient.name }}
+		<div class="flex flex-col gap-10">
+			<div class="ingredients">
+				<div *ngFor="let constituent of recipe.constituents">
+					<img
+						[src]="constructAssetUrl(constituent.ingredient.imageUrl)"
+						[alt]="constituent.ingredient.name"
+					/>
+					<div>
+						{{ constituent.ingredient.name }}
+					</div>
 				</div>
 			</div>
-		</div>
-		<div class="properties" [style.color]="recipe.smartColor">
-			<div matTooltip="Préparation">
-				<mat-icon>blender</mat-icon>
-				<div>
-					{{ recipe.preparationTime + recipe.preparationExtraTimePerCover * 2 }}
-					min
+			<div class="properties" [style.color]="recipe.smartColor">
+				<div matTooltip="Préparation">
+					<mat-icon>blender</mat-icon>
+					<div>
+						{{ recipe.preparationTime + recipe.preparationExtraTimePerCover * 2 }}
+						min
+					</div>
 				</div>
-			</div>
-			<div matTooltip="Cuisson">
-				<mat-icon>microwave</mat-icon>
-				<div>{{ recipe.cookingTime }} min</div>
+				<div matTooltip="Cuisson">
+					<mat-icon>microwave</mat-icon>
+					<div>{{ recipe.cookingTime }} min</div>
+				</div>
 			</div>
 		</div>
 	</div>

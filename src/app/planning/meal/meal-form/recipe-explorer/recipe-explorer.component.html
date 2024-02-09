@@ -51,31 +51,33 @@
 		<div>
 			<div class="text-lg text-[#737373] mb-[10px]">Quelques idées de recettes</div>
 
-			<div class="suggestion-section flex items-stretch gap-[10px]">
-				<div class="suggestions flex flex-wrap gap-[10px]">
-					@if (alreadyUsedRecipeSuggestions$ | async; as suggestions) {
-						<tui-chip
-							*ngFor="let recipe of suggestions"
-							appearance=""
-							(click)="openRecipeModal.next(recipe)"
-							[style.background-image]="
-								'url(\'' + constructAssetUrl(recipe.imageUrl) + '\')'
-							"
-							[style.background-color]="recipe.smartColor"
-						>
-							<div class="title">
-								<div>{{ recipe.title }}</div>
-								<div class="recipe-use-note">essayé {{ recipe.useCount }} fois</div>
-							</div>
-						</tui-chip>
-					} @else {
-						<ng-container *ngTemplateOutlet="suggestionSkeleton"></ng-container>
-					}
-				</div>
-				<div class="flex-none flex justify-end items-center">
-					<span>On remet ça</span>
-				</div>
-			</div>
+			@if (alreadyUsedRecipeSuggestions$ | async; as suggestions) {
+				@if (suggestions.length > 0) {
+					<div class="suggestion-section flex items-stretch gap-[10px]">
+						<div class="suggestions flex flex-wrap gap-[10px]">
+							<tui-chip
+								*ngFor="let recipe of suggestions"
+								appearance=""
+								(click)="openRecipeModal.next(recipe)"
+								[style.background-image]="
+									'url(\'' + constructAssetUrl(recipe.imageUrl) + '\')'
+								"
+								[style.background-color]="recipe.smartColor"
+							>
+								<div class="title">
+									<div>{{ recipe.title }}</div>
+									<div class="recipe-use-note">
+										essayé {{ recipe.useCount }} fois
+									</div>
+								</div>
+							</tui-chip>
+						</div>
+						<div class="flex-none flex justify-end items-center">
+							<span>On remet ça</span>
+						</div>
+					</div>
+				}
+			}
 
 			<div style="margin: 8px 0"></div>
 

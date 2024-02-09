@@ -31,6 +31,8 @@ import { SearchModule } from './search/search.module';
 import { LoginComponent } from './auth/login/login.component';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
 import { TuiAvatarModule, TuiSelectModule } from '@taiga-ui/kit';
+import { TUI_DIALOG_CLOSES_ON_BACK } from '@taiga-ui/cdk';
+import { of } from 'rxjs';
 
 registerLocaleData(fr);
 
@@ -87,6 +89,10 @@ registerLocaleData(fr);
 			position: 'bottom-center',
 		}),
 		{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer },
+		{
+			provide: TUI_DIALOG_CLOSES_ON_BACK,
+			useValue: of(true),
+		},
 	],
 	bootstrap: [AppComponent],
 	exports: [],
