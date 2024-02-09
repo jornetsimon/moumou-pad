@@ -11,7 +11,7 @@
 			</div>
 		</div>
 
-		<div class="aligner gap-4 my-4">
+		<div class="aligner gap-4 my-4 flex-wrap">
 			<a [href]="constructRecipeUrl(recipe._id)" target="_blank">
 				<button tuiButton appearance="secondary" iconLeft="tuiIconBookOpen">
 					Consulter sur Jow
@@ -40,14 +40,14 @@
 				</div>
 			</div>
 			<div class="properties" [style.color]="recipe.smartColor">
-				<div matTooltip="Préparation">
+				<div tuiHint="Préparation">
 					<mat-icon>blender</mat-icon>
 					<div>
 						{{ recipe.preparationTime + recipe.preparationExtraTimePerCover * 2 }}
 						min
 					</div>
 				</div>
-				<div matTooltip="Cuisson">
+				<div tuiHint="Cuisson">
 					<mat-icon>microwave</mat-icon>
 					<div>{{ recipe.cookingTime }} min</div>
 				</div>

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { Recipe } from '../../model/receipe';
 import { JowService } from '../state/jow.service';
 import { constructAssetUrl, constructRecipeUrl } from '../util';
-import { TuiDialogContext } from '@taiga-ui/core';
+import { TuiDialogContext, TuiHintModule } from '@taiga-ui/core';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { CommonModule } from '@angular/common';
 import { TuiLetModule } from '@taiga-ui/cdk';
@@ -34,6 +34,7 @@ export interface RecipeModalData {
 		TuiHeaderModule,
 		TuiTitleModule,
 		TuiTilesModule,
+		TuiHintModule,
 	],
 	standalone: true,
 })

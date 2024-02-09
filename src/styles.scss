@@ -75,3 +75,8 @@ hr {
 .t-empty {
 	@apply mx-2;
 }
+
+tui-root._mobile tui-dialog {
+	border-radius: 14px !important;
+	padding: 10vw;
+}
