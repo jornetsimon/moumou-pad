@@ -1,3 +1,26 @@
+:host {
+	display: contents;
+}
+
+.app-bar {
+	@apply p-4 bg-inherit;
+	height: 4rem !important;
+
+	$borderColor: rgb(255 193 228 / 100%);
+
+	color: $borderColor;
+
+	@media (max-width: 599px) {
+		@apply sticky top-0 z-10;
+		background-color: rgb(255 193 228 / 70%);
+		backdrop-filter: blur(33px) brightness(1.2);
+		box-shadow: 0 0 5px $borderColor;
+	}
+
+	@media (min-width: 600px) {
+		border-bottom: 1px solid $borderColor;
+	}
+}
 .app-title {
 	$appTitleSize: 32px;
 	display: flex;

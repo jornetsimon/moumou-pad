@@ -11,6 +11,7 @@ import { TuiDataListModule, TuiHostedDropdownModule, TuiSvgModule } from '@taiga
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TuiAvatarModule } from '@taiga-ui/kit';
+import { TuiAppBarModule } from '@taiga-ui/addon-mobile';
 
 @Component({
 	selector: 'cb-header',
@@ -26,6 +27,7 @@ import { TuiAvatarModule } from '@taiga-ui/kit';
 		MatIconModule,
 		TuiHostedDropdownModule,
 		TuiAvatarModule,
+		TuiAppBarModule,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
