@@ -5,7 +5,7 @@ import { constructAssetUrl, constructRecipeUrl } from '../util';
 import { TuiDialogContext, TuiHintModule } from '@taiga-ui/core';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { CommonModule } from '@angular/common';
-import { TuiLetModule } from '@taiga-ui/cdk';
+import { TuiLetModule, TuiSwipe, TuiSwipeModule } from '@taiga-ui/cdk';
 import { MatIconModule } from '@angular/material/icon';
 import {
 	TuiButtonModule,
@@ -35,6 +35,7 @@ export interface RecipeModalData {
 		TuiTitleModule,
 		TuiTilesModule,
 		TuiHintModule,
+		TuiSwipeModule,
 	],
 	standalone: true,
 })
@@ -52,5 +53,11 @@ export class RecipeModalComponent {
 
 	addToMeal() {
 		this.context.completeWith(this.data.recipe);
+	}
+
+	onSwipe(swipeEvent: TuiSwipe) {
+		if (swipeEvent.direction === 'bottom') {
+			this.context.completeWith(undefined);
+		}
 	}
 }

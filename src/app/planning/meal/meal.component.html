@@ -59,14 +59,13 @@
 		[style.background-image]="themeBackgroundImage$ | async"
 		[style.background-color]="meal.jowRecipe?.smartColor || (mealTheme$ | async)?.color"
 		[style.box-shadow]="themeBoxShadow$ | async"
-		tuiRipple
 	>
 		<div
 			class="color-overlay"
 			[style.background-color]="meal.jowRecipe?.smartColor || (mealTheme$ | async)?.color"
 		></div>
 		<div class="overlay"></div>
-		<div fxLayoutAlign (click)="toggleEdit()" ngxVibration="10" tuiRipple="skyblue">
+		<div fxLayoutAlign (click)="toggleEdit()" ngxVibration="10" tuiRipple>
 			<div
 				class="header-container"
 				*ngFor="

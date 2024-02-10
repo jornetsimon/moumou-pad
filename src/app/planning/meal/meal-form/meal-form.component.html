@@ -28,12 +28,14 @@
 			></cb-recipe-explorer>
 		}
 
-		<div
-			class="memo mx-8 my-2"
-			*ngIf="recipeMemo || meal?.recipeMemo"
-			[innerHTML]="sanitizerService.render(recipeMemo || meal?.recipeMemo || '')"
-			(click)="openNoteDialog()"
-		></div>
+		@if (form.value.memo; as memo) {
+			<div
+				class="memo mx-8 my-2"
+				tuiRipple
+				[innerHTML]="sanitizerService.render(memo ?? '')"
+				(click)="openNoteDialog()"
+			></div>
+		}
 
 		<div
 			class="extras aligner-col gap-4"
@@ -74,15 +76,12 @@
 					/>
 				</tui-chip>
 
-				<tui-chip
-					*ngIf="!(recipeMemo || meal?.recipeMemo)"
-					tuiHint="Ajouter un mémo"
-					appearance=""
-					(click)="openNoteDialog()"
-				>
-					<mat-icon>edit_note</mat-icon>
-					<input tuiChip type="checkbox" />
-				</tui-chip>
+				@if (!form.value.memo) {
+					<tui-chip tuiHint="Ajouter un mémo" appearance="" (click)="openNoteDialog()">
+						<mat-icon>edit_note</mat-icon>
+						<input tuiChip type="checkbox" />
+					</tui-chip>
+				}
 
 				<tui-chip
 					*ngIf="meal?.name"

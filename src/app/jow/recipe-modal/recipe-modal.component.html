@@ -1,4 +1,4 @@
-<ng-container *tuiLet="data.recipe as recipe">
+<div *tuiLet="data.recipe as recipe" (tuiSwipe)="onSwipe($event)">
 	<img
 		[src]="constructAssetUrl(recipe.posterUrl || recipe.editorialPictureUrl)"
 		class="rounded-2xl"
@@ -54,4 +54,4 @@
 			</div>
 		</div>
 	</div>
-</ng-container>
+</div>

@@ -1,0 +1,17 @@
+<div class="flex flex-col gap-6" (tuiSwipe)="onSwipe($event)">
+	<div class="tui-text_h3">Mémo pour la recette</div>
+
+	<tui-textarea
+		[formControl]="control"
+		[expandable]="true"
+		[tuiTextfieldLabelOutside]="true"
+		[tuiTextfieldCleaner]="true"
+	>
+		Note, lien vers la recette...
+	</tui-textarea>
+
+	<div class="aligner gap-4">
+		<button appearance="secondary" tuiButton (click)="cancel()">Annuler</button>
+		<button appearance="primary" tuiButton (click)="save()">Enregistrer</button>
+	</div>
+</div>
