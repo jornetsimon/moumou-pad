@@ -15,14 +15,14 @@ import { JowService } from '../../jow/state/jow.service';
 import { MealService } from './state/meal.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { DragDropService } from './drag-drop.service';
-import { distinctUntilChanged, filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import { delay, distinctUntilChanged, filter, map, tap, withLatestFrom } from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
 import { MealThemeModel } from './theme/meal-theme.model';
 import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../../shared/utilities';
 import * as tinycolor from 'tinycolor2';
 import { MealThemeService } from './theme/meal-theme.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UntilDestroy } from '@ngneat/until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
 import { TuiAccordionModule, TuiIslandModule } from '@taiga-ui/kit';
 import { CommonModule } from '@angular/common';
@@ -100,9 +100,6 @@ export class MealComponent implements AfterViewInit {
 							document.body.getBoundingClientRect().top -
 							offset,
 					});
-					/*this.containerRef!.nativeElement.scrollIntoView({
-						behavior: 'smooth',
-					});*/
 				}, 250);
 			}
 		})
@@ -196,7 +193,7 @@ export class MealComponent implements AfterViewInit {
 	) {}
 
 	ngAfterViewInit() {
-		/*this.isNext$
+		this.isNext$
 			.pipe(
 				distinctUntilChanged(),
 				filter((isNext) => isNext),
@@ -205,7 +202,7 @@ export class MealComponent implements AfterViewInit {
 			)
 			.subscribe(() => {
 				this.isNext.emit(this.containerRef?.nativeElement);
-			});*/
+			});
 	}
 
 	toggleEdit(setTo?: boolean) {

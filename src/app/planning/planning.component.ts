@@ -89,9 +89,18 @@ export class PlanningComponent {
 	 * @param mealElement
 	 */
 	scrollToMeal(mealElement: HTMLDivElement) {
-		if (this.isXSmall) {
-			mealElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+		if (!this.isXSmall) {
+			return;
 		}
+		const offset = 120;
+
+		window.scrollTo({
+			behavior: 'smooth',
+			top:
+				mealElement.getBoundingClientRect().top -
+				document.body.getBoundingClientRect().top -
+				offset,
+		});
 	}
 
 	getMealAnimation() {
