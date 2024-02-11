@@ -75,7 +75,7 @@ export class MealComponent implements AfterViewInit {
 	@Input() hasMargins = false;
 	@Input() showFullDateInTopper = false;
 	@Input() isReadonly = false;
-	@ViewChild('container') containerRef: ElementRef | undefined;
+	@ViewChild('container') containerRef: ElementRef<HTMLDivElement> | undefined;
 	@ViewChild('dropListRef') dropListRef: CdkDropList<Meal> | undefined;
 	@Output() mealSaved = new EventEmitter<HTMLDivElement>();
 	@Output() isNext = new EventEmitter<HTMLDivElement>();
@@ -89,8 +89,20 @@ export class MealComponent implements AfterViewInit {
 		distinctUntilChanged(),
 		tap((editMode) => {
 			if (editMode && this.containerRef) {
+				const element = this.containerRef.nativeElement;
+				const offset = 120;
+
 				setTimeout(() => {
-					this.containerRef!.nativeElement.scrollIntoView({ behavior: 'smooth' });
+					window.scrollTo({
+						behavior: 'smooth',
+						top:
+							element.getBoundingClientRect().top -
+							document.body.getBoundingClientRect().top -
+							offset,
+					});
+					/*this.containerRef!.nativeElement.scrollIntoView({
+						behavior: 'smooth',
+					});*/
 				}, 250);
 			}
 		})

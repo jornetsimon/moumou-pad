@@ -16,6 +16,7 @@ import { WeekNavigationComponent } from './week-navigation/week-navigation.compo
 import { TuiCarouselModule } from '@taiga-ui/kit';
 import { TuiSwipe, TuiSwipeModule } from '@taiga-ui/cdk';
 import { AppService } from '../../state/app.service';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'cb-planning',
@@ -40,7 +41,8 @@ export class PlanningComponent {
 		private readonly vibrationService: NgxVibrationService,
 		private readonly appQuery: AppQuery,
 		private readonly appService: AppService,
-		private readonly breakpointObserver: BreakpointObserver
+		private readonly breakpointObserver: BreakpointObserver,
+		private readonly router: Router
 	) {}
 
 	meals$: Observable<Meal[]> = combineLatest([
@@ -107,7 +109,9 @@ export class PlanningComponent {
 		return Math.pow(1.25, index) * 50 + 'ms';
 	}
 
-	onSwipe(swipe: TuiSwipe): void {
+	async onSwipe(swipe: TuiSwipe) {
+		await this.router.navigateByUrl('/');
+
 		switch (swipe.direction) {
 			case 'right':
 				this.appService.shiftSchedule('next');
