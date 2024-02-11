@@ -7,7 +7,7 @@
 	z-index: 2;
 
 	background: rgb(235 239 255 / 66%);
-	backdrop-filter: blur(15px) brightness(1.2);
+	backdrop-filter: blur(25px) brightness(1.2);
 
 	@media (max-width: 599px) {
 		box-shadow: 0 0 0 1px var(--tui-secondary);
