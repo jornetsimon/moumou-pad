@@ -12,7 +12,7 @@
 
 	@media (max-width: 599px) {
 		@apply sticky top-0 z-10;
-		background-color: rgb(255 193 228 / 10%);
+		background-color: rgb(255 241 249 / 66%);
 		backdrop-filter: blur(33px) brightness(1.2);
 		box-shadow: 0 0 5px $borderColor;
 	}

@@ -1,7 +1,19 @@
-.highlight {
+.highlight-surface {
 	@media (hover: hover) and (pointer: fine) {
 		&:hover:before {
 			backdrop-filter: brightness(1.1);
 		}
 	}
+}
+
+.lowlight-surface {
+	@media (hover: hover) and (pointer: fine) {
+		&:hover:before {
+			backdrop-filter: brightness(0.92);
+		}
+	}
+}
+
+.shadow-surface:hover {
+	box-shadow: var(--tui-shadow-hover);
 }

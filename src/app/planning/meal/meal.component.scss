@@ -47,7 +47,7 @@ $meal-color: var(--tui-primary);
 	background-color: $meal-color;
 	// transition: background-color 0.5s;
 	&.empty {
-		background-color: $meal-color;
+		background-color: var(--tui-base-04);
 	}
 	&.out-of-home {
 		background-color: $accent;
