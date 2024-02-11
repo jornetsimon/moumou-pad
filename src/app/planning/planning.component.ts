@@ -1,23 +1,21 @@
 import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
 import { MealQuery } from './meal/state/meal.query';
-import { combineLatest, Observable, of } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { Meal } from './meal/state/meal.model';
 import { DragDropService } from './meal/drag-drop.service';
 import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
-import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
-import { generateSchedule, Period } from '../model/period';
-import { addDays, isBefore, isSameDay, isSameMonth, startOfDay } from 'date-fns/esm';
+import { addDays, isBefore, startOfDay } from 'date-fns/esm';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { CroquettesService } from '../croquettes.service';
-import { HotToastService } from '@ngneat/hot-toast';
 import { NgxVibrationService } from 'ngx-vibration';
 import { SharedModule } from '../shared/shared.module';
 import { TvModule } from '../tv/tv.module';
 import { MealModule } from './meal/meal.module';
 import { MealComponent } from './meal/meal.component';
-
-const moumouEscapeDay = new Date(2023, 7, 20);
+import { WeekNavigationComponent } from './week-navigation/week-navigation.component';
+import { TuiCarouselModule } from '@taiga-ui/kit';
+import { TuiSwipe, TuiSwipeModule } from '@taiga-ui/cdk';
+import { AppService } from '../../state/app.service';
 
 @Component({
 	selector: 'cb-planning',
@@ -25,9 +23,26 @@ const moumouEscapeDay = new Date(2023, 7, 20);
 	styleUrls: ['./planning.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	standalone: true,
-	imports: [SharedModule, TvModule, MealModule, MealComponent],
+	imports: [
+		SharedModule,
+		TvModule,
+		MealModule,
+		MealComponent,
+		WeekNavigationComponent,
+		TuiCarouselModule,
+		TuiSwipeModule,
+	],
 })
 export class PlanningComponent {
+	constructor(
+		private readonly mealQuery: MealQuery,
+		private readonly dragDropService: DragDropService,
+		private readonly vibrationService: NgxVibrationService,
+		private readonly appQuery: AppQuery,
+		private readonly appService: AppService,
+		private readonly breakpointObserver: BreakpointObserver
+	) {}
+
 	meals$: Observable<Meal[]> = combineLatest([
 		this.appQuery.select('schedule'),
 		this.appQuery.userConfig$,
@@ -52,20 +67,10 @@ export class PlanningComponent {
 		map((dragging) => !!dragging),
 		startWith(false)
 	);
-	currentSchedule$: Observable<Period> = this.appQuery.select('schedule');
-	isThisWeek$: Observable<boolean> = this.currentSchedule$.pipe(
-		map((schedule) => isSameDay(schedule.from, generateSchedule().from))
-	);
-	scheduleOverlapsTwoMonths$: Observable<boolean> = this.currentSchedule$.pipe(
-		map((schedule) => !isSameMonth(schedule.from, schedule.to))
-	);
 
-	readonly showMoumouEscapeHint$: Observable<boolean> =
-		of(true) /*timer(0, 60000).pipe(
-		map(() => {
-			return isSameDay(Date.now(), moumouEscapeDay);
-		})
-	)*/;
+	readonly showMoumouEscapeHint$: Observable<boolean> = this.appQuery
+		.select('userData')
+		.pipe(map((userData) => !!userData?.isAllowedInFamily && userData.familyName === 'jornet'));
 
 	trackByFn: TrackByFunction<Meal> = (index, item) => item.id;
 
@@ -73,43 +78,8 @@ export class PlanningComponent {
 		return this.breakpointObserver.isMatched(Breakpoints.XSmall);
 	}
 
-	constructor(
-		private mealQuery: MealQuery,
-		private dragDropService: DragDropService,
-		private vibrationService: NgxVibrationService,
-		private appQuery: AppQuery,
-		private appService: AppService,
-		private breakpointObserver: BreakpointObserver,
-		private croquettesService: CroquettesService,
-		private hotToastService: HotToastService
-	) {
-		this.croquettesService.prompt$.subscribe(() => {
-			const croquettesToastRef = this.hotToastService.show(
-				'<strong>Jour de croquettes !</strong>',
-				{
-					icon: '🐱',
-					autoClose: false,
-					dismissible: true,
-					position: 'bottom-center',
-					closeStyle: {
-						'margin-top': '5px',
-						cursor: 'pointer',
-					},
-				}
-			);
-			croquettesToastRef.afterClosed.subscribe(() => {
-				this.vibrationService.vibrate([75]);
-				this.croquettesService.markAsDisplayed();
-			});
-		});
-	}
-
 	onDrop() {
 		this.vibrationService.vibrate([150]);
-	}
-
-	shiftSchedule(direction: 'previous' | 'next') {
-		this.appService.shiftSchedule(direction);
 	}
 
 	/**
@@ -120,10 +90,6 @@ export class PlanningComponent {
 		if (this.isXSmall) {
 			mealElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
 		}
-	}
-
-	onCurrentPeriodClicked() {
-		this.appService.resetSchedule();
 	}
 
 	getMealAnimation() {
@@ -139,5 +105,16 @@ export class PlanningComponent {
 			return index * 50 + 'ms';
 		}
 		return Math.pow(1.25, index) * 50 + 'ms';
+	}
+
+	onSwipe(swipe: TuiSwipe): void {
+		switch (swipe.direction) {
+			case 'right':
+				this.appService.shiftSchedule('next');
+				break;
+			case 'left':
+				this.appService.shiftSchedule('previous');
+				break;
+		}
 	}
 }

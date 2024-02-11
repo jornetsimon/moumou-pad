@@ -1,18 +1,5 @@
 @import '../../styles/colors';
 
-.title {
-	font-size: 37px;
-	font-weight: 300;
-	text-align: center;
-	margin: 22px 0 5px 0;
-	font-family: 'Dancing Script', cursive;
-
-	@media (max-width: 599px) {
-		margin: 15px 0 0 0;
-		padding-bottom: 5px;
-	}
-}
-
 .meals-container {
 	@media (max-width: 599px) {
 		margin-top: 15px;
@@ -66,7 +53,9 @@
 	button {
 		user-select: none;
 		background-color: $button-color;
-		transition: border 0.1s, box-shadow 0.2s ease-out;
+		transition:
+			border 0.1s,
+			box-shadow 0.2s ease-out;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -98,20 +87,6 @@
 			opacity: 100;
 		}
 	}
-}
-
-.period-arrows-container {
-	display: flex;
-	justify-content: space-between;
-	position: absolute;
-	left: 5px;
-	width: calc(100% - 10px);
-	z-index: 1;
-}
-
-.current-period {
-	font-size: 0.5em;
-	height: 22px;
 }
 
 .moumou-escape-hint {

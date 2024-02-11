@@ -1,6 +1,6 @@
 @import '../../../styles/colors';
 
-$meal-color: $primary;
+$meal-color: var(--tui-primary);
 
 .container.has-margins {
 	@media (min-width: 600px) {
@@ -47,7 +47,7 @@ $meal-color: $primary;
 	background-color: $meal-color;
 	// transition: background-color 0.5s;
 	&.empty {
-		background-color: lighten($meal-color, 30%);
+		background-color: $meal-color;
 	}
 	&.out-of-home {
 		background-color: $accent;
@@ -131,7 +131,7 @@ $meal-color: $primary;
 		border-radius: 5px;
 		padding: 30px 30px 15px 30px;
 		margin: 10px 0 0 0;
-		background-color: lighten($meal-color, 50%);
+		background-color: ghostwhite;
 	}
 }
 

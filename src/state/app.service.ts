@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
-import { filter, map, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { AppStore } from './app.store';
 import { UserData } from '../app/model/user-data';
 import { UserConfig } from '../app/model/user-config';
 import { addWeeks, isBefore } from 'date-fns/esm';
-import { Observable } from 'rxjs';
-import { NavigationEnd, Router } from '@angular/router';
 import { doc, docData, Firestore, updateDoc } from '@angular/fire/firestore';
 import { DocumentReference } from 'rxfire/firestore/interfaces';
 import { UntilDestroy } from '@ngneat/until-destroy';
@@ -15,13 +13,10 @@ export type ShiftDirection = 'previous' | 'next';
 @UntilDestroy()
 @Injectable({ providedIn: 'root' })
 export class AppService {
-	constructor(private appStore: AppStore, private firestore: Firestore, private router: Router) {}
-
-	currentUrl$: Observable<string> = this.router.events.pipe(
-		filter((event): event is NavigationEnd => event instanceof NavigationEnd),
-		map((event) => event.url)
-	);
-	isHome$ = this.currentUrl$.pipe(map((url) => url === '/'));
+	constructor(
+		private appStore: AppStore,
+		private firestore: Firestore
+	) {}
 
 	fetchConfig(uid: string) {
 		return docData(doc(this.firestore, `/users/${uid}`) as DocumentReference<UserData>).pipe(

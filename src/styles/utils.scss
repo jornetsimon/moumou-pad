@@ -1,0 +1,7 @@
+.highlight {
+	@media (hover: hover) and (pointer: fine) {
+		&:hover:before {
+			backdrop-filter: brightness(1.1);
+		}
+	}
+}

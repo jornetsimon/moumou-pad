@@ -1,75 +1,46 @@
-<div class="title">
-	<span routerLink="/" class="cursor-pointer">Planning de la semaine</span>
+<div (tuiSwipe)="onSwipe($event)">
+	<cb-week-navigation />
 
-	<div class="current-period">
-		<ng-container *ngIf="(isThisWeek$ | async) === false">
-			<a (click)="onCurrentPeriodClicked()" *ngIf="currentSchedule$ | async as schedule">
-				du
-				{{
-					(scheduleOverlapsTwoMonths$ | async)
-						? (schedule.from | date : 'd MMMM')
-						: (schedule.from | date : 'd')
-				}}
-				au
-				{{ schedule.to | date : 'd MMMM' }}
-			</a>
-		</ng-container>
-	</div>
+	<ng-container cdkDropListGroup>
+		<div
+			class="meals-container"
+			fxLayout="row wrap"
+			[class.drag-cancel-margin]="showDragCancelButton$ | async"
+		>
+			<cb-meal
+				[meal]="meal"
+				[hasMargins]="true"
+				*ngFor="let meal of meals$ | async; let mealIndex = index; trackBy: trackByFn"
+				class="meal"
+				[ngClass]="getMealAnimation()"
+				[style.animation-delay]="getMealAnimationDelay(mealIndex)"
+				(mealSaved)="scrollToMeal($event)"
+				(isNext)="scrollToMeal($event)"
+			></cb-meal>
+		</div>
+
+		<div
+			class="drag-cancel"
+			cdkDropList
+			[cdkDropListData]="{ id: 'cancel' }"
+			[class.show]="showDragCancelButton$ | async"
+			(cdkDropListDropped)="onDrop()"
+		>
+			<button mat-fab matTooltip="Annuler" matTooltipShowDelay="500">
+				<mat-icon>cancel</mat-icon>
+			</button>
+		</div>
+	</ng-container>
 </div>
 
-<div class="period-arrows-container">
-	<button
-		mat-icon-button
-		color="primary"
-		(click)="shiftSchedule('previous')"
-		matTooltip="Semaine précédente"
-		matTooltipPosition="right"
-	>
-		<mat-icon>navigate_before</mat-icon>
-	</button>
-	<button
-		mat-icon-button
-		color="primary"
-		(click)="shiftSchedule('next')"
-		matTooltip="Semaine suivante"
-		matTooltipPosition="left"
-	>
-		<mat-icon>navigate_next</mat-icon>
-	</button>
-</div>
-<ng-container cdkDropListGroup>
-	<div
-		class="meals-container"
-		fxLayout="row wrap"
-		[class.drag-cancel-margin]="showDragCancelButton$ | async"
-	>
-		<cb-meal
-			[meal]="meal"
-			[hasMargins]="true"
-			*ngFor="let meal of meals$ | async; let mealIndex = index; trackBy: trackByFn"
-			class="meal"
-			[ngClass]="getMealAnimation()"
-			[style.animation-delay]="getMealAnimationDelay(mealIndex)"
-			(mealSaved)="scrollToMeal($event)"
-			(isNext)="scrollToMeal($event)"
-		></cb-meal>
+@if (showMoumouEscapeHint$ | async) {
+	<div style="display: flex; margin-bottom: 30px">
+		<div
+			class="moumou-escape-hint fade-in"
+			style="margin-left: 16px"
+			[ngxVibration]="[100, 50, 100]"
+		>
+			🐺 375
+		</div>
 	</div>
-
-	<div
-		class="drag-cancel"
-		cdkDropList
-		[cdkDropListData]="{ id: 'cancel' }"
-		[class.show]="showDragCancelButton$ | async"
-		(cdkDropListDropped)="onDrop()"
-	>
-		<button mat-fab matTooltip="Annuler" matTooltipShowDelay="500">
-			<mat-icon>cancel</mat-icon>
-		</button>
-	</div>
-</ng-container>
-
-<div style="display: flex; margin-bottom: 30px" *ngIf="showMoumouEscapeHint$ | async">
-	<div class="moumou-escape-hint fade-in"  style="margin-left: 16px" [ngxVibration]="[100, 50, 100]">
-		🐺 375
-	</div>
-</div>
+}

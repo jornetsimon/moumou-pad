@@ -1,0 +1,36 @@
+:host {
+	display: block;
+
+	position: sticky;
+	top: 56px;
+	left: 0;
+	z-index: 2;
+
+	background: rgba(255, 254, 240, 0.7);
+	backdrop-filter: blur(33px) brightness(1.2);
+
+	@media (max-width: 599px) {
+		box-shadow: 0 4px 8px 2px rgb(255 193 228 / 32%);
+	}
+	@media (min-width: 600px) {
+		margin-top: 1rem;
+		top: 20px;
+		border: 1px solid var(--tui-secondary);
+		border-radius: 25px;
+	}
+}
+
+.period-arrows-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	padding: 10px;
+	z-index: 1;
+}
+
+.current-period {
+	font-weight: 200;
+	font-size: 22px;
+	cursor: pointer;
+}

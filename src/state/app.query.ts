@@ -11,11 +11,13 @@ export class AppQuery extends Query<AppState> {
 		super(store);
 	}
 
-	userConfig$: Observable<UserConfig | undefined> = this.select().pipe(
+	readonly user$ = this.select('user');
+
+	readonly userConfig$: Observable<UserConfig | undefined> = this.select().pipe(
 		map((state) => state.userData?.config)
 	);
 
-	targetPath$ = this.select().pipe(map(AppQuery.extractTargetPath));
+	readonly targetPath$ = this.select().pipe(map(AppQuery.extractTargetPath));
 
 	getTargetPath(): string {
 		return AppQuery.extractTargetPath(this.getValue());

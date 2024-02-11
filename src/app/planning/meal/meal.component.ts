@@ -33,6 +33,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 import { MealFormComponent } from './meal-form/meal-form.component';
 import { constructAssetUrl } from '../../jow/util';
+import { TuiSurfaceModule } from '@taiga-ui/experimental';
 
 @UntilDestroy()
 @Component({
@@ -60,6 +61,7 @@ import { constructAssetUrl } from '../../jow/util';
 		TuiIslandModule,
 		TuiRippleModule,
 		MealFormComponent,
+		TuiSurfaceModule,
 	],
 })
 export class MealComponent implements AfterViewInit {

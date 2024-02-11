@@ -1,0 +1,11 @@
+<div class="period-arrows-container">
+	<button appearance="secondary" size="m" tuiButton (click)="shiftSchedule('previous')">
+		<tui-icon icon="tuiIconChevronLeftLarge" [style.height.rem]="1"></tui-icon>
+	</button>
+
+	<a (click)="onCurrentPeriodClicked()" class="current-period">{{ weekLabel$ | async }}</a>
+
+	<button appearance="secondary" size="m" tuiButton (click)="shiftSchedule('next')">
+		<tui-icon icon="tuiIconChevronRightLarge" [style.height.rem]="1"></tui-icon>
+	</button>
+</div>
