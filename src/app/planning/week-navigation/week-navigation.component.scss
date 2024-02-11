@@ -10,7 +10,8 @@
 	backdrop-filter: blur(33px) brightness(1.2);
 
 	@media (max-width: 599px) {
-		box-shadow: 0 4px 8px 2px rgb(255 193 228 / 32%);
+		box-shadow: 0 0 0 1px var(--tui-secondary);
+		margin-top: 15px;
 	}
 	@media (min-width: 600px) {
 		margin-top: 1rem;
