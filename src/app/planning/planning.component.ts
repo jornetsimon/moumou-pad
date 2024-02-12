@@ -123,10 +123,10 @@ export class PlanningComponent {
 
 		switch (swipe.direction) {
 			case 'right':
-				this.appService.shiftSchedule('next');
+				this.appService.shiftSchedule('previous');
 				break;
 			case 'left':
-				this.appService.shiftSchedule('previous');
+				this.appService.shiftSchedule('next');
 				break;
 		}
 	}
