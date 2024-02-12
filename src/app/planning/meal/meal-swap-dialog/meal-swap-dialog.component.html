@@ -1,19 +1,26 @@
-<div mat-dialog-title>Échanger ces menus ?</div>
+<div class="flex flex-col gap-8" (tuiSwipe)="onSwipe($event)">
+	<div class="tui-text_h3">Échanger ces menus ?</div>
 
-<div mat-dialog-content>
-	<div fxLayout="row nowrap" fxLayout.xs="column" fxLayoutAlign="center center">
-		<ng-container *ngTemplateOutlet="mealPreview; context: { meal: data.from }"></ng-container>
-		<div class="arrow">
-			<mat-icon>compare_arrows</mat-icon>
+	<div>
+		<div class="aligner flex-col sm:flex-row">
+			<ng-container
+				*ngTemplateOutlet="mealPreview; context: { meal: data.from }"
+			></ng-container>
+			<div class="arrow">
+				<mat-icon>compare_arrows</mat-icon>
+			</div>
+			<ng-container
+				*ngTemplateOutlet="mealPreview; context: { meal: data.to }"
+			></ng-container>
 		</div>
-		<ng-container *ngTemplateOutlet="mealPreview; context: { meal: data.to }"></ng-container>
 	</div>
-</div>
-<div mat-dialog-actions align="end">
-	<button mat-button (click)="cancel()">Annuler</button>
-	<button mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial>
-		Échanger les menus
-	</button>
+
+	<div class="flex justify-end items-center gap-4 flex-wrap">
+		<button tuiButton appearance="secondary" (click)="cancel()">Annuler</button>
+		<button tuiButton appearance="primary" iconLeft="tuiIconShuffle" (click)="swap()">
+			Échanger les menus
+		</button>
+	</div>
 </div>
 
 <ng-template #mealDateLabel let-meal="meal">
@@ -33,20 +40,17 @@
 		<ng-template #noNameTpl>
 			<div class="no-name">Rien de prévu</div>
 		</ng-template>
-		<mat-card class="selected-recipe" *ngIf="meal.jowRecipe as jowRecipe">
-			<div
-				fxLayout="column"
-				fxLayoutAlign="start center"
-				[style.color]="jowRecipe.backgroundColor"
-			>
+
+		<tui-island class="selected-recipe" *ngIf="meal.jowRecipe as jowRecipe">
+			<div class="flex flex-col items-center" [style.color]="jowRecipe.backgroundColor">
 				<img
 					class="preview"
 					[src]="constructAssetUrl(jowRecipe.imageUrl)"
 					[alt]="jowRecipe.title"
-					mat-ripple
+					tuiRipple
 				/>
 				<div class="title">{{ jowRecipe.title }}</div>
 			</div>
-		</mat-card>
+		</tui-island>
 	</div>
 </ng-template>

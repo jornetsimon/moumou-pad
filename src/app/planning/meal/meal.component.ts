@@ -4,6 +4,8 @@ import {
 	Component,
 	ElementRef,
 	EventEmitter,
+	Inject,
+	Injector,
 	Input,
 	Output,
 	TrackByFunction,
@@ -15,7 +17,15 @@ import { JowService } from '../../jow/state/jow.service';
 import { MealService } from './state/meal.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { DragDropService } from './drag-drop.service';
-import { delay, distinctUntilChanged, filter, map, tap, withLatestFrom } from 'rxjs/operators';
+import {
+	delay,
+	distinctUntilChanged,
+	filter,
+	map,
+	switchMap,
+	tap,
+	withLatestFrom,
+} from 'rxjs/operators';
 import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
 import { MealThemeModel } from './theme/meal-theme.model';
 import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../../shared/utilities';
@@ -28,12 +38,14 @@ import { TuiAccordionModule, TuiIslandModule } from '@taiga-ui/kit';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexModule } from '@angular/flex-layout';
-import { TuiButtonModule, TuiHintModule } from '@taiga-ui/core';
-import { CdkDrag, CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
+import { TuiButtonModule, TuiDialogService, TuiHintModule } from '@taiga-ui/core';
+import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 import { MealFormComponent } from './meal-form/meal-form.component';
 import { constructAssetUrl } from '../../jow/util';
 import { TuiSurfaceModule } from '@taiga-ui/experimental';
+import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 
 @UntilDestroy()
 @Component({
@@ -62,9 +74,23 @@ import { TuiSurfaceModule } from '@taiga-ui/experimental';
 		TuiRippleModule,
 		MealFormComponent,
 		TuiSurfaceModule,
+		DragDropModule,
 	],
 })
 export class MealComponent implements AfterViewInit {
+	constructor(
+		private mealService: MealService,
+		private toastService: HotToastService,
+		public jowService: JowService,
+		public dragDropService: DragDropService,
+		private vibrationService: NgxVibrationService,
+		private mealThemeService: MealThemeService,
+		private router: Router,
+		private route: ActivatedRoute,
+		@Inject(Injector) private readonly injector: Injector,
+		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
+	) {}
+
 	@Input() set meal(meal: Meal) {
 		this._meal = meal;
 		this.mealSubject.next(meal);
@@ -181,17 +207,6 @@ export class MealComponent implements AfterViewInit {
 		return !!origin.name || !!destination.name;
 	};
 
-	constructor(
-		private mealService: MealService,
-		private toastService: HotToastService,
-		public jowService: JowService,
-		public dragDropService: DragDropService,
-		private vibrationService: NgxVibrationService,
-		private mealThemeService: MealThemeService,
-		private router: Router,
-		private route: ActivatedRoute
-	) {}
-
 	ngAfterViewInit() {
 		this.isNext$
 			.pipe(
@@ -240,15 +255,26 @@ export class MealComponent implements AfterViewInit {
 			return;
 		}
 
-		this.mealService.swapMeals(originMeal, destinationMeal).then(
-			() => {
-				this.toastService.success('Menus échangés');
-			},
-			(error) => {
-				console.error(error);
-				this.toastService.error(`Erreur lors de l'échange de repas`);
-			}
-		);
+		this.dialogs
+			.open<boolean>(new PolymorpheusComponent(MealSwapDialogComponent, this.injector), {
+				data: { from: originMeal, to: destinationMeal },
+			})
+			.pipe(
+				filter(Boolean),
+				switchMap(() =>
+					this.mealService.swapMeals(originMeal, destinationMeal).then(
+						() => {
+							this.toastService.success('Menus échangés');
+						},
+						(error) => {
+							console.error(error);
+							this.toastService.error(`Erreur lors de l'échange de repas`);
+						}
+					)
+				),
+				untilDestroyed(this)
+			)
+			.subscribe();
 	}
 
 	onDragStart() {

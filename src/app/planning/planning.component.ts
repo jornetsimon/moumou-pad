@@ -10,7 +10,6 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { NgxVibrationService } from 'ngx-vibration';
 import { SharedModule } from '../shared/shared.module';
 import { TvModule } from '../tv/tv.module';
-import { MealModule } from './meal/meal.module';
 import { MealComponent } from './meal/meal.component';
 import { WeekNavigationComponent } from './week-navigation/week-navigation.component';
 import { TuiCarouselModule } from '@taiga-ui/kit';
@@ -27,7 +26,6 @@ import { Router } from '@angular/router';
 	imports: [
 		SharedModule,
 		TvModule,
-		MealModule,
 		MealComponent,
 		WeekNavigationComponent,
 		TuiCarouselModule,
