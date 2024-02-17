@@ -117,6 +117,10 @@ export class PlanningComponent {
 	}
 
 	async onSwipe(swipe: TuiSwipe) {
+		if (!['right', 'left'].includes(swipe.direction)) {
+			return;
+		}
+
 		await this.router.navigateByUrl('/');
 
 		switch (swipe.direction) {
