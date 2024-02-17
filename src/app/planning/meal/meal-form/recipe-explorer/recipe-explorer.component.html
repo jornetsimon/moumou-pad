@@ -62,7 +62,7 @@
 								[style.background-image]="
 									'url(\'' + constructAssetUrl(recipe.imageUrl) + '\')'
 								"
-								[style.background-color]="recipe.smartColor"
+								[style.background-color]="recipe.smartColor || 'var(--tui-primary)'"
 							>
 								<div class="title">
 									<div>{{ recipe.title }}</div>
@@ -91,7 +91,7 @@
 							[style.background-image]="
 								'url(\'' + constructAssetUrl(recipe.imageUrl) + '\')'
 							"
-							[style.background-color]="recipe.smartColor"
+							[style.background-color]="recipe.smartColor || 'var(--tui-primary)'"
 						>
 							<div class="title">{{ recipe.title }}</div>
 						</tui-chip>

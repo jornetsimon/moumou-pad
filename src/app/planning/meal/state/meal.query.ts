@@ -18,6 +18,7 @@ import {
 import { AppQuery } from '../../../../state/app.query';
 import { CollectionReference } from '@firebase/firestore';
 import { Recipe } from '../../../model/receipe';
+import { adaptRecipe } from '../../../jow/util';
 
 @QueryConfig({ sortBy: 'date', sortByOrder: Order.ASC })
 @Injectable({ providedIn: 'root' })
@@ -47,7 +48,7 @@ export class MealQuery extends QueryEntity<MealState> {
 				)
 			)
 		),
-		map((suggestions) => suggestions.map((s) => s.name)),
+		map((suggestions) => suggestions.map(({ name }) => name)),
 		shareReplay(1)
 	);
 
@@ -72,7 +73,9 @@ export class MealQuery extends QueryEntity<MealState> {
 					)
 				)
 			),
-			map((elements) => elements.map((s) => ({ ...s.recipe, useCount: s.count }))),
+			map((elements) =>
+				elements.map(({ recipe, count }) => ({ ...adaptRecipe(recipe), useCount: count }))
+			),
 			shareReplay(1)
 		);
 
@@ -98,7 +101,9 @@ export class MealQuery extends QueryEntity<MealState> {
 				)
 			),
 
-			map((elements) => elements.map((s) => ({ ...s.recipe, useCount: s.count }))),
+			map((elements) =>
+				elements.map(({ recipe, count }) => ({ ...adaptRecipe(recipe), useCount: count }))
+			),
 			shareReplay(1)
 		);
 

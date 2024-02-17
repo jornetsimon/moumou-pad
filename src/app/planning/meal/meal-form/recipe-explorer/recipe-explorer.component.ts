@@ -67,7 +67,8 @@ export class RecipeExplorerComponent {
 	readonly alreadyUsedRecipeSuggestions$ = this.mealQuery.mostUsedRecipes$.pipe(
 		distinctUntilArrayChanged(),
 		map((recipes): Array<Recipe & { useCount: number }> => shuffle(recipes).slice(0, 3)),
-		shareReplay({ bufferSize: 1, refCount: true })
+		shareReplay({ bufferSize: 1, refCount: true }),
+		tap((_) => console.log(_))
 	);
 
 	readonly recipeIdeas$ = combineLatest([

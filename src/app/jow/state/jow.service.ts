@@ -4,6 +4,7 @@ import { from, Observable } from 'rxjs';
 import { Recipe } from '../../model/receipe';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { map } from 'rxjs/operators';
+import { adaptRecipe } from '../util';
 
 @Injectable({ providedIn: 'root' })
 export class JowService {
@@ -17,7 +18,7 @@ export class JowService {
 		from(callable({}))
 			.pipe(
 				map((res) => res.data),
-				map((recipes) => recipes.map(this.adaptRecipe))
+				map((recipes) => recipes.map(adaptRecipe))
 			)
 			.subscribe((recipes) => {
 				this.jowStore.update({ featured: recipes });
@@ -28,7 +29,7 @@ export class JowService {
 		const callable = httpsCallable<{ id: string }, Recipe>(this.fns, 'jowRecipe');
 		return from(callable({ id })).pipe(
 			map((res) => res.data),
-			map((recipe) => this.adaptRecipe(recipe))
+			map(adaptRecipe)
 		);
 	}
 
@@ -36,15 +37,7 @@ export class JowService {
 		const callable = httpsCallable<{ term: string }, Recipe[]>(this.fns, 'jowRecipeSearch');
 		return from(callable({ term })).pipe(
 			map((res) => res.data),
-			map((recipes) => recipes.map(this.adaptRecipe))
+			map((recipes) => recipes.map(adaptRecipe))
 		);
-	}
-
-	private adaptRecipe(recipe: Recipe): Recipe {
-		const smartColor =
-			recipe.backgroundColor && recipe.backgroundColor.toLowerCase() !== '#ffffff'
-				? recipe.backgroundColor
-				: recipe.backgroundPattern.color;
-		return { ...recipe, smartColor };
 	}
 }
