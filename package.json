@@ -10,10 +10,10 @@
     "start": "ng serve",
     "start-hmr": "ng serve --hmr",
     "emulators:start": "firebase emulators:start --only auth,firestore,functions",
-    "build": "ng build --configuration=production",
+    "build": "ng build",
     "build:stats": "ng build --stats-json",
-    "deploy-prod": "npm run build && firebase deploy",
-    "deploy-prod-only-hosting": "npm run build && firebase deploy --only hosting",
+    "deploy-prod": "ng build --configuration=production && firebase deploy",
+    "deploy-prod-only-hosting": "ng deploy",
     "analyze": "webpack-bundle-analyzer -p 9999 dist/moumou-pad/stats.json",
     "lint": "ng lint"
   },
