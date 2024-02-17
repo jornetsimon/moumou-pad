@@ -67,8 +67,7 @@ export class RecipeExplorerComponent {
 	readonly alreadyUsedRecipeSuggestions$ = this.mealQuery.mostUsedRecipes$.pipe(
 		distinctUntilArrayChanged(),
 		map((recipes): Array<Recipe & { useCount: number }> => shuffle(recipes).slice(0, 3)),
-		shareReplay({ bufferSize: 1, refCount: true }),
-		tap((_) => console.log(_))
+		shareReplay({ bufferSize: 1, refCount: true })
 	);
 
 	readonly recipeIdeas$ = combineLatest([
@@ -100,8 +99,7 @@ export class RecipeExplorerComponent {
 		switchMap((term) => (term ? this.jowService.search(term) : of([]))),
 		tap(() => {
 			this.isLoadingSearchResults$$.next(false);
-		}),
-		tap((_) => console.log(_))
+		})
 	);
 
 	readonly emptyContent$ = combineLatest([

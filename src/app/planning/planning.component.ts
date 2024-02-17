@@ -13,9 +13,10 @@ import { TvModule } from '../tv/tv.module';
 import { MealComponent } from './meal/meal.component';
 import { WeekNavigationComponent } from './week-navigation/week-navigation.component';
 import { TuiCarouselModule } from '@taiga-ui/kit';
-import { TuiSwipe, TuiSwipeModule } from '@taiga-ui/cdk';
+import { TUI_SWIPE_OPTIONS, TuiSwipe, TuiSwipeModule } from '@taiga-ui/cdk';
 import { AppService } from '../../state/app.service';
 import { Router } from '@angular/router';
+import { TuiSwipeOptions } from '@taiga-ui/cdk/interfaces';
 
 @Component({
 	selector: 'cb-planning',
@@ -30,6 +31,12 @@ import { Router } from '@angular/router';
 		WeekNavigationComponent,
 		TuiCarouselModule,
 		TuiSwipeModule,
+	],
+	providers: [
+		{
+			provide: TUI_SWIPE_OPTIONS,
+			useValue: { threshold: 150, timeout: 500 } satisfies TuiSwipeOptions,
+		},
 	],
 })
 export class PlanningComponent {
