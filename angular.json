@@ -23,6 +23,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "allowedCommonJsDependencies": [
+              "tinycolor2",
+              "text-mask-core",
+              "dompurify"
+            ],
             "outputPath": "dist/moumou-pad",
             "index": "src/index.html",
             "main": "src/main.ts",
