@@ -50,7 +50,7 @@ import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 @Component({
 	selector: 'cb-meal-form',
 	templateUrl: './meal-form.component.html',
-	styleUrls: ['./meal-form.component.scss'],
+	styleUrls: ['./meal-form.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	standalone: true,
 	imports: [

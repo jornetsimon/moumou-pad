@@ -25,7 +25,7 @@ import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 		TuiRippleModule,
 	],
 	templateUrl: './week-navigation.component.html',
-	styleUrl: './week-navigation.component.scss',
+	styleUrl: './week-navigation.component.less',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WeekNavigationComponent {

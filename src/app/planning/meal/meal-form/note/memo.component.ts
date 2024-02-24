@@ -12,7 +12,7 @@ export type MemoDialogOutput = string | null;
 @Component({
 	selector: 'cb-memo',
 	templateUrl: './memo.component.html',
-	styleUrls: ['./memo.component.scss'],
+	styleUrls: ['./memo.component.less'],
 	standalone: true,
 	imports: [
 		CommonModule,

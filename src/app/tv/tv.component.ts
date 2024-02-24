@@ -6,10 +6,13 @@ import { programsWithDuration, TvService } from './tv.service';
 @Component({
 	selector: 'cb-tv',
 	templateUrl: './tv.component.html',
-	styleUrls: ['./tv.component.scss'],
+	styleUrls: ['./tv.component.less'],
 })
 export class TvComponent {
-	constructor(private appQuery: AppQuery, private tvService: TvService) {}
+	constructor(
+		private appQuery: AppQuery,
+		private tvService: TvService
+	) {}
 
 	primeTimePrograms$ = this.appQuery.select('userData').pipe(
 		filter(Boolean),

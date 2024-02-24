@@ -16,7 +16,7 @@ import { isEqual } from 'lodash-es';
 @Component({
 	selector: 'cb-settings',
 	templateUrl: './settings.component.html',
-	styleUrls: ['./settings.component.scss'],
+	styleUrls: ['./settings.component.less'],
 })
 export class SettingsComponent {
 	weekdays = Object.entries(weekdays).map(([key, value]) => ({ label: key, value }));

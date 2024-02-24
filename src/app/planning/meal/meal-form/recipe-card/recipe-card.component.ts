@@ -22,7 +22,7 @@ import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 		TuiRippleModule,
 	],
 	templateUrl: './recipe-card.component.html',
-	styleUrl: './recipe-card.component.scss',
+	styleUrl: './recipe-card.component.less',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeCardComponent {

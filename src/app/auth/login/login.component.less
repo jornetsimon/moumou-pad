@@ -1,6 +1,6 @@
-$white: #fff;
-$google-blue: #4285f4;
-$button-active-blue: #1669f2;
+@white: #fff;
+@google-blue: #4285f4;
+@button-active-blue: #1669f2;
 
 .app-name {
 	font-family: 'Dancing Script', cursive;
@@ -9,15 +9,15 @@ $button-active-blue: #1669f2;
 }
 
 .app-logo {
-	$defaultLogoSize: 140px;
-	$maxLogoSize: 35vw;
-	width: clamp(0px, $defaultLogoSize, $maxLogoSize);
-	height: clamp(0px, $defaultLogoSize, $maxLogoSize);
+	@defaultLogoSize: 140px;
+	@maxLogoSize: 35vw;
+	width: clamp(0px, @defaultLogoSize, @maxLogoSize);
+	height: clamp(0px, @defaultLogoSize, @maxLogoSize);
 }
 
 .google-btn {
 	cursor: pointer;
-	background-color: $google-blue;
+	background-color: @google-blue;
 	border-radius: 2px;
 	box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
 
@@ -31,7 +31,7 @@ $button-active-blue: #1669f2;
 		width: 50px;
 		height: 50px;
 		border-radius: 2px;
-		background-color: $white;
+		background-color: @white;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -40,7 +40,7 @@ $button-active-blue: #1669f2;
 		height: 28px;
 	}
 	.btn-text {
-		color: $white;
+		color: @white;
 		font-size: large;
 		letter-spacing: 0.2px;
 		font-family: 'Roboto', serif;
@@ -50,9 +50,9 @@ $button-active-blue: #1669f2;
 	}
 	transition: box-shadow 0.25s;
 	&:hover {
-		box-shadow: 0 0 6px $google-blue;
+		box-shadow: 0 0 6px @google-blue;
 	}
 	&:active {
-		background: $button-active-blue;
+		background: @button-active-blue;
 	}
 }

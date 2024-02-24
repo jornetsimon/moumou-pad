@@ -18,7 +18,7 @@ import { filter } from 'rxjs/operators';
 @Component({
 	selector: 'cb-root',
 	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.scss'],
+	styleUrls: ['./app.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	animations: [fadeInOnEnterAnimation()],
 })

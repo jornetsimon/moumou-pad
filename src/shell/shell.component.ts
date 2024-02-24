@@ -8,7 +8,7 @@ import { HeaderComponent } from '../app/header/header.component';
 	standalone: true,
 	imports: [RouterOutlet, TuiRootModule, HeaderComponent],
 	templateUrl: './shell.component.html',
-	styleUrl: './shell.component.scss',
+	styleUrl: './shell.component.less',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShellComponent {}

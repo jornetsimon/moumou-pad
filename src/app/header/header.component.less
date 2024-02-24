@@ -6,41 +6,42 @@
 	@apply p-4 bg-inherit;
 	height: 4rem !important;
 
-	$borderColor: rgb(255 193 228 / 100%);
+	@borderColor: rgb(255 193 228 / 100%);
 
-	color: $borderColor;
+	color: @borderColor;
 
 	@media (max-width: 599px) {
 		@apply sticky top-0 z-10;
 		background-color: #fff4fa;
-		box-shadow: 0 0 5px $borderColor;
+		box-shadow: 0 0 5px @borderColor;
 	}
 
 	@media (min-width: 600px) {
-		border-bottom: 1px solid $borderColor;
+		border-bottom: 1px solid @borderColor;
 	}
 }
 .app-title {
-	$appTitleSize: 32px;
+	@appTitleSize: 32px;
 	display: flex;
 	align-items: center;
 	gap: 0.2em;
 	user-select: none;
 
 	font-family: 'Dancing Script', cursive;
-	font-size: $appTitleSize;
+	font-size: @appTitleSize;
+	line-height: 1em;
 
 	img {
-		$imgSize: $appTitleSize * 0.75;
-		height: $imgSize;
-		width: $imgSize;
+		@imgSize: @appTitleSize * 0.75;
+		height: @imgSize;
+		width: @imgSize;
 	}
 }
 
 .avatar {
-	$avatar-size: 25px;
-	height: $avatar-size;
-	width: $avatar-size;
+	@avatar-size: 25px;
+	height: @avatar-size;
+	width: @avatar-size;
 	border-radius: 50%;
 	object-fit: cover;
 

@@ -6,7 +6,7 @@ import { debounceTime, filter, switchMap } from 'rxjs/operators';
 @Component({
 	selector: 'cb-search',
 	templateUrl: './search.component.html',
-	styleUrls: ['./search.component.scss'],
+	styleUrls: ['./search.component.less'],
 })
 export class SearchComponent {
 	constructor(private searchService: SearchService) {}

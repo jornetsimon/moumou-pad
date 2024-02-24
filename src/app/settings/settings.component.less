@@ -1,4 +1,4 @@
-@import '../../styles/colors.scss';
+@import '../../styles/colors.less';
 
 ::ng-deep {
 	cb-settings {
@@ -17,14 +17,14 @@ mat-divider {
 
 .family-container {
 	width: fit-content;
-	border: 1px solid $accent;
+	border: 1px solid @accent;
 	border-radius: 5px;
 	padding: 1em;
 	line-height: 1.5em;
 }
 .family-name {
 	font-weight: bold;
-	color: $accent;
+	color: @accent;
 	margin: 0.2em 0;
 }
 .pending-family-access {

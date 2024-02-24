@@ -9,7 +9,7 @@ import { HotToastService } from '@ngneat/hot-toast';
 	selector: 'cb-login',
 	standalone: true,
 	templateUrl: './login.component.html',
-	styleUrls: ['./login.component.scss'],
+	styleUrls: ['./login.component.less'],
 })
 export class LoginComponent {
 	constructor(

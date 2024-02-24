@@ -1,6 +1,6 @@
 @import '../../../styles/colors';
 
-$meal-color: var(--tui-primary);
+@meal-color: var(--tui-primary);
 
 .container.has-margins {
 	@media (min-width: 600px) {
@@ -45,13 +45,13 @@ $meal-color: var(--tui-primary);
 		min-height: 70px;
 	}
 
-	background-color: $meal-color;
+	background-color: @meal-color;
 	// transition: background-color 0.5s;
 	&.empty {
 		background-color: var(--tui-base-04);
 	}
 	&.out-of-home {
-		background-color: $accent;
+		background-color: @accent;
 	}
 	&.has-jow-recipe,
 	&.has-theme {
@@ -156,10 +156,10 @@ $meal-color: var(--tui-primary);
 	align-items: center;
 
 	mat-icon {
-		$size: 19px;
-		font-size: $size;
-		height: $size;
-		width: $size;
+		@size: 19px;
+		font-size: @size;
+		height: @size;
+		width: @size;
 	}
 
 	transition:

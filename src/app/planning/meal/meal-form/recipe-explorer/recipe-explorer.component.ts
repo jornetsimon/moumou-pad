@@ -49,7 +49,7 @@ import { ToReadableTextColorPipe } from '../../../../../utils/pipes/to-readable-
 		ToReadableTextColorPipe,
 	],
 	templateUrl: './recipe-explorer.component.html',
-	styleUrl: './recipe-explorer.component.scss',
+	styleUrl: './recipe-explorer.component.less',
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecipeExplorerComponent {

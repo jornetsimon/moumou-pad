@@ -18,7 +18,7 @@ export interface MealSwapDialogData {
 @Component({
 	selector: 'cb-meal-swap-dialog',
 	templateUrl: './meal-swap-dialog.component.html',
-	styleUrls: ['./meal-swap-dialog.component.scss'],
+	styleUrls: ['./meal-swap-dialog.component.less'],
 	standalone: true,
 	imports: [
 		CommonModule,

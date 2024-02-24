@@ -52,7 +52,7 @@ import { environment } from '../../../environments/environment';
 @Component({
 	selector: 'cb-meal',
 	templateUrl: './meal.component.html',
-	styleUrls: ['./meal.component.scss'],
+	styleUrls: ['./meal.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	standalone: true,
 	animations: [

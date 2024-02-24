@@ -1,4 +1,4 @@
-@import '../../../../styles/colors.scss';
+@import '../../../../styles/colors.less';
 
 .clear-icon {
 	&:hover {
@@ -32,13 +32,13 @@
 			justify-content: center;
 			align-items: center;
 
-			$size: 18px;
-			height: $size;
-			width: $size;
+			@size: 18px;
+			height: @size;
+			width: @size;
 			padding: 1em;
 
 			::ng-deep mat-icon {
-				font-size: $size;
+				font-size: @size;
 			}
 		}
 
@@ -86,9 +86,9 @@
 }
 
 .memo {
-	$color: #f5e56b;
+	@color: #f5e56b;
 	padding: 20px 30px;
-	background-color: $color;
+	background-color: @color;
 	transform: rotate(359deg);
 	border-radius: 2px;
 	box-shadow: 1px 4px 3px 0 rgb(0 0 0 / 12%);
@@ -108,6 +108,6 @@
 	transition: background-color 0.33s;
 
 	&:hover {
-		background-color: darken($color, 10%);
+		background-color: darken(@color, 10%);
 	}
 }

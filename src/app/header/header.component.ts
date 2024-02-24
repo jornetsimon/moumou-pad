@@ -16,7 +16,7 @@ import { TuiAppBarModule } from '@taiga-ui/addon-mobile';
 @Component({
 	selector: 'cb-header',
 	templateUrl: './header.component.html',
-	styleUrls: ['./header.component.scss'],
+	styleUrls: ['./header.component.less'],
 	standalone: true,
 	imports: [
 		TuiSvgModule,

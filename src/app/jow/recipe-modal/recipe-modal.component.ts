@@ -23,7 +23,7 @@ export interface RecipeModalData {
 @Component({
 	selector: 'cb-recipe-modal',
 	templateUrl: './recipe-modal.component.html',
-	styleUrls: ['./recipe-modal.component.scss'],
+	styleUrls: ['./recipe-modal.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	imports: [
 		CommonModule,

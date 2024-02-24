@@ -21,7 +21,7 @@ import { TuiSwipeOptions } from '@taiga-ui/cdk/interfaces';
 @Component({
 	selector: 'cb-planning',
 	templateUrl: './planning.component.html',
-	styleUrls: ['./planning.component.scss'],
+	styleUrls: ['./planning.component.less'],
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	standalone: true,
 	imports: [

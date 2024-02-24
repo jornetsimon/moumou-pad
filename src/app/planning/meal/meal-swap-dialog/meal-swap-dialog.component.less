@@ -44,10 +44,10 @@
 		align-items: center;
 
 		mat-icon {
-			$size: 19px;
-			font-size: $size;
-			height: $size;
-			width: $size;
+			@size: 19px;
+			font-size: @size;
+			height: @size;
+			width: @size;
 		}
 	}
 
@@ -62,9 +62,9 @@
 	}
 }
 
-$selected-recipe-border-radius: 16px;
+@selected-recipe-border-radius: 16px;
 .selected-recipe {
-	border-radius: $selected-recipe-border-radius $selected-recipe-border-radius;
+	border-radius: @selected-recipe-border-radius @selected-recipe-border-radius;
 	color: black;
 	text-align: center;
 	margin-bottom: 12px;
@@ -86,7 +86,7 @@ $selected-recipe-border-radius: 16px;
 .arrow {
 	flex: none;
 	margin: 0 5px;
-	color: $primary;
+	color: @primary;
 	.mat-icon {
 		height: 52px;
 		width: 52px;

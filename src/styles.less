@@ -3,21 +3,23 @@
 @import 'styles/animations';
 @import 'styles/utils';
 
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-	$font:
+	@font:
 		Roboto,
 		Helvetica Neue,
 		sans-serif;
-	--tui-font-text: $font !important;
-	--tui-font-text-s: $font !important;
-	--tui-font-text-xs: $font !important;
-	--tui-font-text-l: $font !important;
-	--tui-font-text-xl: $font !important;
-	font-family: $font !important;
+	--tui-font-text: @font !important;
+	--tui-font-text-s: @font !important;
+	--tui-font-text-xs: @font !important;
+	--tui-font-text-l: @font !important;
+	--tui-font-text-xl: @font !important;
+	font-family: @font !important;
 	font-size: 14px;
 
 	/*--tui-backdrop: blur(3px);*/
@@ -81,4 +83,8 @@ hr {
 
 .t-overlay {
 	background-color: rgba(0, 0, 0, 0.32) !important;
+}
+
+.t-content {
+	overflow: initial;
 }
