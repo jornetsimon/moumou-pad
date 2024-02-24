@@ -46,6 +46,7 @@ import { constructAssetUrl } from '../../jow/util';
 import { TuiSurfaceModule } from '@taiga-ui/experimental';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { environment } from '../../../environments/environment';
 
 @UntilDestroy()
 @Component({
@@ -213,6 +214,7 @@ export class MealComponent implements AfterViewInit {
 				distinctUntilChanged(),
 				filter((isNext) => isNext),
 				delay(500),
+				filter(() => environment.production),
 				untilDestroyed(this)
 			)
 			.subscribe(() => {
