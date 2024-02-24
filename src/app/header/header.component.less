@@ -1,3 +1,5 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 :host {
 	display: contents;
 }
@@ -10,13 +12,13 @@
 
 	color: @borderColor;
 
-	@media (max-width: 599px) {
+	@media @tui-mobile {
 		@apply sticky top-0 z-10;
 		background-color: #fff4fa;
 		box-shadow: 0 0 5px @borderColor;
 	}
 
-	@media (min-width: 600px) {
+	@media @tui-tablet-min {
 		border-bottom: 1px solid @borderColor;
 	}
 }
@@ -71,7 +73,7 @@
 	justify-content: flex-start;
 	align-items: center;
 
-	@media (max-width: 599px) {
+	@media @tui-mobile {
 		display: none;
 	}
 }

@@ -1,8 +1,9 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
 @import '../../styles/colors.less';
 
 ::ng-deep {
 	cb-settings {
-		@media (max-width: 599px) {
+		@media @tui-mobile {
 			padding: 0 20px;
 			display: block;
 		}

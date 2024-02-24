@@ -1,7 +1,8 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
 @import '../../styles/colors';
 
 .meals-container {
-	@media (max-width: 599px) {
+	@media @tui-mobile {
 		margin-top: 15px;
 
 		& > *:nth-child(2n) {
@@ -18,7 +19,7 @@
 	margin: 0 20px;
 	flex: 40%;
 
-	@media (max-width: 599px) {
+	@media @tui-mobile {
 		margin: 0;
 		flex: 100%;
 	}

@@ -1,9 +1,9 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 @import 'styles/fonts';
 @import 'styles/colors';
 @import 'styles/animations';
 @import 'styles/utils';
-
-@import '@taiga-ui/core/styles/taiga-ui-local.less';
 
 @tailwind base;
 @tailwind components;
@@ -38,7 +38,7 @@ body {
 	justify-content: center;
 	align-items: stretch;*/
 
-	@media (min-width: 600px) {
+	@media @tui-tablet-min {
 		//padding: 0 5vw;
 	}
 	@media (min-width: 1024px) {
@@ -87,4 +87,9 @@ hr {
 
 .t-content {
 	overflow: initial;
+}
+
+// override tailwind
+.container {
+	max-width: initial;
 }

@@ -1,3 +1,5 @@
+@import '@taiga-ui/core/styles/taiga-ui-local.less';
+
 :host {
 	display: block;
 
@@ -9,11 +11,11 @@
 	background: rgb(244 246 255 / 75%);
 	backdrop-filter: blur(16px) brightness(1.3);
 
-	@media (max-width: 599px) {
+	@media @tui-mobile {
 		box-shadow: 0 0 0 1px var(--tui-secondary);
 		margin-top: 15px;
 	}
-	@media (min-width: 600px) {
+	@media @tui-tablet-min {
 		margin: 1rem 20px 0 20px;
 		top: 20px;
 		border: 1px solid var(--tui-secondary);
@@ -29,11 +31,11 @@
 	width: 100%;
 	z-index: 1;
 
-	@media (min-width: 600px) {
+	@media @tui-tablet-min {
 		padding: 10px;
 	}
 
-	@media (max-width: 599px) {
+	@media @tui-mobile {
 		button {
 			flex-grow: 1;
 			display: flex;
@@ -59,7 +61,7 @@
 	text-align: center;
 	user-select: none;
 
-	@media (max-width: 599px) {
+	@media @tui-mobile {
 		font-size: 19px;
 	}
 }
