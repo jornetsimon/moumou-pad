@@ -72,5 +72,9 @@ export class WeekNavigationComponent {
 	onCurrentPeriodClicked() {
 		this.appService.resetSchedule();
 		this.router.navigateByUrl('/');
+		window.scrollTo({
+			top: 0,
+			behavior: 'smooth',
+		});
 	}
 }
