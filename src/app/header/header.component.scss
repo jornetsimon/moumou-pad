@@ -25,6 +25,7 @@
 	display: flex;
 	align-items: center;
 	gap: 0.2em;
+	user-select: none;
 
 	font-family: 'Dancing Script', cursive;
 	font-size: $appTitleSize;

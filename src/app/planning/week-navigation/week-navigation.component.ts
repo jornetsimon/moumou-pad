@@ -10,6 +10,7 @@ import { isSameDay, isSameMonth } from 'date-fns/esm';
 import { generateSchedule, Period } from '../../model/period';
 import { AppQuery } from '../../../state/app.query';
 import { AppService } from '../../../state/app.service';
+import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 
 @Component({
 	selector: 'cb-week-navigation',
@@ -21,6 +22,7 @@ import { AppService } from '../../../state/app.service';
 		TuiIconModule,
 		TuiButtonModule,
 		TuiHintModule,
+		TuiRippleModule,
 	],
 	templateUrl: './week-navigation.component.html',
 	styleUrl: './week-navigation.component.scss',
@@ -61,7 +63,7 @@ export class WeekNavigationComponent {
 			);
 			const toLabel = this.datePipe.transform(to, 'd MMMM');
 
-			return `du ${fromLabel} au ${toLabel}`;
+			return `<span class="whitespace-nowrap">du ${fromLabel}</span> au <span class="whitespace-nowrap">${toLabel}</span>`;
 		})
 	);
 
