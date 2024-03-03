@@ -1,94 +1,131 @@
-<div class="page-title">
-	Mes préférences
-	<button mat-icon-button color="primary" routerLink="/">
-		<mat-icon fontSet="material-icons-round">home</mat-icon>
-	</button>
-</div>
+<div class="my-2 px-8">
+	<h1 class="tui-text_h1">Mes préférences</h1>
 
-<h2>Général</h2>
-<form [formGroup]="form" (ngSubmit)="save()">
-	<mat-form-field appearance="fill" class="width-100">
-		<mat-label>Jour de début de semaine</mat-label>
-		<select matNativeControl formControlName="startWeekOn">
-			<option [value]="weekday.value" *ngFor="let weekday of weekdays">
-				{{ weekday.label | titlecase }}
-			</option>
-		</select>
-	</mat-form-field>
-	<mat-form-field appearance="fill" class="width-100">
-		<mat-label>Ville pour la météo</mat-label>
-		<input matInput type="text" formControlName="city" autocomplete="address-level2" />
-	</mat-form-field>
-	<button mat-raised-button color="primary" type="submit">Enregistrer</button>
-</form>
-
-<mat-divider></mat-divider>
-
-<h2>Famille</h2>
-<form [formGroup]="familyForm" (ngSubmit)="joinFamily(familyForm.value)">
-	<mat-form-field appearance="fill" class="width-100">
-		<mat-label>Créer ou rejoindre une famille</mat-label>
-		<input matInput formControlName="name" placeholder="Nom de ma famille" />
-	</mat-form-field>
-	<button
-		mat-raised-button
-		color="primary"
-		type="submit"
-		*ngIf="(userData$ | async)?.familyName !== familyForm.get('name')?.value"
-		[disabled]="familyForm.invalid"
-	>
-		Rejoindre
-	</button>
-</form>
-
-<ng-container *ngIf="userData$ | async as userData">
-	<mat-progress-spinner
-		mode="indeterminate"
-		[diameter]="25"
-		style="margin: 10px"
-		*ngIf="loadingSubject.asObservable() | async"
-	></mat-progress-spinner>
-	<div class="family-container" *ngIf="userData.familyName">
-		<div>
-			Ma famille : <span class="family-name">{{ userData.familyName }}</span>
+	<form [formGroup]="form" (ngSubmit)="save()">
+		<h3 class="tui-form__header">Général</h3>
+		<div class="tui-form__row">
+			<tui-select [formControl]="form.controls.startWeekOn" [valueContent]="getWeekdayLabel">
+				Jour de début de semaine
+				<input tuiTextfield />
+				<tui-data-list *tuiDataList>
+					<button tuiOption [value]="weekday.value" *ngFor="let weekday of weekdays">
+						{{ weekday.label | titlecase }}
+					</button>
+				</tui-data-list>
+			</tui-select>
 		</div>
 
-		<div *ngIf="!userData.isAllowedInFamily" class="pending-family-access">
-			En attente d'approbation du chef de famille
+		<div class="tui-form__row">
+			<tui-input [formControl]="form.controls.city" [tuiTextfieldCleaner]="true">
+				Ville pour la météo
+				<input tuiTextfield autocomplete="address-level2" />
+			</tui-input>
 		</div>
-		<ng-container *ngIf="isManager$ | async">
-			🐺 Vous êtes le chef de la famille
 
-			<ng-container *ngIf="pending$ | async as pendingList">
-				<div class="pending-list" *ngIf="pendingList.length">
-					<div
-						fxLayout="row wrap"
-						fxLayoutAlign="start center"
-						*ngFor="let pendingUid of pendingList"
-					>
-						<div fxLayoutAlign="start" style="margin: 10px 20px 10px 0">
-							<mat-icon style="color: #3f51b5">new_releases</mat-icon>
-							<div>Une personne souhaiterait rejoindre la famille</div>
-						</div>
-						<div fxLayoutAlign="center center" fxLayoutGap="10px">
-							<button
-								mat-raised-button
-								color="warn"
-								(click)="denyPending(userData.familyName, pendingUid)"
-							>
-								Ignorer
-							</button>
-							<button
-								mat-raised-button
-								color="primary"
-								(click)="approvePending(userData.familyName, pendingUid)"
-							>
-								Accepter
-							</button>
-						</div>
-					</div>
+		<div class="tui-form__buttons">
+			<button tuiButton type="submit" [disabled]="form.invalid">Enregistrer</button>
+		</div>
+	</form>
+
+	<hr class="my-8" />
+
+	<form [formGroup]="familyForm" (ngSubmit)="joinFamily(familyForm.controls.name.value)">
+		<h3 class="tui-form__header">Général</h3>
+		<div class="tui-form__row">
+			<tui-input [formControl]="familyForm.controls.name">
+				Créer ou rejoindre une famille
+				<input placeholder="Nom de ma famille" tuiTextfield />
+			</tui-input>
+		</div>
+
+		@if ((userData$ | async)?.familyName !== familyForm.get('name')?.value) {
+			<tui-loader
+				class="loader"
+				[inheritColor]="true"
+				[overlay]="true"
+				[showLoader]="(isLoading$ | async) ?? false"
+			>
+				<div class="tui-form__buttons">
+					<button tuiButton type="submit" [disabled]="familyForm.invalid">
+						Rejoindre
+					</button>
 				</div>
-			</ng-container>
-		</ng-container>
-	</div>
-</ng-container>
+			</tui-loader>
+		}
+	</form>
+
+	@if (userData$ | async; as userData) {
+		@if (userData.familyName) {
+			<div class="mt-8 max-w-[350px] flex flex-col gap-4">
+				<tui-island>
+					<p class="tui-island__category">Ma famille</p>
+					<h3 class="tui-island__title">
+						<span class="family-name">{{ userData.familyName }}</span>
+					</h3>
+					<p class="tui-island__paragraph">
+						@if (isWaitingForApproval$ | async) {
+							<div class="pending-family-access">
+								En attente d'approbation du chef de famille
+							</div>
+						}
+						@if (isManager$ | async) {
+							<div>🐺 Vous êtes le chef de la famille</div>
+						}
+					</p>
+				</tui-island>
+
+				@if (isManager$ | async) {
+					@if (pending$ | async; as pendingList) {
+						@if (pendingList.length) {
+							<div class="flex items-center gap-4">
+								@for (pendingUid of pendingList; track pendingUid) {
+									<tui-island class="mt-4">
+										<div class="tui-island__paragraph">
+											<div class="flex items-center gap-2">
+												<mat-icon
+													class="shrink-0"
+													style="color: var(--tui-primary)"
+												>
+													new_releases
+												</mat-icon>
+												<div class="font-bold">
+													Une personne souhaiterait rejoindre la famille
+												</div>
+											</div>
+										</div>
+										<div
+											class="pt-3 p-1 flex items-center justify-center gap-4"
+										>
+											<button
+												appearance="secondary-destructive"
+												size="m"
+												tuiButton
+												type="button"
+												(click)="
+													denyPending(userData.familyName, pendingUid)
+												"
+											>
+												Ignorer
+											</button>
+											<button
+												appearance="primary"
+												size="m"
+												tuiButton
+												type="button"
+												(click)="
+													approvePending(userData.familyName, pendingUid)
+												"
+											>
+												Accepter
+											</button>
+										</div>
+									</tui-island>
+								}
+							</div>
+						}
+					}
+				}
+			</div>
+		}
+	}
+</div>

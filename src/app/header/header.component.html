@@ -26,8 +26,9 @@
 							routerLink="/settings"
 						>
 							<tui-svg src="tuiIconUsers"></tui-svg>
-							<div>
-								Famille <span class="family-name">{{ family }}</span>
+							<div class="grow ml-2 flex flex-col">
+								<span class="text-xs">Famille</span>
+								<span class="family-name">{{ family | titlecase }} </span>
 							</div>
 						</a>
 						<a tuiOption role="menuitemradio" routerLinkActive routerLink="/settings">
@@ -44,50 +45,3 @@
 		}
 	</ng-container>
 </tui-app-bar>
-
-<!--<div class="container">
-	<a class="app-title" routerLink="/">
-		<img src="assets/logo.svg" alt="MoumouPad logo" width="20px" height="20px" />
-		<div class="font-dancing-script">MoumouPad</div>
-	</a>
-
-	@if (firebaseUser$ | async; as user) {
-		<div class="absolute right-2.5 top-5">
-			<tui-hosted-dropdown [content]="content">
-				<tui-avatar
-					size="s"
-					[text]="user.displayName || ''"
-					[rounded]="true"
-					[autoColor]="true"
-					[avatarUrl]="user.photoURL"
-				></tui-avatar>
-			</tui-hosted-dropdown>
-
-			<ng-template #content>
-				<tui-data-list role="menu">
-					<tui-opt-group [label]="user.displayName">
-						<a
-							tuiOption
-							role="menuitemradio"
-							*ngIf="family$ | async as family"
-							routerLink="/settings"
-						>
-							<tui-svg src="tuiIconUsers"></tui-svg>
-							<div>
-								Famille <span class="family-name">{{ family }}</span>
-							</div>
-						</a>
-						<a tuiOption role="menuitemradio" routerLinkActive routerLink="/settings">
-							<mat-icon>settings</mat-icon>
-							<span>Préférences</span>
-						</a>
-						<a tuiOption role="menuitemradio" (click)="logout()">
-							<tui-svg src="tuiIconLogOut"></tui-svg>
-							<span>Déconnexion</span>
-						</a>
-					</tui-opt-group>
-				</tui-data-list>
-			</ng-template>
-		</div>
-	}
-</div>-->

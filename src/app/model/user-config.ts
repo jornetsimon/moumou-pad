@@ -1,5 +1,7 @@
+import { WeekdayValue } from './weekday';
+
 export interface UserConfig {
-	startWeekOn: number;
+	startWeekOn: WeekdayValue;
 	familyName?: string;
 	city?: string;
 }
