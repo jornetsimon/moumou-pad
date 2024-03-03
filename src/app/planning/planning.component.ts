@@ -7,8 +7,7 @@ import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
 import { AppQuery } from '../../state/app.query';
 import { addDays, isBefore, startOfDay } from 'date-fns/esm';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { NgxVibrationService } from 'ngx-vibration';
-import { SharedModule } from '../shared/shared.module';
+import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
 import { TvModule } from '../tv/tv.module';
 import { MealComponent } from './meal/meal.component';
 import { WeekNavigationComponent } from './week-navigation/week-navigation.component';
@@ -17,6 +16,10 @@ import { TUI_SWIPE_OPTIONS, TuiSwipe, TuiSwipeModule } from '@taiga-ui/cdk';
 import { AppService } from '../../state/app.service';
 import { Router } from '@angular/router';
 import { TuiSwipeOptions } from '@taiga-ui/cdk/interfaces';
+import { CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { TuiButtonModule } from '@taiga-ui/core';
 
 @Component({
 	selector: 'cb-planning',
@@ -25,12 +28,17 @@ import { TuiSwipeOptions } from '@taiga-ui/cdk/interfaces';
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	standalone: true,
 	imports: [
-		SharedModule,
+		CommonModule,
 		TvModule,
 		MealComponent,
 		WeekNavigationComponent,
 		TuiCarouselModule,
 		TuiSwipeModule,
+		CdkDropList,
+		MatIconModule,
+		NgxVibrationModule,
+		TuiButtonModule,
+		CdkDropListGroup,
 	],
 	providers: [
 		{

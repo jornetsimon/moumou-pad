@@ -3,8 +3,7 @@
 
 	<ng-container cdkDropListGroup>
 		<div
-			class="meals-container"
-			fxLayout="row wrap"
+			class="meals-container flex flex-wrap"
 			[class.drag-cancel-margin]="showDragCancelButton$ | async"
 		>
 			<cb-meal
@@ -26,9 +25,12 @@
 			[class.show]="showDragCancelButton$ | async"
 			(cdkDropListDropped)="onDrop()"
 		>
-			<button mat-fab matTooltip="Annuler" matTooltipShowDelay="500">
-				<mat-icon>cancel</mat-icon>
-			</button>
+			<button
+				tuiIconButton
+				type="button"
+				icon="tuiIconCloseLarge"
+				class="!rounded-full"
+			></button>
 		</div>
 	</ng-container>
 </div>

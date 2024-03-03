@@ -10,7 +10,7 @@ import {
 	Output,
 	SimpleChanges,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MealService } from '../state/meal.service';
 import { createMeal, Meal } from '../state/meal.model';
 import { pickBy } from 'lodash-es';
@@ -20,7 +20,6 @@ import { JowService } from '../../../jow/state/jow.service';
 import { MemoComponent, MemoDialogOutput } from './note/memo.component';
 import { RenderService } from '../../../shared/render.service';
 import { MealQuery } from '../state/meal.query';
-import { SharedModule } from '../../../shared/shared.module';
 import { CommonModule } from '@angular/common';
 import {
 	TuiDataListWrapperModule,
@@ -45,6 +44,8 @@ import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { tap } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
+import { MatIconModule } from '@angular/material/icon';
+import { NgxVibrationModule } from 'ngx-vibration';
 
 @UntilDestroy()
 @Component({
@@ -55,7 +56,6 @@ import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 	standalone: true,
 	imports: [
 		CommonModule,
-		SharedModule,
 		TuiInputModule,
 		TuiErrorModule,
 		TuiFieldErrorPipeModule,
@@ -69,6 +69,9 @@ import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 		RecipeCardComponent,
 		RecipeExplorerComponent,
 		TuiRippleModule,
+		MatIconModule,
+		ReactiveFormsModule,
+		NgxVibrationModule,
 	],
 })
 export class MealFormComponent implements OnChanges {

@@ -57,6 +57,9 @@ const modules = [
 	MatListModule,
 ];
 
+/**
+ * @deprecated
+ */
 @NgModule({
 	declarations: [...components],
 	imports: [...modules],
