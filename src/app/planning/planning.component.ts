@@ -8,7 +8,6 @@ import { AppQuery } from '../../state/app.query';
 import { addDays, isBefore, startOfDay } from 'date-fns/esm';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
-import { TvModule } from '../tv/tv.module';
 import { MealComponent } from './meal/meal.component';
 import { WeekNavigationComponent } from './week-navigation/week-navigation.component';
 import { TuiCarouselModule } from '@taiga-ui/kit';
@@ -29,7 +28,6 @@ import { TuiButtonModule } from '@taiga-ui/core';
 	standalone: true,
 	imports: [
 		CommonModule,
-		TvModule,
 		MealComponent,
 		WeekNavigationComponent,
 		TuiCarouselModule,

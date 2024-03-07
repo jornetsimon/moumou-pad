@@ -26,7 +26,6 @@ import {
 } from '@angular/fire/firestore';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
-import { SearchModule } from './search/search.module';
 import { LoginComponent } from './auth/login/login.component';
 import { provideHotToastConfig } from '@ngneat/hot-toast';
 import { TuiAvatarModule, TuiSelectModule } from '@taiga-ui/kit';
@@ -71,7 +70,6 @@ registerLocaleData(fr);
 			// or after 30 seconds (whichever comes first).
 			registrationStrategy: 'registerWhenStable:30000',
 		}),
-		SearchModule,
 		TuiRootModule,
 		TuiDialogModule,
 		TuiAlertModule,

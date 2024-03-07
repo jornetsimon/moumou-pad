@@ -5,11 +5,12 @@ import { filter, map, shareReplay, switchMap, take, tap } from 'rxjs/operators';
 import { CityWeather } from './model/cityWeather';
 import { timer } from 'rxjs';
 
-@Injectable({
-	providedIn: 'root',
-})
+@Injectable()
 export class WeatherService {
-	constructor(private http: HttpClient, private appQuery: AppQuery) {}
+	constructor(
+		private http: HttpClient,
+		private appQuery: AppQuery
+	) {}
 
 	private API_KEY = '633570e4f43519c6abcb3649cabce6c4'; // steal that if you want 🤷
 

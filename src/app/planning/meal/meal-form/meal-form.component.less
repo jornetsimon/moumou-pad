@@ -7,16 +7,6 @@
 }
 
 .extras {
-	mat-chip {
-		user-select: none;
-
-		&:not(.mat-chip-selected) {
-			background-color: unset;
-			border: 1px solid #e0e0e0;
-			filter: contrast(0);
-		}
-	}
-
 	tui-chip {
 		font-weight: 500;
 	}
@@ -26,8 +16,7 @@
 	}
 
 	.buttons {
-		button,
-		::ng-deep .mat-button-wrapper {
+		button {
 			display: flex;
 			justify-content: center;
 			align-items: center;

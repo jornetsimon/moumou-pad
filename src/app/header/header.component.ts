@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { TuiAvatarModule } from '@taiga-ui/kit';
 import { TuiAppBarModule } from '@taiga-ui/addon-mobile';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
 	selector: 'cb-header',
@@ -21,6 +22,7 @@ import { TuiAppBarModule } from '@taiga-ui/addon-mobile';
 	imports: [
 		TuiSvgModule,
 		CommonModule,
+		HttpClientModule,
 		TuiDataListModule,
 		RouterLink,
 		RouterLinkActive,
@@ -30,6 +32,7 @@ import { TuiAppBarModule } from '@taiga-ui/addon-mobile';
 		TuiAppBarModule,
 	],
 	changeDetection: ChangeDetectionStrategy.OnPush,
+	providers: [WeatherService],
 })
 export class HeaderComponent {
 	constructor(
