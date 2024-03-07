@@ -1,0 +1,10 @@
+@if (weatherIconUrl$ | async; as weatherIconUrl) {
+	<div class="flex items-center" [@tuiFadeIn]="{ value: '', params: { duration: 500 } }">
+		<img
+			class="w-[50px]"
+			[src]="weatherIconUrl"
+			alt="weather"
+			[tuiHint]="(weatherTooltip$ | async) || ''"
+		/>
+	</div>
+}
