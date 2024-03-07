@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -34,7 +33,6 @@ const modules = [
 	RouterModule,
 	ReactiveFormsModule,
 	HttpClientModule,
-	FlexLayoutModule,
 	NgxVibrationModule,
 	MatTooltipModule,
 	MatCardModule,

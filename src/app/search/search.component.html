@@ -1,4 +1,4 @@
-<form [formGroup]="form" fxLayoutAlign="center" class="search-form">
+<form [formGroup]="form" class="search-form flex justify-center items-center">
 	<mat-form-field appearance="outline" class="term-field">
 		<mat-label>Rechercher un mot-clé</mat-label>
 		<input
@@ -14,8 +14,7 @@
 <div class="results-container" *ngIf="form.valid">
 	<ng-container *ngIf="searchResults$ | async as searchResults">
 		<div
-			fxLayout="column"
-			fxLayoutAlign="center center"
+			class="flex flex-column justify-center items-center"
 			*ngIf="searchResults.length; else noResultsTpl"
 		>
 			<div class="results-count">{{ searchResults.length }} résultats trouvés</div>

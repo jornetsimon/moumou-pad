@@ -2,7 +2,7 @@
 	Recette sélectionnée
 </div>
 <div class="selected-recipe" [style.border-color]="jowRecipe.smartColor">
-	<div fxLayout="column" fxLayoutAlign="start center" [style.color]="jowRecipe.smartColor">
+	<div class="flex flex-col justify-start items-center" [style.color]="jowRecipe.smartColor">
 		<img
 			class="preview"
 			[src]="constructAssetUrl(jowRecipe.imageUrl)"

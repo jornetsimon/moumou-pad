@@ -4,7 +4,7 @@
 		<mat-expansion-panel *ngFor="let program of programs">
 			<mat-expansion-panel-header>
 				<mat-panel-title>
-					<div fxLayoutAlign="left center" fxLayoutGap="10px">
+					<div class="flex justify-start items-center gap-[10px]">
 						<div class="channel">
 							<img
 								[src]="program._attributes.channel.icon._attributes.src"
@@ -44,7 +44,7 @@
 </div>
 
 <ng-template #loadingTpl>
-	<div fxLayoutAlign="center" style="margin: 10px 0">
+	<div class="flex justify-center items-center" style="margin: 10px 0">
 		<mat-spinner></mat-spinner>
 	</div>
 </ng-template>

@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { FlexModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf, NgOptimizedImage } from '@angular/common';
 import { TuiButtonModule, TuiHintModule } from '@taiga-ui/core';
@@ -13,7 +12,6 @@ import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 	selector: 'cb-recipe-card',
 	standalone: true,
 	imports: [
-		FlexModule,
 		MatIconModule,
 		NgIf,
 		TuiButtonModule,

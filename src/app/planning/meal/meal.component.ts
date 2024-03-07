@@ -37,7 +37,6 @@ import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
 import { TuiAccordionModule, TuiIslandModule } from '@taiga-ui/kit';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { FlexModule } from '@angular/flex-layout';
 import { TuiButtonModule, TuiDialogService, TuiHintModule } from '@taiga-ui/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
@@ -67,7 +66,6 @@ import { environment } from '../../../environments/environment';
 		CommonModule,
 		TuiAccordionModule,
 		MatIconModule,
-		FlexModule,
 		TuiHintModule,
 		TuiButtonModule,
 		NgxVibrationModule,
