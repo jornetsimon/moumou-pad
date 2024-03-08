@@ -2,10 +2,15 @@
 
 :host {
 	display: contents;
+
+	::ng-deep .t-right {
+		display: flex;
+		align-items: center;
+	}
 }
 
 .app-bar {
-	@apply p-4 bg-inherit;
+	@apply pr-2 bg-inherit;
 	height: 4rem !important;
 
 	@borderColor: rgb(255 193 228 / 100%);
