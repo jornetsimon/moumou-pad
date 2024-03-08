@@ -16,7 +16,6 @@ import { registerLocaleData } from '@angular/common';
 import fr from '@angular/common/locales/fr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { AppRoutingModule } from './app-routing.module';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import {
 	connectFirestoreEmulator,
@@ -31,6 +30,8 @@ import { provideHotToastConfig } from '@ngneat/hot-toast';
 import { TuiAvatarModule, TuiSelectModule } from '@taiga-ui/kit';
 import { TUI_DIALOG_CLOSES_ON_BACK } from '@taiga-ui/cdk';
 import { of } from 'rxjs';
+import { RouterModule } from '@angular/router';
+import { routes } from './app.routes';
 
 registerLocaleData(fr);
 
@@ -63,7 +64,7 @@ registerLocaleData(fr);
 		}),
 		LoginComponent,
 		BrowserAnimationsModule,
-		AppRoutingModule,
+		RouterModule.forRoot(routes),
 		ServiceWorkerModule.register('ngsw-worker.js', {
 			enabled: environment.production,
 			// Register the ServiceWorker as soon as the app is stable
