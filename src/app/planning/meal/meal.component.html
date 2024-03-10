@@ -26,7 +26,6 @@
 				(cdkDragStarted)="onDragStart()"
 				(cdkDragEnded)="onDragEnd()"
 				cdkDragPreviewClass="dragging"
-				cdkDragPreviewContainer="parent"
 			>
 				<ng-container *ngIf="showFullDateInTopper; else defaultTopperDateTpl">
 					{{ meal.date | date: 'EEEE dd MMMM' | titlecase }}&nbsp;
