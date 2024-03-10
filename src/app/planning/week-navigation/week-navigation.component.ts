@@ -69,6 +69,10 @@ export class WeekNavigationComponent {
 
 	shiftSchedule(direction: 'previous' | 'next') {
 		this.appService.shiftSchedule(direction);
+		window.scrollTo({
+			behavior: 'instant',
+			top: 0,
+		});
 	}
 
 	onCurrentPeriodClicked() {
