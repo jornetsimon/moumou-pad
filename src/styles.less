@@ -15,10 +15,6 @@
 		Helvetica Neue,
 		sans-serif;
 	--tui-font-text: @font !important;
-	--tui-font-text-s: @font !important;
-	--tui-font-text-xs: @font !important;
-	--tui-font-text-l: @font !important;
-	--tui-font-text-xl: @font !important;
 	font-family: @font !important;
 	font-size: 14px;
 
@@ -32,11 +28,7 @@ body {
 
 body {
 	margin: auto !important;
-
-	/*display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: stretch;*/
+	font-size: var(--tui-font-text-m) !important;
 
 	@media @tui-tablet-min {
 		//padding: 0 5vw;
