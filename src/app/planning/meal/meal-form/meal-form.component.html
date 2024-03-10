@@ -28,11 +28,11 @@
 			></cb-recipe-explorer>
 		}
 
-		@if (form.value.memo; as memo) {
+		@if (getRecipeMemo(); as memo) {
 			<div
 				class="memo mx-8 my-2"
 				tuiRipple
-				[innerHTML]="sanitizerService.render(memo ?? '')"
+				[innerHTML]="memo | renderRichText"
 				(click)="openNoteDialog()"
 			></div>
 		}
@@ -76,7 +76,7 @@
 					/>
 				</tui-chip>
 
-				@if (!form.value.memo) {
+				@if (!this.getRecipeMemo()) {
 					<tui-chip tuiHint="Ajouter un mémo" appearance="" (click)="openNoteDialog()">
 						<mat-icon>edit_note</mat-icon>
 						<input tuiChip type="checkbox" />

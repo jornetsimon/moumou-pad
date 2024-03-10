@@ -15,10 +15,8 @@ import { MealService } from '../state/meal.service';
 import { createMeal, Meal } from '../state/meal.model';
 import { pickBy } from 'lodash-es';
 import { Recipe } from '../../../model/receipe';
-import { JowQuery } from '../../../jow/state/jow.query';
-import { JowService } from '../../../jow/state/jow.service';
-import { MemoComponent, MemoDialogOutput } from './note/memo.component';
-import { RenderService } from '../../../shared/render.service';
+import { MemoDialogComponent, MemoDialogOutput } from './memo-dialog/memo-dialog.component';
+import { RenderRichTextPipe } from '../../../shared/render-rich-text.pipe';
 import { MealQuery } from '../state/meal.query';
 import { CommonModule } from '@angular/common';
 import {
@@ -41,7 +39,7 @@ import { constructAssetUrl } from '../../../jow/util';
 import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
 import { RecipeExplorerComponent } from './recipe-explorer/recipe-explorer.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 import { MatIconModule } from '@angular/material/icon';
@@ -72,16 +70,14 @@ import { NgxVibrationModule } from 'ngx-vibration';
 		MatIconModule,
 		ReactiveFormsModule,
 		NgxVibrationModule,
+		RenderRichTextPipe,
 	],
 })
 export class MealFormComponent implements OnChanges {
 	constructor(
 		private readonly mealQuery: MealQuery,
 		private readonly mealService: MealService,
-		private readonly jowQuery: JowQuery,
-		private readonly jowService: JowService,
 		private readonly cd: ChangeDetectorRef,
-		public readonly sanitizerService: RenderService,
 		@Inject(Injector) private readonly injector: Injector,
 		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
 	) {}
@@ -146,7 +142,7 @@ export class MealFormComponent implements OnChanges {
 			jowRecipe: this.jowRecipe,
 			extras: this.extrasFg.value,
 			alternateDish: this.form.value.alternateDish,
-			recipeMemo: this.form.value.memo,
+			recipeMemo: this.getRecipeMemo(),
 		};
 		if (this.meal?.name) {
 			this.mealService.update(
@@ -199,15 +195,22 @@ export class MealFormComponent implements OnChanges {
 
 	openNoteDialog() {
 		this.dialogs
-			.open<MemoDialogOutput>(new PolymorpheusComponent(MemoComponent, this.injector), {
+			.open<MemoDialogOutput>(new PolymorpheusComponent(MemoDialogComponent, this.injector), {
 				data: this.form.controls.memo.value,
 			})
 			.pipe(
+				map((note) => note || null),
 				tap((note) => {
 					this.form.controls.memo.setValue(note);
+					this.cd.detectChanges();
 				}),
 				untilDestroyed(this)
 			)
 			.subscribe();
+	}
+
+	getRecipeMemo() {
+		const formValue = this.form.controls.memo.value;
+		return formValue !== undefined ? formValue : this.meal?.recipeMemo;
 	}
 }

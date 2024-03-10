@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { Dish, isNextMeal, Meal } from './state/meal.model';
 import { collapseOnLeaveAnimation, expandOnEnterAnimation } from 'angular-animations';
-import { JowService } from '../../jow/state/jow.service';
 import { MealService } from './state/meal.service';
 import { HotToastService } from '@ngneat/hot-toast';
 import { DragDropService } from './drag-drop.service';
@@ -80,7 +79,6 @@ export class MealComponent implements AfterViewInit {
 	constructor(
 		private mealService: MealService,
 		private toastService: HotToastService,
-		public jowService: JowService,
 		public dragDropService: DragDropService,
 		private vibrationService: NgxVibrationService,
 		private mealThemeService: MealThemeService,

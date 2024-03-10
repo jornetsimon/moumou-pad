@@ -44,7 +44,7 @@
 		</div>
 		<div class="icons w-1/3 flex justify-end items-center gap-[10px]">
 			<div *ngIf="meal.extras?.prepared" tuiHint="Repas préparé">✅</div>
-			<div *ngIf="meal.recipeMemo" tuiHint="Note">📝</div>
+			<div *ngIf="meal.recipeMemo" [tuiHint]="meal.recipeMemo" tuiHint="Note">📝</div>
 			<div *ngIf="meal.extras?.croquettes" tuiHint="Jour de croquettes">🐱</div>
 		</div>
 	</div>
