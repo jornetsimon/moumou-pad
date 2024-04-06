@@ -46,7 +46,6 @@ import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxVibrationModule } from 'ngx-vibration';
 import { MealEmojisService } from './meal-emojis.service';
-import { debugObservable } from '../../../../utils/debug-observable';
 
 @UntilDestroy()
 @Component({
@@ -114,7 +113,6 @@ export class MealFormComponent implements OnChanges {
 	);
 
 	readonly emojis$ = combineLatest([this.emojisService.emojis$, this.formEmojis$]).pipe(
-		debugObservable(),
 		map(([emojis, selectedEmojis]) =>
 			emojis.map((emoji) => ({
 				emoji,
