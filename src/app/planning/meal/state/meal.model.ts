@@ -21,8 +21,6 @@ export interface Meal {
 	emojis?: string[];
 }
 export interface MealExtras {
-	croquettes?: boolean;
-	freezer?: boolean;
 	outOfHome?: boolean;
 	prepared?: boolean;
 }

@@ -94,7 +94,6 @@ export class MealService {
 						jowRecipe: from.jowRecipe || null,
 						extras: mapUndefinedToNull({
 							...from.extras,
-							croquettes: to.extras?.croquettes,
 						}),
 						alternateDish: from.alternateDish,
 						emojis: from.emojis,
@@ -106,7 +105,6 @@ export class MealService {
 						jowRecipe: to.jowRecipe || null,
 						extras: mapUndefinedToNull({
 							...to.extras,
-							croquettes: from.extras?.croquettes,
 						}),
 						alternateDish: to.alternateDish,
 						emojis: to.emojis,
