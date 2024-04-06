@@ -18,6 +18,7 @@ export interface Meal {
 	alternateDish?: Dish;
 	recipeMemo?: string | null;
 	searchKeys: string[];
+	emojis?: string[];
 }
 export interface MealExtras {
 	croquettes?: boolean;

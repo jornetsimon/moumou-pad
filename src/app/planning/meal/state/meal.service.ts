@@ -97,7 +97,9 @@ export class MealService {
 							croquettes: to.extras?.croquettes,
 						}),
 						alternateDish: from.alternateDish,
-					};
+						emojis: from.emojis,
+					} satisfies Meal;
+
 					const source = {
 						...from,
 						name: to.name || null,
@@ -107,7 +109,9 @@ export class MealService {
 							croquettes: from.extras?.croquettes,
 						}),
 						alternateDish: to.alternateDish,
-					};
+						emojis: to.emojis,
+					} satisfies Meal;
+
 					batch.set(doc(collectionRef, to.id), mapUndefinedToNull(destination));
 					batch.set(doc(collectionRef, from.id), mapUndefinedToNull(source));
 					return batch.commit();

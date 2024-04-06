@@ -7,6 +7,7 @@ import { addWeeks, isBefore } from 'date-fns/esm';
 import { doc, docData, Firestore, updateDoc } from '@angular/fire/firestore';
 import { DocumentReference } from 'rxfire/firestore/interfaces';
 import { UntilDestroy } from '@ngneat/until-destroy';
+import { UpdateData } from '@firebase/firestore';
 
 export type ShiftDirection = 'previous' | 'next';
 
@@ -24,7 +25,7 @@ export class AppService {
 		);
 	}
 
-	setConfig(config: UserConfig) {
+	setConfig(config: UpdateData<UserConfig>) {
 		const uid = this.appStore.getValue().user!.uid;
 		const userDoc = doc(this.firestore, `/users/${uid}`) as DocumentReference<UserData>;
 		return updateDoc(userDoc, { config });

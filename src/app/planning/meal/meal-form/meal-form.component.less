@@ -100,3 +100,13 @@
 		background-color: darken(@color, 10%);
 	}
 }
+
+.emoji-button {
+	@apply !text-xl border border-gray-300;
+	padding: 0 5px;
+	border-radius: 5px;
+
+	&.selected {
+		@apply bg-yellow-300;
+	}
+}

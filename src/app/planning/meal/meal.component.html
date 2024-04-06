@@ -45,6 +45,9 @@
 			<div *ngIf="meal.extras?.prepared" tuiHint="Repas préparé">✅</div>
 			<div *ngIf="meal.recipeMemo" [tuiHint]="meal.recipeMemo" tuiHint="Note">📝</div>
 			<div *ngIf="meal.extras?.croquettes" tuiHint="Jour de croquettes">🐱</div>
+			@for (emoji of meal.emojis; track emoji) {
+				<div>{{ emoji }}</div>
+			}
 		</div>
 	</div>
 	<div
