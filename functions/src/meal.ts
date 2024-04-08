@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import { db } from './init';
-import { Dish, Meal, Recipe } from './model/meal.model';
+import { Dish, Meal } from './model/meal.model';
 import { PickByType } from './helpers/pick-by-type';
 import { RecursiveKeyOf } from './helpers/recursive-key-of';
 import { normalizeString } from './helpers/normalize-string';
@@ -9,6 +9,7 @@ import { isNotNullOrUndefined } from './helpers/is-not-null-or-undefined.helper'
 import slugify from 'slugify';
 import { Change, EventContext } from 'firebase-functions/lib/cloud-functions';
 import { DocumentSnapshot } from 'firebase-functions/lib/providers/firestore';
+import { Recipe } from './model/receipe.model';
 import get = require('lodash/get');
 import uniq = require('lodash/uniq');
 import FieldValue = firestore.FieldValue;
