@@ -39,7 +39,7 @@ import { constructAssetUrl } from '../../../jow/util';
 import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
 import { RecipeExplorerComponent } from './recipe-explorer/recipe-explorer.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { map, shareReplay, startWith, tap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
@@ -109,6 +109,7 @@ export class MealFormComponent implements OnChanges {
 	nameSuggestions$ = this.mealQuery.nameSuggestions$;
 
 	private readonly formEmojis$ = this.form.controls.emojis.valueChanges.pipe(
+		startWith(this.form.controls.emojis.value),
 		shareReplay({ bufferSize: 1, refCount: true })
 	);
 
@@ -139,16 +140,20 @@ export class MealFormComponent implements OnChanges {
 	}
 
 	initializeForm() {
-		this.form.patchValue({
-			name: this.meal?.name || '',
-			extras: this.meal?.extras,
-			memo: this.meal?.recipeMemo || null,
-			alternateDish: {
-				name: this.meal?.alternateDish?.name || null,
-				show: !!this.meal?.alternateDish?.name,
-			},
-			emojis: this.meal?.emojis || [],
-		});
+		// setTimeout is needed for the form initial value to be correctly detected by consumers
+		// TODO: explore signals to avoid the need to rely on the OnChange hook
+		setTimeout(() => {
+			this.form.patchValue({
+				name: this.meal?.name || '',
+				extras: this.meal?.extras,
+				memo: this.meal?.recipeMemo || null,
+				alternateDish: {
+					name: this.meal?.alternateDish?.name || null,
+					show: !!this.meal?.alternateDish?.name,
+				},
+				emojis: this.meal?.emojis || [],
+			});
+		}, 0);
 	}
 
 	saveMeal() {
