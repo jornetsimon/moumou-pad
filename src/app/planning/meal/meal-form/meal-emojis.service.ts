@@ -3,6 +3,7 @@ import { AppQuery } from '../../../../state/app.query';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { AppService } from '../../../../state/app.service';
+import { isEqual } from 'lodash-es';
 
 @Injectable()
 export class MealEmojisService {
@@ -16,7 +17,13 @@ export class MealEmojisService {
 	readonly emojiRegex = /<a?:.+?:\d{18}>|\p{Extended_Pictographic}/gu;
 
 	readonly emojis$: Observable<string[]> = this.appQuery.userConfig$.pipe(
-		map((config) => config?.emojis ?? []),
+		map((config) => config?.emojis ?? {}),
+		map((emojis) =>
+			Object.entries(emojis)
+				.map(([emoji, usageCount]) => ({ emoji, usageCount }))
+				.sort((a, b) => b.usageCount - a.usageCount)
+				.map(({ emoji }) => emoji)
+		),
 		map((userEmojis) => {
 			const missingDefaultEmojis = this.defaultEmojis.filter(
 				(emoji) => !userEmojis.includes(emoji)
@@ -27,7 +34,24 @@ export class MealEmojisService {
 
 	setEmojisAsUsed(emojis: string[]) {
 		const currentEmojis = this.appQuery.getValue().userData?.config.emojis ?? [];
-		const updatedEmojis = [...emojis, ...currentEmojis];
-		return this.appService.setConfig({ emojis: [...new Set(updatedEmojis)] });
+
+		const newEmojis = emojis
+			.filter((emoji) => !Object.keys(currentEmojis).includes(emoji))
+			.reduce<Record<string, number>>((acc, emoji) => ({ ...acc, [emoji]: 1 }), {});
+
+		const updatedEmojis = Object.entries(currentEmojis).reduce<Record<string, number>>(
+			(acc, [emoji, count]) => {
+				const alreadyInRecord = emojis.includes(emoji);
+				const newCount = alreadyInRecord ? count + 1 : count;
+				return { ...acc, [emoji]: newCount };
+			},
+			{}
+		);
+
+		if (isEqual(updatedEmojis, currentEmojis)) {
+			return Promise.resolve();
+		}
+
+		return this.appService.setConfig({ emojis: { ...updatedEmojis, ...newEmojis } });
 	}
 }
