@@ -48,10 +48,12 @@ export class MealEmojisService {
 			{}
 		);
 
-		if (isEqual(updatedEmojis, currentEmojis)) {
+		const newData = { ...updatedEmojis, ...newEmojis };
+
+		if (isEqual(currentEmojis, newData)) {
 			return Promise.resolve();
 		}
 
-		return this.appService.setConfig({ emojis: { ...updatedEmojis, ...newEmojis } });
+		return this.appService.setConfig({ emojis: newData });
 	}
 }
