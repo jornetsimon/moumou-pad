@@ -13,10 +13,11 @@ export class MealEmojisService {
 	) {}
 
 	readonly defaultEmojis: string[] = ['❄️', '🐱', '✅'];
-	readonly maxEmojis = 6;
-	readonly emojiRegex = /<a?:.+?:\d{18}>|\p{Extended_Pictographic}/gu;
+	readonly maxRecommendedEmojis = 5;
+	static readonly emojiRegex =
+		/(?:(?:\p{RI}\p{RI}|\p{Emoji}(?:\p{Emoji_Modifier}|\u{FE0F}\u{20E3}?|[\u{E0020}-\u{E007E}]+\u{E007F})?(?:\u{200D}\p{Emoji}(?:\p{Emoji_Modifier}|\u{FE0F}\u{20E3}?|[\u{E0020}-\u{E007E}]+\u{E007F})?)*)|[\u{1f900}-\u{1f9ff}\u{2600}-\u{26ff}\u{2700}-\u{27bf}])+/u;
 
-	readonly emojis$: Observable<string[]> = this.appQuery.userConfig$.pipe(
+	readonly popularEmojis$: Observable<string[]> = this.appQuery.userConfig$.pipe(
 		map((config) => config?.emojis ?? {}),
 		map((emojis) =>
 			Object.entries(emojis)
@@ -28,7 +29,7 @@ export class MealEmojisService {
 			const missingDefaultEmojis = this.defaultEmojis.filter(
 				(emoji) => !userEmojis.includes(emoji)
 			);
-			return [...userEmojis, ...missingDefaultEmojis].slice(0, this.maxEmojis);
+			return [...userEmojis, ...missingDefaultEmojis];
 		})
 	);
 

@@ -42,7 +42,7 @@
 			formGroupName="extras"
 			[class.eyes-only-strict]="isReadonly"
 		>
-			<div class="aligner gap-4">
+			<div class="aligner gap-3 flex-wrap">
 				@for (emoji of emojis$ | async; track emoji.emoji) {
 					<button
 						type="button"
@@ -53,6 +53,9 @@
 						{{ emoji.emoji }}
 					</button>
 				}
+				<button type="button" class="add-emoji-button" (click)="addEmoji()">
+					<mat-icon>add_circle</mat-icon>
+				</button>
 			</div>
 			<div class="buttons aligner gap-[10px]">
 				<tui-chip

@@ -39,13 +39,17 @@ import { constructAssetUrl } from '../../../jow/util';
 import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
 import { RecipeExplorerComponent } from './recipe-explorer/recipe-explorer.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { map, shareReplay, startWith, tap } from 'rxjs/operators';
+import { filter, map, shareReplay, startWith, tap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxVibrationModule } from 'ngx-vibration';
 import { MealEmojisService } from './meal-emojis.service';
+import {
+	EmojiInputDialogComponent,
+	EmojiInputDialogOutput,
+} from './emoji-input-dialog/emoji-input-dialog.component';
 
 @UntilDestroy()
 @Component({
@@ -113,13 +117,25 @@ export class MealFormComponent implements OnChanges {
 		shareReplay({ bufferSize: 1, refCount: true })
 	);
 
-	readonly emojis$ = combineLatest([this.emojisService.emojis$, this.formEmojis$]).pipe(
-		map(([emojis, selectedEmojis]) =>
-			emojis.map((emoji) => ({
+	readonly emojis$ = combineLatest([this.emojisService.popularEmojis$, this.formEmojis$]).pipe(
+		map(([popularEmojis, selectedEmojis]) => {
+			const popularEmojiCount = Math.max(
+				0,
+				this.emojisService.maxRecommendedEmojis - selectedEmojis.length
+			);
+			const allEmojis = [
+				...selectedEmojis,
+				...popularEmojis
+					.filter((emoji) => !selectedEmojis.includes(emoji))
+					.slice(0, popularEmojiCount + 1),
+			];
+			const slicedEmojis = allEmojis.slice(0, this.emojisService.maxRecommendedEmojis);
+
+			return Array.from(new Set(slicedEmojis)).map((emoji) => ({
 				emoji,
 				isSelected: selectedEmojis.includes(emoji),
-			}))
-		)
+			}));
+		})
 	);
 
 	jowRecipe: Recipe | null = null;
@@ -247,14 +263,29 @@ export class MealFormComponent implements OnChanges {
 	toggleEmoji(emoji: string) {
 		const currentEmojis = this.form.controls.emojis.value;
 
-		console.log('toggle', emoji, currentEmojis);
-
 		if (currentEmojis.includes(emoji)) {
-			console.log('removing');
 			this.form.controls.emojis.setValue(currentEmojis.filter((e) => e !== emoji));
 		} else {
-			console.log('adding');
 			this.form.controls.emojis.setValue([...currentEmojis, emoji]);
 		}
+	}
+
+	addEmoji() {
+		this.dialogs
+			.open<EmojiInputDialogOutput>(
+				new PolymorpheusComponent(EmojiInputDialogComponent, this.injector)
+			)
+			.pipe(
+				map((emoji) => emoji || null),
+				filter(Boolean),
+				tap((emoji) => {
+					this.form.controls.emojis.setValue(
+						Array.from(new Set([...this.form.controls.emojis.value, emoji]))
+					);
+					this.cd.detectChanges();
+				}),
+				untilDestroyed(this)
+			)
+			.subscribe();
 	}
 }
