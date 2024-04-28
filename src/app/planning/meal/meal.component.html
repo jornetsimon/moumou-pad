@@ -55,7 +55,7 @@
 			</div>
 		</div>
 
-		<tui-swipe-actions [autoClose]="true">
+		<tui-swipe-actions [autoClose]="true" [enabled]="!(editMode$ | async) || editMode">
 			<div
 				class="meal lowlight-surface !overflow-visible"
 				tuiSurface

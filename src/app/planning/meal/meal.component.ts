@@ -46,12 +46,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule } from '@angular/cdk/
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 import { MealFormComponent } from './meal-form/meal-form.component';
 import { constructAssetUrl } from '../../jow/util';
-import {
-	TuiButtonModule,
-	TuiIconModule,
-	TuiSurfaceModule,
-	TuiSwipeActionsModule,
-} from '@taiga-ui/experimental';
+import { TuiButtonModule, TuiIconModule, TuiSurfaceModule } from '@taiga-ui/experimental';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { TuiLetModule } from '@taiga-ui/cdk';
@@ -60,6 +55,10 @@ import { RecipeModalService } from '../../jow/recipe-modal/recipe-modal.service'
 import { Recipe } from '@functions/model/receipe.model';
 import { MealLineInputDialogComponent } from './meal-line-input-dialog/meal-line-input-dialog.component';
 import { ToReadableTextColorPipe } from '../../../utils/pipes/to-readable-text-color.pipe';
+import {
+	TuiSwipeActionsAutoCloseDirective,
+	TuiSwipeActionsComponent,
+} from '../../../vendor/taiga-ui/swipe-action';
 
 @UntilDestroy()
 @Component({
@@ -89,12 +88,13 @@ import { ToReadableTextColorPipe } from '../../../utils/pipes/to-readable-text-c
 		TuiSurfaceModule,
 		DragDropModule,
 		TuiLetModule,
-		TuiSwipeActionsModule,
 		TuiButtonModule,
 		TuiHostedDropdownModule,
 		TuiDataListModule,
 		TuiIconModule,
 		ToReadableTextColorPipe,
+		TuiSwipeActionsComponent,
+		TuiSwipeActionsAutoCloseDirective,
 	],
 	providers: [RecipeModalService],
 })
