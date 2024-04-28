@@ -36,7 +36,6 @@ import {
 import { TuiChipModule } from '@taiga-ui/experimental';
 import { RecipeCardComponent } from './recipe-card/recipe-card.component';
 import { constructAssetUrl } from '../../../jow/util';
-import { RecipeModalComponent } from '../../../jow/recipe-modal/recipe-modal.component';
 import { RecipeExplorerComponent } from './recipe-explorer/recipe-explorer.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { filter, map, shareReplay, startWith, tap } from 'rxjs/operators';
@@ -50,6 +49,7 @@ import {
 	EmojiInputDialogComponent,
 	EmojiInputDialogOutput,
 } from './emoji-input-dialog/emoji-input-dialog.component';
+import { RecipeModalService } from '../../../jow/recipe-modal/recipe-modal.service';
 
 @UntilDestroy()
 @Component({
@@ -78,7 +78,7 @@ import {
 		NgxVibrationModule,
 		RenderRichTextPipe,
 	],
-	providers: [MealEmojisService],
+	providers: [MealEmojisService, RecipeModalService],
 })
 export class MealFormComponent implements OnChanges {
 	constructor(
@@ -86,6 +86,7 @@ export class MealFormComponent implements OnChanges {
 		private readonly mealService: MealService,
 		private readonly cd: ChangeDetectorRef,
 		private readonly emojisService: MealEmojisService,
+		private readonly recipeModalService: RecipeModalService,
 		@Inject(Injector) private readonly injector: Injector,
 		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
 	) {}
@@ -212,16 +213,10 @@ export class MealFormComponent implements OnChanges {
 	}
 
 	openRecipeModal(recipe: Recipe) {
-		this.dialogs
-			.open<Recipe | undefined>(
-				new PolymorpheusComponent(RecipeModalComponent, this.injector),
-				{
-					data: {
-						recipe,
-						isSelected: !!(this.jowRecipe && this.jowRecipe._id === recipe._id),
-					},
-				}
-			)
+		const isRecipeSelected = !!(this.jowRecipe && this.jowRecipe._id === recipe._id);
+
+		this.recipeModalService
+			.openRecipeModal(recipe, isRecipeSelected)
 			.pipe(
 				tap((recipe) => {
 					if (recipe) {

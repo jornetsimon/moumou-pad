@@ -2,8 +2,9 @@
 @import '../../../styles/colors';
 
 @meal-color: var(--tui-primary);
+@border-radius: 7px;
 
-.container.has-margins {
+.meal-container.has-margins {
 	@media @tui-tablet-min {
 		margin: min(20px, 1.5vh) 0;
 	}
@@ -74,7 +75,7 @@
 			top: 0;
 			left: 0;
 			@media @tui-tablet-min {
-				border-radius: 7px;
+				border-radius: @border-radius;
 			}
 		}
 		&.has-jow-recipe,
@@ -93,7 +94,7 @@
 	padding: 10px;
 	border-radius: 0;
 	@media @tui-tablet-min {
-		border-radius: 7px;
+		border-radius: @border-radius;
 	}
 
 	.header-container {
@@ -191,4 +192,62 @@
 .cdk-drag-placeholder {
 	margin-left: -5px;
 	z-index: 2;
+}
+
+.meal-line {
+	border-bottom: 1px solid;
+	border-top: none !important;
+
+	transition:
+		color 0.5s,
+		border-radius 0.5s;
+
+	@media @tui-tablet-min {
+		border: 1px solid;
+	}
+
+	font-size: 1.15em;
+	line-height: 1.5em;
+	font-family: 'Permanent Marker', cursive;
+
+	&:last-child {
+		border-bottom: 1px solid;
+
+		@media @tui-tablet-min {
+			border-bottom-right-radius: @border-radius;
+			border-bottom-left-radius: @border-radius;
+		}
+	}
+}
+
+.fallback-actions,
+.remove-line-icon {
+	opacity: 0;
+	transition: opacity 0.3s;
+	cursor: pointer;
+}
+
+.meal-container:hover .fallback-actions {
+	opacity: 1;
+}
+
+.meal-line:hover .remove-line-icon {
+	opacity: 1;
+}
+
+@media only screen and (hover: none) and (pointer: coarse) {
+	.fallback-actions {
+		display: none;
+	}
+
+	::ng-deep tui-swipe-actions {
+		overflow-x: visible !important;
+		overflow-y: visible !important;
+	}
+}
+
+// Default from Taiga
+::ng-deep tui-swipe-actions {
+	overflow-x: scroll !important;
+	overflow-y: hidden !important;
 }

@@ -36,14 +36,30 @@ import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
 import { TuiAccordionModule, TuiIslandModule } from '@taiga-ui/kit';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { TuiButtonModule, TuiDialogService, TuiHintModule } from '@taiga-ui/core';
+import {
+	TuiDataListModule,
+	TuiDialogService,
+	TuiHintModule,
+	TuiHostedDropdownModule,
+} from '@taiga-ui/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 import { MealFormComponent } from './meal-form/meal-form.component';
 import { constructAssetUrl } from '../../jow/util';
-import { TuiSurfaceModule } from '@taiga-ui/experimental';
+import {
+	TuiButtonModule,
+	TuiIconModule,
+	TuiSurfaceModule,
+	TuiSwipeActionsModule,
+} from '@taiga-ui/experimental';
 import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
 import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
+import { TuiLetModule } from '@taiga-ui/cdk';
+import { MealLine } from '@functions/model/meal.model';
+import { RecipeModalService } from '../../jow/recipe-modal/recipe-modal.service';
+import { Recipe } from '@functions/model/receipe.model';
+import { MealLineInputDialogComponent } from './meal-line-input-dialog/meal-line-input-dialog.component';
+import { ToReadableTextColorPipe } from '../../../utils/pipes/to-readable-text-color.pipe';
 
 @UntilDestroy()
 @Component({
@@ -72,24 +88,33 @@ import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 		MealFormComponent,
 		TuiSurfaceModule,
 		DragDropModule,
+		TuiLetModule,
+		TuiSwipeActionsModule,
+		TuiButtonModule,
+		TuiHostedDropdownModule,
+		TuiDataListModule,
+		TuiIconModule,
+		ToReadableTextColorPipe,
 	],
+	providers: [RecipeModalService],
 })
 export class MealComponent implements AfterViewInit {
 	constructor(
-		private mealService: MealService,
-		private toastService: HotToastService,
-		public dragDropService: DragDropService,
-		private vibrationService: NgxVibrationService,
-		private mealThemeService: MealThemeService,
-		private router: Router,
-		private route: ActivatedRoute,
+		private readonly mealService: MealService,
+		private readonly toastService: HotToastService,
+		public readonly dragDropService: DragDropService,
+		private readonly vibrationService: NgxVibrationService,
+		private readonly mealThemeService: MealThemeService,
+		private readonly router: Router,
+		private readonly route: ActivatedRoute,
+		private readonly recipeModalService: RecipeModalService,
 		@Inject(Injector) private readonly injector: Injector,
 		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
 	) {}
 
 	@Input() set meal(meal: Meal) {
 		this._meal = meal;
-		this.mealSubject.next(meal);
+		this.meal$$.next(meal);
 	}
 	get meal(): Meal {
 		return this._meal;
@@ -103,8 +128,8 @@ export class MealComponent implements AfterViewInit {
 	@Output() isNext = new EventEmitter<HTMLDivElement>();
 
 	private _meal!: Meal;
-	private mealSubject = new BehaviorSubject<Meal | undefined>(undefined);
-	meal$: Observable<Meal> = this.mealSubject.asObservable().pipe(filter(isNotNullOrUndefined));
+	private meal$$ = new BehaviorSubject<Meal | undefined>(undefined);
+	meal$: Observable<Meal> = this.meal$$.asObservable().pipe(filter(isNotNullOrUndefined));
 	editMode = false;
 	editMode$ = this.route.fragment.pipe(
 		map((fragment) => fragment === this.meal.id),
@@ -191,6 +216,25 @@ export class MealComponent implements AfterViewInit {
 			return theme?.emoji || '';
 		})
 	);
+
+	readonly mealColor$: Observable<string> = combineLatest([this.meal$, this.mealTheme$]).pipe(
+		map(([meal, theme]) => {
+			if (meal.jowRecipe?.smartColor) {
+				return meal.jowRecipe.smartColor;
+			}
+			if (theme?.color) {
+				return theme.color;
+			}
+
+			if (meal.name) {
+				return 'var(--tui-primary)';
+			}
+
+			return 'var(--tui-base-04)';
+		})
+	);
+
+	readonly lines$: Observable<MealLine[]> = this.meal$.pipe(map((meal) => meal.lines || []));
 
 	trackByIndex: TrackByFunction<Dish> = (index) => index;
 
@@ -284,5 +328,41 @@ export class MealComponent implements AfterViewInit {
 
 	onEnter() {
 		this.vibrationService.vibrate([25]);
+	}
+
+	openRecipeDialog(recipe: Recipe) {
+		this.recipeModalService
+			.openRecipeModal(recipe, false)
+			.pipe(untilDestroyed(this))
+			.subscribe();
+	}
+
+	openMealLineDialog(event?: MouseEvent) {
+		if (event) {
+			const target = event.target as HTMLElement;
+			target.blur();
+		}
+
+		this.dialogs
+			.open<MealLine | null>(
+				new PolymorpheusComponent(MealLineInputDialogComponent, this.injector)
+			)
+			.pipe(
+				tap((mealLine) => {
+					if (mealLine) {
+						this.mealService.update(this.meal.id, {
+							lines: [...(this.meal.lines || []), mealLine],
+						});
+					}
+				}),
+				untilDestroyed(this)
+			)
+			.subscribe();
+	}
+
+	removeLine(index: number) {
+		const lines = [...(this.meal.lines || [])];
+		lines.splice(index, 1);
+		this.mealService.update(this.meal.id, { lines });
 	}
 }

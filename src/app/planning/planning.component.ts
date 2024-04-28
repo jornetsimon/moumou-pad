@@ -130,6 +130,13 @@ export class PlanningComponent {
 	}
 
 	async onSwipe(swipe: TuiSwipe) {
+		const swipedOnMeal = swipe.events.some((event) =>
+			(event.target as Element).closest('.meal-container')
+		);
+		if (swipedOnMeal) {
+			return;
+		}
+
 		if (!['right', 'left'].includes(swipe.direction)) {
 			return;
 		}
