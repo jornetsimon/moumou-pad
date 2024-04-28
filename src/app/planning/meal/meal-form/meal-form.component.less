@@ -100,3 +100,42 @@
 		background-color: darken(@color, 10%);
 	}
 }
+
+.emoji-button {
+	@apply flex justify-center items-center;
+
+	font-size: 15pt;
+	padding: 0.25em 0.25em;
+
+	cursor: pointer;
+	border-radius: 25%;
+	transition:
+		all 0.25s,
+		box-shadow ease-in-out;
+	box-shadow:
+		-8px -8px 20px 0px #fff9,
+		-6px -6px 6px 0px #fff9,
+		8px 8px 20px 0px #0001,
+		5px 5px 6px 0px #0001,
+		inset 0px 0px 0px 0px #fff9,
+		inset 0px 0px 0px 0px #0001,
+		inset 0px 0px 0px 0px #fff9,
+		inset 0px 0px 0px 0px #0001;
+
+	&.selected {
+		@apply bg-yellow-300;
+	}
+}
+
+.add-emoji {
+	@apply flex justify-center items-center;
+	transition: color 0.3s;
+
+	font-size: 1.3em;
+	color: #9aa0a6;
+
+	&:hover {
+		color: #7f8388;
+		cursor: pointer;
+	}
+}

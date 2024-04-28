@@ -1,30 +1,8 @@
 import { format, fromUnixTime, getHours, isSameDay } from 'date-fns';
-import { Recipe } from '../../../model/receipe';
+import { Dish, Meal, MealExtras, MealType } from '@functions/model/meal.model';
+import { Recipe } from '@functions/model/receipe.model';
 
-export type MealType = 'lunch' | 'dinner';
-export type Dish = {
-	name?: string | null;
-	jowRecipe?: Recipe | null;
-};
-
-export interface Meal {
-	id: string;
-	date: Date;
-	type: MealType;
-	timestamp: number;
-	name?: string | null;
-	jowRecipe: Recipe | null;
-	extras?: MealExtras;
-	alternateDish?: Dish;
-	recipeMemo?: string | null;
-	searchKeys: string[];
-}
-export interface MealExtras {
-	croquettes?: boolean;
-	freezer?: boolean;
-	outOfHome?: boolean;
-	prepared?: boolean;
-}
+export type { Meal, MealExtras, MealType, Dish } from '@functions/model/meal.model';
 
 export function createMeal(input: {
 	date: Date;

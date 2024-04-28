@@ -42,16 +42,24 @@
 			formGroupName="extras"
 			[class.eyes-only-strict]="isReadonly"
 		>
-			<div class="aligner gap-2">
-				<tui-chip [appearance]="extrasFg.controls.freezer.value ? 'primary' : ''">
-					Congel ❄️
-					<input tuiChip type="checkbox" [formControl]="extrasFg.controls.freezer" />
-				</tui-chip>
-
-				<tui-chip [appearance]="extrasFg.controls.croquettes.value ? 'primary' : ''">
-					Croquettes 🐱
-					<input tuiChip type="checkbox" [formControl]="extrasFg.controls.croquettes" />
-				</tui-chip>
+			<div class="aligner gap-3 flex-wrap">
+				@for (emoji of emojis$ | async; track emoji.emoji) {
+					<button
+						type="button"
+						class="emoji-button"
+						[class.selected]="emoji.isSelected"
+						(click)="toggleEmoji(emoji.emoji)"
+					>
+						<span>{{ emoji.emoji }}</span>
+					</button>
+				}
+				<mat-icon
+					fontSet="material-icons-outlined"
+					class="add-emoji ml-1"
+					(click)="addEmoji()"
+				>
+					add_reaction
+				</mat-icon>
 			</div>
 			<div class="buttons aligner gap-[10px]">
 				<tui-chip

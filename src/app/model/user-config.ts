@@ -4,4 +4,5 @@ export interface UserConfig {
 	startWeekOn: WeekdayValue;
 	familyName?: string;
 	city?: string;
+	emojis?: Record<string, number>;
 }

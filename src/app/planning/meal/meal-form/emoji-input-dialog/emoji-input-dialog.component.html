@@ -1,0 +1,12 @@
+<form>
+	<div class="w-full">
+		<h3 class="tui-form__header mt-0">Ajouter un emoji</h3>
+		<div class="tui-form__row">
+			<tui-input [formControl]="control" tuiAutoFocus>
+				Emoji
+				<input placeholder="🤗" tuiTextfield />
+			</tui-input>
+			<tui-error [formControl]="control" [error]="[] | tuiFieldError | async"></tui-error>
+		</div>
+	</div>
+</form>
