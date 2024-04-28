@@ -2,16 +2,29 @@
 	<div class="w-full">
 		<h3 class="tui-form__header mt-0">Ajouter un détail</h3>
 		<div class="tui-form__row">
-			<div class="form items-center">
-				<tui-input
-					[formControl]="control"
-					tuiAutoFocus
-					[tuiTextfieldLabelOutside]="true"
-					(keyup.enter)="save()"
-				>
-					<input tuiTextfield />
-				</tui-input>
-				<tui-error [formControl]="control" [error]="[] | tuiFieldError | async"></tui-error>
+			<div class="flex items-center gap-2">
+				<div class="form items-center grow">
+					<tui-input
+						[formControl]="control"
+						tuiAutoFocus
+						[tuiTextfieldLabelOutside]="true"
+						(keyup)="onKeyUp($event)"
+					>
+						<input tuiTextfield />
+					</tui-input>
+					<tui-error
+						[formControl]="control"
+						[error]="[] | tuiFieldError | async"
+					></tui-error>
+				</div>
+				<button
+					type="button"
+					icon="tuiIconCheck"
+					size="l"
+					tuiIconButton
+					[disabled]="control.invalid"
+					(click)="save()"
+				></button>
 			</div>
 		</div>
 	</div>

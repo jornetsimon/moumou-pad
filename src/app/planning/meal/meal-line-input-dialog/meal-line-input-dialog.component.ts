@@ -1,8 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TuiAutoFocusModule } from '@taiga-ui/cdk';
-import { TuiDialogContext, TuiErrorModule, TuiTextfieldControllerModule } from '@taiga-ui/core';
+import {
+	TuiButtonModule,
+	TuiDialogContext,
+	TuiErrorModule,
+	TuiTextfieldControllerModule,
+} from '@taiga-ui/core';
 import { TuiFieldErrorPipeModule, TuiInputModule, TuiTextareaModule } from '@taiga-ui/kit';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { MealLine } from '@functions/model/meal.model';
@@ -13,14 +18,14 @@ import { MealEmojisService } from '../meal-form/meal-emojis.service';
 	standalone: true,
 	imports: [
 		AsyncPipe,
-		ReactiveFormsModule,
 		TuiAutoFocusModule,
 		TuiErrorModule,
 		TuiFieldErrorPipeModule,
 		TuiInputModule,
 		TuiTextareaModule,
 		TuiTextfieldControllerModule,
-		FormsModule,
+		ReactiveFormsModule,
+		TuiButtonModule,
 	],
 	templateUrl: './meal-line-input-dialog.component.html',
 	styleUrl: './meal-line-input-dialog.component.less',
@@ -45,6 +50,7 @@ export class MealLineInputDialogComponent {
 
 		if (!value) {
 			this.context.completeWith(null);
+			return;
 		}
 
 		const allEmojisPattern = new RegExp(`${MealEmojisService.emojiRegex.source}`, 'gu');
@@ -65,5 +71,11 @@ export class MealLineInputDialogComponent {
 		text = text.replace(emoji, '');
 		//}
 		this.context.completeWith({ emoji, text: text });
+	}
+
+	onKeyUp(event: KeyboardEvent) {
+		if (event.key === 'Enter') {
+			this.save();
+		}
 	}
 }
