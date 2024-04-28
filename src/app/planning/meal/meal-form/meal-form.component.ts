@@ -129,12 +129,17 @@ export class MealFormComponent implements OnChanges {
 					.filter((emoji) => !selectedEmojis.includes(emoji))
 					.slice(0, popularEmojiCount + 1),
 			];
-			const slicedEmojis = allEmojis.slice(0, this.emojisService.maxRecommendedEmojis);
+			const slicedEmojis = allEmojis.slice(
+				0,
+				Math.max(selectedEmojis.length, this.emojisService.maxRecommendedEmojis)
+			);
 
-			return Array.from(new Set(slicedEmojis)).map((emoji) => ({
-				emoji,
-				isSelected: selectedEmojis.includes(emoji),
-			}));
+			return Array.from(new Set(slicedEmojis))
+				.sort()
+				.map((emoji) => ({
+					emoji,
+					isSelected: selectedEmojis.includes(emoji),
+				}));
 		})
 	);
 
