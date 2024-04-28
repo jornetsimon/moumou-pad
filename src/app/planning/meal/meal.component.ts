@@ -174,9 +174,15 @@ export class MealComponent implements AfterViewInit {
 		this.mealThemeService.mealThemes$,
 	]).pipe(
 		map(([meal, themes]): MealThemeModel | undefined => {
-			const name = sanitizeString(meal.name || '');
+			const keywordsToCheck = [
+				sanitizeString(meal.name || ''),
+				...(meal.lines?.map(({ text }) => text) ?? []),
+			];
+
 			const matchedThemeIndex = themes.findIndex((themeEntry) =>
-				themeEntry.keywords.some((keyword) => name.includes(sanitizeString(keyword)))
+				themeEntry.keywords.some((keyword) =>
+					keywordsToCheck.some((k) => sanitizeString(k).includes(sanitizeString(keyword)))
+				)
 			);
 			if (!(matchedThemeIndex >= 0)) {
 				return undefined;
