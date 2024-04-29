@@ -181,6 +181,7 @@ export class MealFormComponent implements OnChanges {
 	saveMeal() {
 		const date = this.meal!.date;
 		const type = this.meal!.type;
+		const lines = this.meal?.lines || [];
 		const emojis = this.form.value.emojis || [];
 
 		const meal = {
@@ -190,6 +191,7 @@ export class MealFormComponent implements OnChanges {
 			alternateDish: this.form.value.alternateDish,
 			recipeMemo: this.getRecipeMemo(),
 			emojis,
+			lines,
 		} satisfies Partial<Meal>;
 
 		if (this.meal?.name) {

@@ -59,6 +59,7 @@ import {
 	TuiSwipeActionsAutoCloseDirective,
 	TuiSwipeActionsComponent,
 } from '../../../vendor/taiga-ui/swipe-action';
+import { pickBy } from 'lodash-es';
 
 @UntilDestroy()
 @Component({
@@ -355,11 +356,17 @@ export class MealComponent implements AfterViewInit {
 			)
 			.pipe(
 				tap((mealLine) => {
-					if (mealLine) {
-						this.mealService.update(this.meal.id, {
-							lines: [...(this.meal.lines || []), mealLine],
-						});
+					if (!mealLine) {
+						return;
 					}
+
+					const meal = this.meal;
+					const lines = [...(meal.lines || []), mealLine];
+
+					this.mealService.update(this.meal.id, {
+						...pickBy(meal, (p) => p !== undefined),
+						lines,
+					});
 				}),
 				untilDestroyed(this)
 			)
