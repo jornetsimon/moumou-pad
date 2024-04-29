@@ -95,7 +95,6 @@ export class MealService {
 						extras: mapUndefinedToNull({
 							...from.extras,
 						}),
-						alternateDish: from.alternateDish,
 						emojis: from.emojis,
 					} satisfies Meal;
 
@@ -106,7 +105,6 @@ export class MealService {
 						extras: mapUndefinedToNull({
 							...to.extras,
 						}),
-						alternateDish: to.alternateDish,
 						emojis: to.emojis,
 					} satisfies Meal;
 

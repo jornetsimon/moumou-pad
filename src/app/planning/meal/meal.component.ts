@@ -8,10 +8,9 @@ import {
 	Injector,
 	Input,
 	Output,
-	TrackByFunction,
 	ViewChild,
 } from '@angular/core';
-import { Dish, isNextMeal, Meal } from './state/meal.model';
+import { isNextMeal, Meal } from './state/meal.model';
 import { collapseOnLeaveAnimation, expandOnEnterAnimation } from 'angular-animations';
 import { MealService } from './state/meal.service';
 import { HotToastService } from '@ngneat/hot-toast';
@@ -161,15 +160,6 @@ export class MealComponent implements AfterViewInit {
 		})
 	);
 	isNext$ = merge(interval(60 * 60 * 1000), this.meal$).pipe(map(() => isNextMeal(this.meal)));
-	headers$: Observable<Dish[]> = this.meal$.pipe(
-		map(
-			(meal) =>
-				[
-					{ name: meal.name, jowRecipe: meal.jowRecipe },
-					meal.alternateDish?.name ? meal.alternateDish : undefined,
-				].filter(Boolean) as Dish[]
-		)
-	);
 	mealTheme$: Observable<MealThemeModel | undefined> = combineLatest([
 		this.meal$,
 		this.mealThemeService.mealThemes$,
@@ -242,8 +232,6 @@ export class MealComponent implements AfterViewInit {
 	);
 
 	readonly lines$: Observable<MealLine[]> = this.meal$.pipe(map((meal) => meal.lines || []));
-
-	trackByIndex: TrackByFunction<Dish> = (index) => index;
 
 	canEnter = (drag: CdkDrag<Meal>, drop: CdkDropList<Meal>): boolean => {
 		const origin = drag.data;

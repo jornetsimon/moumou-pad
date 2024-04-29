@@ -73,31 +73,21 @@
 				<div class="color-overlay" [style.background-color]="mealColor"></div>
 				<div class="overlay" [class.!rounded-b-none]="(lines$ | async)?.length"></div>
 				<div class="flex" (click)="toggleEdit()" ngxVibration="10" tuiRipple>
-					<div
-						class="header-container"
-						*ngFor="
-							let header of headers$ | async;
-							let headerIndex = index;
-							trackBy: trackByIndex
-						"
-					>
+					<div class="header-container">
 						<div
 							class="header flex justify-between items-center"
-							[class.has-jow-recipe]="header?.jowRecipe"
+							[class.has-jow-recipe]="meal.jowRecipe"
 							[class.has-theme]="!!(mealTheme$ | async)"
 						>
 							<div>
 								<div class="flex flex-col">
 									<div class="tui-text_body-l tui-text_bold text-[20px]">
-										<ng-container *ngIf="header?.name; else noMealTpl">
-											{{ header?.name }}
-										</ng-container>
-										<ng-container *ngIf="headerIndex === 0">
-											{{ themeEmoji$ | async }}
-										</ng-container>
-										<ng-template #noMealTpl>
+										@if (meal.name) {
+											{{ meal.name }}
+										} @else {
 											<div class="no-meal-title">Aucun plat</div>
-										</ng-template>
+										}
+										{{ themeEmoji$ | async }}
 									</div>
 								</div>
 							</div>

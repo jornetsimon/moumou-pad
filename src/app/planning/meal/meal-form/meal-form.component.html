@@ -71,19 +71,6 @@
 					<input tuiChip type="checkbox" [formControl]="extrasFg.controls.outOfHome" />
 				</tui-chip>
 
-				<tui-chip
-					*ngIf="!form.controls.alternateDish.controls.show.value"
-					tuiHint="Ajouter un second plat"
-					appearance=""
-				>
-					<mat-icon>restaurant_menu</mat-icon>
-					<input
-						tuiChip
-						type="checkbox"
-						[formControl]="form.controls.alternateDish.controls.show"
-					/>
-				</tui-chip>
-
 				@if (!this.getRecipeMemo()) {
 					<tui-chip tuiHint="Ajouter un mémo" appearance="" (click)="openNoteDialog()">
 						<mat-icon>edit_note</mat-icon>
@@ -111,21 +98,6 @@
 				</tui-chip>
 			</div>
 		</div>
-
-		@if (form.controls.alternateDish.controls.show.value) {
-			<tui-input
-				[formControl]="form.controls.alternateDish.controls.name"
-				[tuiTextfieldCleaner]="true"
-			>
-				Second plat
-				<input
-					tuiTextfield
-					autocomplete="off"
-					placeholder="Poulet poivrons, huevos rotos..."
-					[disabled]="isReadonly"
-				/>
-			</tui-input>
-		}
 	</div>
 
 	<div class="form-actions aligner" *ngIf="!isReadonly">

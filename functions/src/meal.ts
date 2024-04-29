@@ -1,6 +1,6 @@
 import * as functions from 'firebase-functions';
 import { db } from './init';
-import { Dish, Meal } from './model/meal.model';
+import { Meal } from './model/meal.model';
 import { PickByType } from './helpers/pick-by-type';
 import { RecursiveKeyOf } from './helpers/recursive-key-of';
 import { normalizeString } from './helpers/normalize-string';
@@ -105,13 +105,7 @@ export function onMealCreated(targetLocation: 'users' | 'families') {
 
 function getMealCustomNames(meal: Meal): string[] {
 	const primaryMealName = meal.name === meal.jowRecipe?.title ? undefined : meal.name;
-	const secondaryMealName =
-		meal.alternateDish?.name === meal.alternateDish?.jowRecipe?.title
-			? undefined
-			: meal.alternateDish?.name;
-	return [primaryMealName, secondaryMealName]
-		.map((name) => name?.trim() || undefined)
-		.filter(isNotNullOrUndefined);
+	return [primaryMealName].map((name) => name?.trim() || undefined).filter(isNotNullOrUndefined);
 }
 
 function generateMealSearchKeys(meal: Meal): Meal['searchKeys'] {
@@ -121,9 +115,6 @@ function generateMealSearchKeys(meal: Meal): Meal['searchKeys'] {
 		'jowRecipe.title',
 		'jowRecipe.composition',
 		'jowRecipe.keywords',
-		'alternateDish.jowRecipe.title',
-		'alternateDish.jowRecipe.composition',
-		'alternateDish.jowRecipe.keywords',
 	];
 	const values: string[] = keys
 		.map((key) => get(meal, key))
@@ -142,6 +133,4 @@ function generateMealSearchKeys(meal: Meal): Meal['searchKeys'] {
 
 type AllowedSearchKey =
 	| Exclude<keyof PickByType<Meal, string | null>, 'searchKeys'>
-	| `jowRecipe.${RecursiveKeyOf<Recipe, string>}`
-	| `alternateDish.${keyof Dish['name']}`
-	| `alternateDish.jowRecipe.${RecursiveKeyOf<Recipe, string>}`;
+	| `jowRecipe.${RecursiveKeyOf<Recipe, string>}`;

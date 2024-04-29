@@ -8,7 +8,6 @@ export interface Meal {
 	name?: string | null;
 	jowRecipe: Recipe | null;
 	extras?: MealExtras;
-	alternateDish?: Dish;
 	recipeMemo?: string | null;
 	searchKeys?: string[];
 	emojis?: string[];
@@ -16,11 +15,6 @@ export interface Meal {
 }
 
 export type MealType = 'lunch' | 'dinner';
-
-export type Dish = {
-	name?: string | null;
-	jowRecipe?: Recipe | null;
-};
 
 export interface MealExtras {
 	outOfHome?: boolean;

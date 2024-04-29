@@ -1,8 +1,8 @@
 import { format, fromUnixTime, getHours, isSameDay } from 'date-fns';
-import { Dish, Meal, MealExtras, MealType } from '@functions/model/meal.model';
+import { Meal, MealExtras, MealType } from '@functions/model/meal.model';
 import { Recipe } from '@functions/model/receipe.model';
 
-export type { Meal, MealExtras, MealType, Dish } from '@functions/model/meal.model';
+export type { Meal, MealExtras, MealType } from '@functions/model/meal.model';
 
 export function createMeal(input: {
 	date: Date;
@@ -10,14 +10,12 @@ export function createMeal(input: {
 	name?: string | null;
 	jowRecipe: Recipe | null;
 	extras?: MealExtras;
-	alternateDish?: Dish;
 	recipeMemo?: string | null;
 }): Meal {
 	return {
 		id: format(input.date, `yyyy-MM-dd-`) + input.type,
 		...input,
 		timestamp: input.date.getTime() / 1000,
-		alternateDish: input.alternateDish,
 		searchKeys: [],
 	};
 }

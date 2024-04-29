@@ -104,10 +104,6 @@ export class MealFormComponent implements OnChanges {
 		name: new FormControl<string | undefined>(undefined, { nonNullable: true }),
 		memo: new FormControl<string | null>(null),
 		extras: this.extrasFg,
-		alternateDish: new FormGroup({
-			name: new FormControl<string | null>(null, { nonNullable: true }),
-			show: new FormControl<boolean>(false, { nonNullable: true }),
-		}),
 		emojis: new FormControl<string[]>([], { nonNullable: true }),
 	});
 
@@ -169,10 +165,6 @@ export class MealFormComponent implements OnChanges {
 				name: this.meal?.name || '',
 				extras: this.meal?.extras,
 				memo: this.meal?.recipeMemo || null,
-				alternateDish: {
-					name: this.meal?.alternateDish?.name || null,
-					show: !!this.meal?.alternateDish?.name,
-				},
 				emojis: this.meal?.emojis || [],
 			});
 		}, 0);
@@ -188,7 +180,6 @@ export class MealFormComponent implements OnChanges {
 			name: this.form.value.name,
 			jowRecipe: this.jowRecipe,
 			extras: this.extrasFg.value,
-			alternateDish: this.form.value.alternateDish,
 			recipeMemo: this.getRecipeMemo(),
 			emojis,
 			lines,
