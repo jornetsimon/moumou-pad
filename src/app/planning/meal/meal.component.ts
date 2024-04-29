@@ -219,8 +219,13 @@ export class MealComponent implements AfterViewInit {
 			if (meal.jowRecipe?.smartColor) {
 				return meal.jowRecipe.smartColor;
 			}
+
 			if (theme?.color) {
 				return theme.color;
+			}
+
+			if (meal.extras?.outOfHome) {
+				return '#ff4081';
 			}
 
 			if (meal.name) {

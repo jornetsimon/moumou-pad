@@ -60,7 +60,6 @@
 				class="meal lowlight-surface !overflow-visible"
 				tuiSurface
 				[class.empty]="!meal.name"
-				[class.out-of-home]="!!meal.extras?.outOfHome"
 				[class.has-jow-recipe]="!!meal.jowRecipe"
 				[class.has-theme]="!!(mealTheme$ | async)"
 				[class.has-theme-background]="!!(themeBackgroundImage$ | async)"
