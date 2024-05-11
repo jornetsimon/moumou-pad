@@ -10,7 +10,7 @@
 
 	<ng-container tuiSlot="right">
 		@if (firebaseUser$ | async; as user) {
-			<tui-hosted-dropdown [content]="content">
+			<tui-hosted-dropdown [content]="content" #userMenu>
 				<tui-avatar
 					size="s"
 					[text]="user.displayName || ''"
@@ -22,7 +22,7 @@
 
 			<ng-template #content>
 				<tui-data-list role="menu">
-					<tui-opt-group [label]="user.displayName">
+					<tui-opt-group [label]="user.displayName" (click)="userMenu.close()">
 						<a
 							tuiOption
 							role="menuitemradio"
