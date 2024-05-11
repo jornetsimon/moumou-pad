@@ -6,7 +6,7 @@ import { TuiButtonModule, TuiIconModule } from '@taiga-ui/experimental';
 import { TuiHintModule } from '@taiga-ui/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { isSameDay, isSameMonth } from 'date-fns/esm';
+import { isSameDay, isSameMonth, isSameWeek, nextMonday } from 'date-fns/esm';
 import { generateSchedule, Period } from '../../model/period';
 import { AppQuery } from '../../../state/app.query';
 import { AppService } from '../../../state/app.service';
@@ -39,20 +39,16 @@ export class WeekNavigationComponent {
 
 	readonly currentSchedule$: Observable<Period> = this.appQuery.select('schedule');
 
-	readonly isThisWeek$: Observable<boolean> = this.currentSchedule$.pipe(
-		map((schedule) => isSameDay(schedule.from, generateSchedule().from))
-	);
-
-	readonly scheduleOverlapsTwoMonths$: Observable<boolean> = this.currentSchedule$.pipe(
-		map((schedule) => !isSameMonth(schedule.from, schedule.to))
-	);
-
 	readonly weekLabel$ = this.currentSchedule$.pipe(
 		map(({ from, to }) => {
 			const isThisWeek = isSameDay(from, generateSchedule().from);
-
 			if (isThisWeek) {
 				return `Cette semaine`;
+			}
+
+			const isNextWeek = isSameWeek(from, nextMonday(Date.now()), { weekStartsOn: 1 });
+			if (isNextWeek) {
+				return `Semaine prochaine`;
 			}
 
 			const scheduleOverlapsTwoMonths = !isSameMonth(from, to);
