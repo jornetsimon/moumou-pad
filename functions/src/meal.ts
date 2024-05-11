@@ -118,7 +118,8 @@ function generateMealSearchKeys(meal: Meal): Meal['searchKeys'] {
 	];
 	const values: string[] = keys
 		.map((key) => get(meal, key))
-		.filter((val) => !!val && typeof val === 'string');
+		.filter((val): val is string => !!val && typeof val === 'string');
+
 	const splitValues = values
 		.map((val) =>
 			`${val}`
