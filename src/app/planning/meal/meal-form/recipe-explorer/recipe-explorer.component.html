@@ -9,7 +9,7 @@
 				*tuiLet="recipeSearchResults$ | async as recipeSearchResults"
 			>
 				Rechercher une recette
-				<input placeholder="Mot-clé" tuiTextfield autocomplete="off" />
+				<input placeholder="Mot-clé" tuiTextfield autocomplete="off" inputmode="search" />
 
 				@if (recipeSearchResults?.length) {
 					<tui-data-list *tuiDataList [emptyContent]="emptyContent$ | async">

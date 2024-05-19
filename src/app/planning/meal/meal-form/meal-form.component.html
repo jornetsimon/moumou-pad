@@ -2,7 +2,12 @@
 	<div class="flex flex-col gap-6">
 		<tui-input formControlName="name" [tuiTextfieldCleaner]="true">
 			Nom du plat
-			<input placeholder="Poulet poivrons, huevos rotos..." tuiTextfield autocomplete="off" />
+			<input
+				placeholder="Poulet poivrons, huevos rotos..."
+				tuiTextfield
+				autocomplete="off"
+				enterkeyhint="done"
+			/>
 
 			<tui-data-list-wrapper
 				*tuiDataList
