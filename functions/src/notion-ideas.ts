@@ -42,7 +42,9 @@ function extractMealIdeaFromNotionPage(page: PageObjectResponse): MealIdea {
 	const ratingProp =
 		page.properties['Appréciation']?.type === 'select' ? page.properties['Appréciation'] : null;
 	const rawRating = ratingProp?.select?.name || '';
-	const rating = rawRating.split('👍').length - 1;
+	const positiveRating = rawRating.split('👍').length - 1;
+	const negativeRating = rawRating.split('👎').length - 1;
+	const rating = positiveRating - negativeRating;
 
 	const urlProp = page.properties.URL?.type === 'url' ? page.properties.URL : null;
 	const url = urlProp?.url ?? undefined;
