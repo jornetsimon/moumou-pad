@@ -1,0 +1,20 @@
+<div tuiHeader="l" class="mb-6">
+	<h3 tuiTitle>Mes recettes</h3>
+</div>
+
+<div class="flex flex-col gap-4 idea-list">
+	@for (idea of ideas(); track idea.name) {
+		<div tuiCell tuiSurface="elevated" class="idea-container">
+			@if (idea.name) {
+				<img [alt]="idea.name" [src]="idea.image" [style.border-radius.rem]="0.5" />
+			}
+			<div tuiTitle>
+				{{ idea.name }}
+				<div tuiSubtitle>
+					A blade runner must pursue and terminate four replicants who stole a ship in
+					space and have returned to Earth to find their creator.
+				</div>
+			</div>
+		</div>
+	}
+</div>

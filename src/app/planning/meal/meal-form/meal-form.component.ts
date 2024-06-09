@@ -30,6 +30,7 @@ import {
 	TuiButtonModule,
 	TuiDialogService,
 	TuiErrorModule,
+	TuiGroupModule,
 	TuiHintModule,
 	TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
@@ -50,6 +51,10 @@ import {
 	EmojiInputDialogOutput,
 } from './emoji-input-dialog/emoji-input-dialog.component';
 import { RecipeModalService } from '../../../jow/recipe-modal/recipe-modal.service';
+import {
+	MealIdeasComponent,
+	MealIdeasDialogOutput,
+} from '../../../meal-ideas/meal-ideas.component';
 
 @UntilDestroy()
 @Component({
@@ -77,6 +82,7 @@ import { RecipeModalService } from '../../../jow/recipe-modal/recipe-modal.servi
 		ReactiveFormsModule,
 		NgxVibrationModule,
 		RenderRichTextPipe,
+		TuiGroupModule,
 	],
 	providers: [MealEmojisService, RecipeModalService],
 })
@@ -267,6 +273,25 @@ export class MealFormComponent implements OnChanges {
 		this.dialogs
 			.open<EmojiInputDialogOutput>(
 				new PolymorpheusComponent(EmojiInputDialogComponent, this.injector)
+			)
+			.pipe(
+				map((emoji) => emoji || null),
+				filter(Boolean),
+				tap((emoji) => {
+					this.form.controls.emojis.setValue(
+						Array.from(new Set([...this.form.controls.emojis.value, emoji]))
+					);
+					this.cd.detectChanges();
+				}),
+				untilDestroyed(this)
+			)
+			.subscribe();
+	}
+
+	openMealIdeasDialog() {
+		this.dialogs
+			.open<MealIdeasDialogOutput>(
+				new PolymorpheusComponent(MealIdeasComponent, this.injector)
 			)
 			.pipe(
 				map((emoji) => emoji || null),
