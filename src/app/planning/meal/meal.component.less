@@ -158,9 +158,7 @@
 		width: @size;
 	}
 
-	transition:
-		background-color 0.25s ease-out,
-		filter 0.25s ease-out;
+	transition: background-color 0.25s ease-out, filter 0.25s ease-out;
 
 	&.waiting-for-swap {
 	}
@@ -199,9 +197,7 @@
 	border-bottom: 1px solid;
 	border-top: none !important;
 
-	transition:
-		color 0.5s,
-		border-radius 0.5s;
+	transition: color 0.5s, border-radius 0.5s;
 
 	@media @tui-tablet-min {
 		border: 1px solid;
@@ -236,19 +232,13 @@
 	opacity: 1;
 }
 
-@media only screen and (hover: none) and (pointer: coarse) {
-	.fallback-actions {
-		display: none;
-	}
+:host ::ng-deep tui-swipe-actions {
+  &:not(.enabled) {
+	overflow-x: visible !important;
+	overflow-y: visible !important;
 
-	::ng-deep tui-swipe-actions {
-		overflow-x: visible !important;
-		overflow-y: visible !important;
+	.t-content {
+	  flex-shrink: initial;
 	}
-}
-
-// Default from Taiga
-::ng-deep tui-swipe-actions {
-	overflow-x: scroll !important;
-	overflow-y: hidden !important;
+  }
 }

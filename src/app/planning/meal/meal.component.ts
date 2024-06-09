@@ -2,12 +2,15 @@ import {
 	AfterViewInit,
 	ChangeDetectionStrategy,
 	Component,
+	DestroyRef,
 	ElementRef,
 	EventEmitter,
 	Inject,
 	Injector,
 	Input,
+	OnInit,
 	Output,
+	signal,
 	ViewChild,
 } from '@angular/core';
 import { isNextMeal, Meal } from './state/meal.model';
@@ -59,6 +62,7 @@ import {
 	TuiSwipeActionsComponent,
 } from '../../../vendor/taiga-ui/swipe-action';
 import { pickBy } from 'lodash-es';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @UntilDestroy()
 @Component({
@@ -98,7 +102,7 @@ import { pickBy } from 'lodash-es';
 	],
 	providers: [RecipeModalService],
 })
-export class MealComponent implements AfterViewInit {
+export class MealComponent implements OnInit, AfterViewInit {
 	constructor(
 		private readonly mealService: MealService,
 		private readonly toastService: HotToastService,
@@ -108,6 +112,7 @@ export class MealComponent implements AfterViewInit {
 		private readonly router: Router,
 		private readonly route: ActivatedRoute,
 		private readonly recipeModalService: RecipeModalService,
+		private readonly destroyRef: DestroyRef,
 		@Inject(Injector) private readonly injector: Injector,
 		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
 	) {}
@@ -130,27 +135,7 @@ export class MealComponent implements AfterViewInit {
 	private _meal!: Meal;
 	private meal$$ = new BehaviorSubject<Meal | undefined>(undefined);
 	meal$: Observable<Meal> = this.meal$$.asObservable().pipe(filter(isNotNullOrUndefined));
-	editMode = false;
-	editMode$ = this.route.fragment.pipe(
-		map((fragment) => fragment === this.meal.id),
-		distinctUntilChanged(),
-		tap((editMode) => {
-			if (editMode && this.containerRef) {
-				const element = this.containerRef.nativeElement;
-				const offset = 120;
-
-				setTimeout(() => {
-					window.scrollTo({
-						behavior: 'smooth',
-						top:
-							element.getBoundingClientRect().top -
-							document.body.getBoundingClientRect().top -
-							offset,
-					});
-				}, 250);
-			}
-		})
-	);
+	readonly isEditMode = signal(false);
 	cannotDropHere$: Observable<boolean> = this.dragDropService.dragging$.pipe(
 		map((dragging) => {
 			if (!dragging || !this.dropListRef) {
@@ -247,6 +232,10 @@ export class MealComponent implements AfterViewInit {
 		return !!origin.name || !!destination.name;
 	};
 
+	ngOnInit() {
+		this.setEditModeFromRoute().pipe(takeUntilDestroyed(this.destroyRef)).subscribe();
+	}
+
 	ngAfterViewInit() {
 		this.isNext$
 			.pipe(
@@ -263,7 +252,7 @@ export class MealComponent implements AfterViewInit {
 
 	toggleEdit(setTo?: boolean) {
 		if (this.isReadonly) {
-			this.editMode = setTo !== undefined ? setTo : !this.editMode;
+			this.isEditMode.update((value) => (setTo !== undefined ? setTo : !value));
 			return;
 		}
 		let newFragment: string | undefined;
@@ -370,5 +359,31 @@ export class MealComponent implements AfterViewInit {
 		const lines = [...(this.meal.lines || [])];
 		lines.splice(index, 1);
 		this.mealService.update(this.meal.id, { lines });
+	}
+
+	private setEditModeFromRoute() {
+		return this.route.fragment.pipe(
+			map((fragment) => fragment === this.meal.id),
+			distinctUntilChanged(),
+			tap((editingCurrentMeal) => this.isEditMode.set(editingCurrentMeal)),
+			filter(Boolean),
+			tap(() => {
+				if (!this.containerRef) {
+					return;
+				}
+				const element = this.containerRef.nativeElement;
+				const offset = 120;
+
+				setTimeout(() => {
+					window.scrollTo({
+						behavior: 'smooth',
+						top:
+							element.getBoundingClientRect().top -
+							document.body.getBoundingClientRect().top -
+							offset,
+					});
+				}, 250);
+			})
+		);
 	}
 }
