@@ -19,6 +19,7 @@ import { CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { TuiButtonModule } from '@taiga-ui/core';
+import { MealIdeasService } from '../meal-ideas/meal-ideas.service';
 
 @Component({
 	selector: 'cb-planning',
@@ -53,8 +54,11 @@ export class PlanningComponent {
 		private readonly appQuery: AppQuery,
 		private readonly appService: AppService,
 		private readonly breakpointObserver: BreakpointObserver,
-		private readonly router: Router
-	) {}
+		private readonly router: Router,
+		private readonly ideasService: MealIdeasService
+	) {
+		this.ideasService.fetchIdeas();
+	}
 
 	meals$: Observable<Meal[]> = combineLatest([
 		this.appQuery.select('schedule'),

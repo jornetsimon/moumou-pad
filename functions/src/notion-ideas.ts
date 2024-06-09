@@ -37,7 +37,7 @@ function extractMealIdeaFromNotionPage(page: PageObjectResponse): MealIdea {
 	const image = imageProp?.files[0]?.type === 'file' ? imageProp.files[0].file.url : undefined;
 
 	const tagsProp = page.properties.Tags?.type === 'multi_select' ? page.properties.Tags : null;
-	const tags = tagsProp?.multi_select.map((select) => select.name) ?? [];
+	const tags = tagsProp?.multi_select.map(({ name, color }) => ({ name, color })) ?? [];
 
 	const ratingProp =
 		page.properties['Appréciation']?.type === 'select' ? page.properties['Appréciation'] : null;

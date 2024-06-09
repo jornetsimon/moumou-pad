@@ -5,15 +5,61 @@
 <div class="flex flex-col gap-4 idea-list">
 	@for (idea of ideas(); track idea.name) {
 		<div tuiCell tuiSurface="elevated" class="idea-container">
-			@if (idea.name) {
+			@if (idea.image) {
 				<img [alt]="idea.name" [src]="idea.image" [style.border-radius.rem]="0.5" />
 			}
-			<div tuiTitle>
-				{{ idea.name }}
-				<div tuiSubtitle>
-					A blade runner must pursue and terminate four replicants who stole a ship in
-					space and have returned to Earth to find their creator.
+
+			<div class="grow px-4 py-2 flex items-center gap-4">
+				<div class="grow flex flex-col gap-[0.15rem]">
+					<div class="text-xl flex gap-4">
+						<div>{{ idea.name }}</div>
+						<div class="flex items-center gap-1">
+							@if (idea.rating > 0) {
+								<span
+									class="rating-icon bg-green-200"
+									*tuiRepeatTimes="let index of idea.absoluteRating"
+								>
+									👍
+								</span>
+							} @else {
+								<span
+									class="rating-icon bg-red-200"
+									*tuiRepeatTimes="let index of idea.absoluteRating"
+								>
+									👎
+								</span>
+							}
+						</div>
+					</div>
+
+					<div class="flex items-center gap-2">
+						@for (tag of idea.tags; track tag.name) {
+							<tui-tag
+								status="custom"
+								[hoverable]="false"
+								[value]="tag.name"
+								[ngStyle]="{
+									'background-color': tag.color,
+									color:
+										'#fff'
+										| toReadableTextColor: tag.color : 'decorative' : '#000'
+								}"
+							></tui-tag>
+						}
+					</div>
+
+					@if (idea.url) {
+						<a class="text-gray-500" [href]="idea.url">{{ idea.url | urlPreview }}</a>
+					}
 				</div>
+
+				<button
+					appearance="primary"
+					size="s"
+					tuiIconButton
+					type="button"
+					icon="tuiIconChevronsRight"
+				></button>
 			</div>
 		</div>
 	}

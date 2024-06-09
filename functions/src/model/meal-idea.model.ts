@@ -1,7 +1,7 @@
 export interface MealIdea {
 	name: string;
 	image?: string;
-	tags: string[];
+	tags: Array<{ name: string; color: string }>;
 	url?: string;
 	rating: number;
 	notionPageUrl: string;
