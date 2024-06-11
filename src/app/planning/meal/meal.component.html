@@ -47,6 +47,9 @@
 			<div
 				class="icons w-1/3 flex justify-end items-center flex-wrap gap-x-[10px] gap-y-[5px]"
 			>
+				@if (themeEmoji$ | async; as themeEmoji) {
+					{{ themeEmoji }}
+				}
 				<div *ngIf="meal.extras?.prepared" tuiHint="Repas préparé">✅</div>
 				<div *ngIf="meal.recipeMemo" [tuiHint]="meal.recipeMemo" tuiHint="Note">📝</div>
 				@for (emoji of meal.emojis; track emoji) {
@@ -90,7 +93,6 @@
 										} @else {
 											<div class="no-meal-title">Aucun plat</div>
 										}
-										{{ themeEmoji$ | async }}
 									</div>
 								</div>
 							</div>
