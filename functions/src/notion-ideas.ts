@@ -4,7 +4,7 @@ import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import { MealIdea } from './model/meal-idea.model';
 import { assertIsNotNullOrUndefined } from './helpers/assert';
 import { db } from './init';
-import { User, UserConfig } from './model/user.model';
+import { User } from './model/user.model';
 import { firestore } from 'firebase-admin';
 
 const config = functions.config();
@@ -19,7 +19,7 @@ export const notionIdeas = functions.region('europe-west1').https.onCall(async (
 	const userDoc = db.doc(`users/${uid}`) as firestore.DocumentReference<User>;
 	const userSnapshot = await userDoc.get();
 	const user = userSnapshot.data();
-	const notionConfig: UserConfig['notion'] = isEmulated ? config.notion : user?.config?.notion;
+	const notionConfig: User['notion'] = isEmulated ? config.notion : user?.notion;
 
 	if (!notionConfig) {
 		return [];
