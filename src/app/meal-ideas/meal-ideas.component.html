@@ -6,13 +6,8 @@
 	@for (idea of ideas(); track idea.name) {
 		<div tuiSurface="elevated" class="idea-container" (click)="useIdea(idea)">
 			@if (idea.image) {
-				<a [href]="idea.notionPageDeeplink" target="_blank">
-					<img
-						class="shrink-0"
-						[alt]="idea.name"
-						[src]="idea.image"
-						[style.border-radius.rem]="0.5"
-					/>
+				<a [href]="idea.notionPageDeeplink" target="_blank" class="shrink-0">
+					<img [alt]="idea.name" [src]="idea.image" [style.border-radius.rem]="0.5" />
 				</a>
 			}
 
