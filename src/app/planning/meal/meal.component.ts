@@ -30,7 +30,6 @@ import {
 import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
 import { MealThemeModel } from './theme/meal-theme.model';
 import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../../shared/utilities';
-import * as tinycolor from 'tinycolor2';
 import { MealThemeService } from './theme/meal-theme.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -64,6 +63,7 @@ import {
 import { pickBy } from 'lodash-es';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { toRgba, transparentize } from 'color2k';
 
 @UntilDestroy()
 @Component({
@@ -168,14 +168,17 @@ export class MealComponent implements OnInit, AfterViewInit {
 			return themes[matchedThemeIndex].theme;
 		})
 	);
+	// TODO: fix where the shadow is applied
+	// It got broken with the tui-swipe-actions
 	themeBoxShadow$ = this.mealTheme$.pipe(
-		map((theme) =>
-			theme?.color && theme.shadow
-				? `0px 0px 11px 2px ${tinycolor(theme.color)
-						.setAlpha(theme.backgroundImage ? 1 : 0.5)
-						.toRgbString()}`
-				: undefined
-		)
+		map((theme) => {
+			if (!(theme?.color && theme.shadow)) {
+				return undefined;
+			}
+
+			const color = transparentize(theme.color, theme.backgroundImage ? 0 : 0.5);
+			return `0px 0px 11px 2px ${toRgba(color)}`;
+		})
 	);
 	themeBackgroundImage$: Observable<string> = this.mealTheme$.pipe(
 		withLatestFrom(this.meal$),

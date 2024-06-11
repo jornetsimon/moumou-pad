@@ -54,7 +54,6 @@
     "ng-for-repeat": "^1.0.1",
     "ngx-vibration": "^1.2.0",
     "rxjs": "^7.8.1",
-    "tinycolor2": "^1.6.0",
     "tslib": "^2.1.0",
     "xml-js": "^1.6.11",
     "zone.js": "~0.14.3"

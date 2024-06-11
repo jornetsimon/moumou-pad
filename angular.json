@@ -24,7 +24,6 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
-              "tinycolor2",
               "text-mask-core",
               "dompurify"
             ],
