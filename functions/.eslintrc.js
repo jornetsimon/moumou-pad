@@ -26,6 +26,7 @@ module.exports = {
 		'object-curly-spacing': 'off',
 		"indent": ['error', 'tab'],
 		'no-tabs': 'off',
+		'camelcase': 'off',
 		'@typescript-eslint/no-unused-vars': 'off',
 		'prefer-promise-reject-errors': 'off',
 		'max-len': ['error', { code: 100 }],
