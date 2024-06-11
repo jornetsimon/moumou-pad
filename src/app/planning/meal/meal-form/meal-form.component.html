@@ -6,6 +6,7 @@
 					formControlName="name"
 					[tuiTextfieldCleaner]="true"
 					class="meal-name-input"
+					[class.meal-ideas-available]="mealIdeasAvailable()"
 				>
 					Nom du plat
 					<input
@@ -23,18 +24,21 @@
 					></tui-data-list-wrapper>
 				</tui-input>
 			</div>
-			<div class="shrink-0">
-				<button
-					type="button"
-					tuiIconButton
-					appearance="secondary"
-					size="s"
-					(click)="openMealIdeasDialog()"
-					class="meal-ideas-button"
-				>
-					<mat-icon>bookmark_heart</mat-icon>
-				</button>
-			</div>
+
+			@if (mealIdeasAvailable()) {
+				<div class="shrink-0">
+					<button
+						type="button"
+						tuiIconButton
+						appearance="secondary"
+						size="s"
+						(click)="openMealIdeasDialog()"
+						class="meal-ideas-button"
+					>
+						<mat-icon>bookmark_heart</mat-icon>
+					</button>
+				</div>
+			}
 		</div>
 
 		@if (jowRecipe) {

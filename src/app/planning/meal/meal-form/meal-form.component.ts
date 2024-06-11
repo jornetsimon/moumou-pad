@@ -2,6 +2,7 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
+	computed,
 	EventEmitter,
 	Inject,
 	Injector,
@@ -55,6 +56,7 @@ import {
 	MealIdeasComponent,
 	MealIdeasDialogOutput,
 } from '../../../meal-ideas/meal-ideas.component';
+import { MealIdeasService } from '../../../meal-ideas/meal-ideas.service';
 
 @UntilDestroy()
 @Component({
@@ -93,6 +95,7 @@ export class MealFormComponent implements OnChanges {
 		private readonly cd: ChangeDetectorRef,
 		private readonly emojisService: MealEmojisService,
 		private readonly recipeModalService: RecipeModalService,
+		private readonly mealIdeasService: MealIdeasService,
 		@Inject(Injector) private readonly injector: Injector,
 		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
 	) {}
@@ -149,6 +152,10 @@ export class MealFormComponent implements OnChanges {
 	jowRecipe: Recipe | null = null;
 
 	readonly constructAssetUrl = constructAssetUrl;
+
+	readonly mealIdeasAvailable = computed(
+		() => !this.mealIdeasService.areIdeasLoading() && this.mealIdeasService.ideas().length > 0
+	);
 
 	ngOnChanges(changes: SimpleChanges) {
 		this.initializeForm();

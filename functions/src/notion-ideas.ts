@@ -3,31 +3,46 @@ import { Client, isFullPage, LogLevel } from '@notionhq/client';
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import { MealIdea } from './model/meal-idea.model';
 import { assertIsNotNullOrUndefined } from './helpers/assert';
+import { db } from './init';
+import { User, UserConfig } from './model/user.model';
+import { firestore } from 'firebase-admin';
 
 const config = functions.config();
 const isEmulated = process.env.FUNCTIONS_EMULATOR === 'true';
 
-export const notionIdeas = functions
-	.region('europe-west1')
-	.https.onCall(async (data: { databaseId: string }, context) => {
-		const notion = new Client({
-			auth: config.notion.key,
-			logLevel: isEmulated ? LogLevel.DEBUG : LogLevel.WARN,
-		});
+export const notionIdeas = functions.region('europe-west1').https.onCall(async (data, context) => {
+	const uid = context.auth?.uid;
+	if (!uid) {
+		throw new functions.https.HttpsError('failed-precondition', 'not_authenticated');
+	}
 
-		const res = await notion.databases.query({
-			database_id: data.databaseId ?? '9221c1d7570d460f97430a5eddafbaff',
-			filter: {
-				property: 'Nom',
-				rich_text: {
-					is_not_empty: true,
-				},
-			},
-		});
+	const userDoc = db.doc(`users/${uid}`) as firestore.DocumentReference<User>;
+	const userSnapshot = await userDoc.get();
+	const user = userSnapshot.data();
+	const notionConfig: UserConfig['notion'] = isEmulated ? config.notion : user?.config?.notion;
 
-		const fullPages = res.results.filter(isFullPage);
-		return fullPages.map((page) => extractMealIdeaFromNotionPage(page));
+	if (!notionConfig) {
+		return [];
+	}
+
+	const notion = new Client({
+		auth: notionConfig?.integration_secret,
+		logLevel: isEmulated ? LogLevel.DEBUG : LogLevel.WARN,
 	});
+
+	const res = await notion.databases.query({
+		database_id: notionConfig?.database_id,
+		filter: {
+			property: 'Nom',
+			rich_text: {
+				is_not_empty: true,
+			},
+		},
+	});
+
+	const fullPages = res.results.filter(isFullPage);
+	return fullPages.map((page) => extractMealIdeaFromNotionPage(page));
+});
 
 function extractMealIdeaFromNotionPage(page: PageObjectResponse): MealIdea {
 	const nameProp = page.properties.Nom?.type === 'title' ? page.properties.Nom : null;

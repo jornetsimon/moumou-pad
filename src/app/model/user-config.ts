@@ -1,8 +1,1 @@
-import { WeekdayValue } from './weekday';
-
-export interface UserConfig {
-	startWeekOn: WeekdayValue;
-	familyName?: string;
-	city?: string;
-	emojis?: Record<string, number>;
-}
+export { UserConfig } from '@functions/model/user.model';

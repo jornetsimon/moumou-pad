@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { weekdays, WeekdayValue } from '../model/weekday';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { AppService } from '../../state/app.service';
 import { AppQuery } from '../../state/app.query';
@@ -37,6 +36,7 @@ import {
 import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
 import { MatIconModule } from '@angular/material/icon';
 import { TuiIconModule } from '@taiga-ui/experimental';
+import { weekdays, WeekdayValue } from '@functions/model/weekday.model';
 
 @UntilDestroy()
 @Component({
