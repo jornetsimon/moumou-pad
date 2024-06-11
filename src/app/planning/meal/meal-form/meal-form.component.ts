@@ -2,6 +2,7 @@ import {
 	ChangeDetectionStrategy,
 	ChangeDetectorRef,
 	Component,
+	computed,
 	EventEmitter,
 	Inject,
 	Injector,
@@ -30,6 +31,7 @@ import {
 	TuiButtonModule,
 	TuiDialogService,
 	TuiErrorModule,
+	TuiGroupModule,
 	TuiHintModule,
 	TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
@@ -50,6 +52,11 @@ import {
 	EmojiInputDialogOutput,
 } from './emoji-input-dialog/emoji-input-dialog.component';
 import { RecipeModalService } from '../../../jow/recipe-modal/recipe-modal.service';
+import {
+	MealIdeasComponent,
+	MealIdeasDialogOutput,
+} from '../../../meal-ideas/meal-ideas.component';
+import { MealIdeasService } from '../../../meal-ideas/meal-ideas.service';
 
 @UntilDestroy()
 @Component({
@@ -77,6 +84,7 @@ import { RecipeModalService } from '../../../jow/recipe-modal/recipe-modal.servi
 		ReactiveFormsModule,
 		NgxVibrationModule,
 		RenderRichTextPipe,
+		TuiGroupModule,
 	],
 	providers: [MealEmojisService, RecipeModalService],
 })
@@ -87,6 +95,7 @@ export class MealFormComponent implements OnChanges {
 		private readonly cd: ChangeDetectorRef,
 		private readonly emojisService: MealEmojisService,
 		private readonly recipeModalService: RecipeModalService,
+		private readonly mealIdeasService: MealIdeasService,
 		@Inject(Injector) private readonly injector: Injector,
 		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
 	) {}
@@ -143,6 +152,10 @@ export class MealFormComponent implements OnChanges {
 	jowRecipe: Recipe | null = null;
 
 	readonly constructAssetUrl = constructAssetUrl;
+
+	readonly mealIdeasAvailable = computed(
+		() => !this.mealIdeasService.areIdeasLoading() && this.mealIdeasService.ideas().length > 0
+	);
 
 	ngOnChanges(changes: SimpleChanges) {
 		this.initializeForm();
@@ -276,6 +289,22 @@ export class MealFormComponent implements OnChanges {
 						Array.from(new Set([...this.form.controls.emojis.value, emoji]))
 					);
 					this.cd.detectChanges();
+				}),
+				untilDestroyed(this)
+			)
+			.subscribe();
+	}
+
+	openMealIdeasDialog() {
+		this.dialogs
+			.open<MealIdeasDialogOutput>(
+				new PolymorpheusComponent(MealIdeasComponent, this.injector)
+			)
+			.pipe(
+				map((emoji) => emoji || null),
+				filter(Boolean),
+				tap((mealIdea) => {
+					this.form.controls.name.setValue(mealIdea.name);
 				}),
 				untilDestroyed(this)
 			)

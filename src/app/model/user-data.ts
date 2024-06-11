@@ -1,7 +1,1 @@
-import { UserConfig } from './user-config';
-
-export interface UserData {
-	config: UserConfig;
-	familyName: string;
-	isAllowedInFamily: boolean;
-}
+export { User as UserData } from '@functions/model/user.model';

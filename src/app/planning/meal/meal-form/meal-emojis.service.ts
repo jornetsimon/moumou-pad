@@ -2,14 +2,16 @@ import { Injectable } from '@angular/core';
 import { AppQuery } from '../../../../state/app.query';
 import { map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { AppService } from '../../../../state/app.service';
 import { isEqual } from 'lodash-es';
+import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
+import { DocumentReference } from 'rxfire/firestore/interfaces';
+import { UserData } from '../../../model/user-data';
 
 @Injectable()
 export class MealEmojisService {
 	constructor(
 		private readonly appQuery: AppQuery,
-		private readonly appService: AppService
+		private firestore: Firestore
 	) {}
 
 	readonly defaultEmojis: string[] = ['❄️', '🐱', '✅'];
@@ -17,8 +19,8 @@ export class MealEmojisService {
 	static readonly emojiRegex =
 		/(?:(?:\p{RI}\p{RI}|\p{Emoji}(?:\p{Emoji_Modifier}|\u{FE0F}\u{20E3}?|[\u{E0020}-\u{E007E}]+\u{E007F})?(?:\u{200D}\p{Emoji}(?:\p{Emoji_Modifier}|\u{FE0F}\u{20E3}?|[\u{E0020}-\u{E007E}]+\u{E007F})?)*)|[\u{1f900}-\u{1f9ff}\u{2600}-\u{26ff}\u{2700}-\u{27bf}])+/u;
 
-	readonly popularEmojis$: Observable<string[]> = this.appQuery.userConfig$.pipe(
-		map((config) => config?.emojis ?? {}),
+	readonly popularEmojis$: Observable<string[]> = this.appQuery.userData$.pipe(
+		map((user) => user?.emojis ?? {}),
 		map((emojis) =>
 			Object.entries(emojis)
 				.map(([emoji, usageCount]) => ({ emoji, usageCount }))
@@ -34,7 +36,7 @@ export class MealEmojisService {
 	);
 
 	setEmojisAsUsed(emojis: string[]) {
-		const currentEmojis = this.appQuery.getValue().userData?.config.emojis ?? [];
+		const currentEmojis = this.appQuery.getValue().userData?.emojis ?? [];
 
 		const newEmojis = emojis
 			.filter((emoji) => !Object.keys(currentEmojis).includes(emoji))
@@ -55,6 +57,12 @@ export class MealEmojisService {
 			return Promise.resolve();
 		}
 
-		return this.appService.setConfig({ emojis: newData });
+		return this.updateEmojis(newData);
+	}
+
+	private updateEmojis(emojis: UserData['emojis']) {
+		const uid = this.appQuery.getValue().user!.uid;
+		const userDoc = doc(this.firestore, `/users/${uid}`) as DocumentReference<UserData>;
+		return updateDoc(userDoc, { emojis });
 	}
 }

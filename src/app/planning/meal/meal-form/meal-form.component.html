@@ -1,21 +1,45 @@
 <form [formGroup]="form" (ngSubmit)="saveMeal()">
 	<div class="flex flex-col gap-6">
-		<tui-input formControlName="name" [tuiTextfieldCleaner]="true">
-			Nom du plat
-			<input
-				placeholder="Poulet poivrons, huevos rotos..."
-				tuiTextfield
-				autocomplete="off"
-				enterkeyhint="done"
-			/>
+		<div class="flex">
+			<div class="grow">
+				<tui-input
+					formControlName="name"
+					[tuiTextfieldCleaner]="true"
+					class="meal-name-input"
+					[class.meal-ideas-available]="mealIdeasAvailable()"
+				>
+					Nom du plat
+					<input
+						placeholder="Poulet poivrons, huevos rotos..."
+						tuiTextfield
+						autocomplete="off"
+						enterkeyhint="done"
+					/>
 
-			<tui-data-list-wrapper
-				*tuiDataList
-				emptyContent="Aucun résultat"
-				size="xs"
-				[items]="(nameSuggestions$ | async) ?? [] | tuiFilterByInput"
-			></tui-data-list-wrapper>
-		</tui-input>
+					<tui-data-list-wrapper
+						*tuiDataList
+						emptyContent="Aucun résultat"
+						size="xs"
+						[items]="(nameSuggestions$ | async) ?? [] | tuiFilterByInput"
+					></tui-data-list-wrapper>
+				</tui-input>
+			</div>
+
+			@if (mealIdeasAvailable()) {
+				<div class="shrink-0">
+					<button
+						type="button"
+						tuiIconButton
+						appearance="secondary"
+						size="s"
+						(click)="openMealIdeasDialog()"
+						class="meal-ideas-button"
+					>
+						<mat-icon>bookmark_heart</mat-icon>
+					</button>
+				</div>
+			}
+		</div>
 
 		@if (jowRecipe) {
 			<cb-recipe-card

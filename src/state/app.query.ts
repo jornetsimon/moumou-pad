@@ -12,6 +12,7 @@ export class AppQuery extends Query<AppState> {
 	}
 
 	readonly user$ = this.select('user');
+	readonly userData$ = this.select('userData');
 
 	readonly userConfig$: Observable<UserConfig | undefined> = this.select().pipe(
 		map((state) => state.userData?.config)

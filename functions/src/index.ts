@@ -4,6 +4,7 @@ import { approveOrDenyNewFamilyMember, joinFamily } from './family';
 import { primeTimePrograms } from './tv';
 import { search } from './search';
 import { createFamilyMeal, createMeal } from './meal';
+import { notionIdeas } from './notion-ideas';
 
 exports.createUser = createUser;
 exports.joinFamily = joinFamily;
@@ -15,3 +16,4 @@ exports.search = search;
 exports.primeTimePrograms = primeTimePrograms;
 exports.createMeal = createMeal;
 exports.createFamilyMeal = createFamilyMeal;
+exports.notionIdeas = notionIdeas;

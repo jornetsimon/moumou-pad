@@ -3,6 +3,7 @@ import { db } from './init';
 import { assertAuthenticated } from './helpers/assert';
 import { normalizeString } from './helpers/normalize-string';
 import * as assert from 'assert';
+import { User } from './model/user.model';
 
 export const search = functions.region('europe-west1').https.onCall(async (data, context) => {
 	const uid = context.auth?.uid;
@@ -17,10 +18,7 @@ export const search = functions.region('europe-west1').https.onCall(async (data,
 	const searchTerm: string = normalizeString(inputTerm);
 
 	const userDoc = await db.doc(`users/${uid}`).get();
-	const { familyName, isAllowedInFamily } = userDoc.data() as {
-		familyName: string;
-		isAllowedInFamily: boolean;
-	};
+	const { familyName, isAllowedInFamily } = userDoc.data() as User;
 	const mealsPath =
 		familyName && isAllowedInFamily ? `families/${familyName}/meals` : `users/${uid}/meals`;
 

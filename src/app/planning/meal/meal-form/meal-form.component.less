@@ -139,3 +139,27 @@
 		cursor: pointer;
 	}
 }
+
+::ng-deep .meal-name-input {
+	&.meal-ideas-available {
+		.t-textfield {
+			border-top-right-radius: 0 !important;
+			border-bottom-right-radius: 0 !important;
+		}
+	}
+}
+
+.meal-ideas-button {
+	height: 100%;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+	box-shadow: 0 0.125rem 0.1875rem rgba(0, 0, 0, 0.1);
+	border: 1px solid #dbe2fe;
+	border-left: none;
+
+	mat-icon {
+		font-size: 18px;
+		height: 18px;
+		width: 18px;
+	}
+}
