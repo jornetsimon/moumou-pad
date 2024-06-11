@@ -36,7 +36,6 @@
     "@ngneat/overview": "^6.0.0",
     "@ngneat/until-destroy": "^10.0.0",
     "@ngx-pwa/local-storage": "^17.0.0",
-    "@notionhq/client": "^2.2.15",
     "@taiga-ui/addon-commerce": "^3.63.0",
     "@taiga-ui/addon-mobile": "^3.62.0",
     "@taiga-ui/cdk": "^3.62.0",
