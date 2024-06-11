@@ -15,8 +15,9 @@ import { UrlPreviewPipe } from '../shared/url-preview.pipe';
 import { TuiTagModule } from '@taiga-ui/kit';
 import { ToReadableTextColorPipe } from '../../utils/pipes/to-readable-text-color.pipe';
 import { TuiRepeatTimesModule } from '@taiga-ui/cdk';
+import { MealIdea } from '@functions/model/meal-idea.model';
 
-export type MealIdeasDialogOutput = string | null;
+export type MealIdeasDialogOutput = MealIdea | null;
 
 @UntilDestroy()
 @Component({
@@ -48,8 +49,14 @@ export class MealIdeasComponent {
 	) {}
 
 	readonly ideas = computed(() =>
-		this.ideasService
-			.ideas()
-			.map((idea) => ({ ...idea, absoluteRating: Math.abs(idea.rating) }))
+		this.ideasService.ideas().map((idea) => ({
+			...idea,
+			absoluteRating: Math.abs(idea.rating),
+			notionPageDeeplink: idea.notionPageUrl.replace(/http(s)?:\/\//, 'notion://'),
+		}))
 	);
+
+	useIdea(idea: MealIdea) {
+		this.context.completeWith(idea);
+	}
 }

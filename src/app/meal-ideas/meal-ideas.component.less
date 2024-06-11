@@ -2,12 +2,15 @@
 }
 
 .idea-container {
+	display: flex;
+	align-items: stretch;
+
 	padding: 0;
 	gap: 0;
 	border-radius: var(--tui-radius-s);
 
 	img {
-		max-height: 100px;
+		height: 100px;
 	}
 }
 
@@ -19,4 +22,11 @@
 	align-items: center;
 
 	border-radius: 0.25rem;
+}
+
+.submit-button {
+	height: 100%;
+
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
 }

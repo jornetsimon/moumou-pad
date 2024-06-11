@@ -16,6 +16,5 @@ export class MealIdeasService {
 		const callable = httpsCallable<{}, MealIdea[]>(this.fns, 'notionIdeas');
 		const response = await callable({});
 		this.ideas.set(response.data);
-		console.log('Meal ideas', response.data);
 	}
 }

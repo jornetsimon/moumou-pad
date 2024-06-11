@@ -296,11 +296,8 @@ export class MealFormComponent implements OnChanges {
 			.pipe(
 				map((emoji) => emoji || null),
 				filter(Boolean),
-				tap((emoji) => {
-					this.form.controls.emojis.setValue(
-						Array.from(new Set([...this.form.controls.emojis.value, emoji]))
-					);
-					this.cd.detectChanges();
+				tap((mealIdea) => {
+					this.form.controls.name.setValue(mealIdea.name);
 				}),
 				untilDestroyed(this)
 			)
