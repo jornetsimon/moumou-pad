@@ -63,6 +63,7 @@ import {
 } from '../../../vendor/taiga-ui/swipe-action';
 import { pickBy } from 'lodash-es';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @UntilDestroy()
 @Component({
@@ -113,6 +114,7 @@ export class MealComponent implements OnInit, AfterViewInit {
 		private readonly route: ActivatedRoute,
 		private readonly recipeModalService: RecipeModalService,
 		private readonly destroyRef: DestroyRef,
+		private readonly breakpointObserver: BreakpointObserver,
 		@Inject(Injector) private readonly injector: Injector,
 		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
 	) {}
@@ -222,6 +224,11 @@ export class MealComponent implements OnInit, AfterViewInit {
 	);
 
 	readonly lines$: Observable<MealLine[]> = this.meal$.pipe(map((meal) => meal.lines || []));
+
+	readonly isPointerDevice$ = this.breakpointObserver.observe('(pointer: fine)').pipe(
+		map((result) => result.matches),
+		distinctUntilChanged()
+	);
 
 	canEnter = (drag: CdkDrag<Meal>, drop: CdkDropList<Meal>): boolean => {
 		const origin = drag.data;

@@ -22,7 +22,7 @@
 					[class.waiting-for-swap]="dragDropService.dragging$ | async"
 					[class.cannot-drop]="cannotDropHere$ | async"
 					[tuiHint]="
-						showFullDateInTopper ? '' : (meal.date | date : 'EEEE dd MMMM') || '🤷‍♂️'
+						showFullDateInTopper ? '' : (meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'
 					"
 					cdkDrag
 					[cdkDragData]="meal"
@@ -31,10 +31,10 @@
 					cdkDragPreviewClass="dragging"
 				>
 					<ng-container *ngIf="showFullDateInTopper; else defaultTopperDateTpl">
-						{{ meal.date | date : 'EEEE dd MMMM' | titlecase }}&nbsp;
+						{{ meal.date | date: 'EEEE dd MMMM' | titlecase }}&nbsp;
 					</ng-container>
 					<ng-template #defaultTopperDateTpl>
-						{{ meal.date | date : 'EEEE' | titlecase }}&nbsp;
+						{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;
 					</ng-template>
 					<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900">
 						light_mode
@@ -50,7 +50,7 @@
 				<div *ngIf="meal.extras?.prepared" tuiHint="Repas préparé">✅</div>
 				<div *ngIf="meal.recipeMemo" [tuiHint]="meal.recipeMemo" tuiHint="Note">📝</div>
 				@for (emoji of meal.emojis; track emoji) {
-				<div>{{ emoji }}</div>
+					<div>{{ emoji }}</div>
 				}
 			</div>
 		</div>
@@ -86,9 +86,9 @@
 								<div class="flex flex-col">
 									<div class="tui-text_body-l tui-text_bold text-[20px]">
 										@if (meal.name) {
-										{{ meal.name }}
+											{{ meal.name }}
 										} @else {
-										<div class="no-meal-title">Aucun plat</div>
+											<div class="no-meal-title">Aucun plat</div>
 										}
 										{{ themeEmoji$ | async }}
 									</div>
@@ -97,13 +97,15 @@
 							<div
 								class="icons flex justify-end items-center gap-[10px] row-gap-[5px] shrink-0"
 							>
-								<div class="fallback-actions">
-									<mat-icon
-										(click)="openMealLineDialog(); $event.stopPropagation()"
-									>
-										add_circle
-									</mat-icon>
-								</div>
+								@if (isPointerDevice$ | async) {
+									<div class="fallback-actions">
+										<mat-icon
+											(click)="openMealLineDialog(); $event.stopPropagation()"
+										>
+											add_circle
+										</mat-icon>
+									</div>
+								}
 							</div>
 						</div>
 					</div>
@@ -122,14 +124,14 @@
 			</div>
 
 			@if (meal.jowRecipe) {
-			<button
-				iconLeft="tuiIconEye"
-				size="m"
-				[style.background-color]="mealColor"
-				tuiIconButton
-				tuiSwipeAction
-				(click)="openRecipeDialog(meal.jowRecipe)"
-			></button>
+				<button
+					iconLeft="tuiIconEye"
+					size="m"
+					[style.background-color]="mealColor"
+					tuiIconButton
+					tuiSwipeAction
+					(click)="openRecipeDialog(meal.jowRecipe)"
+				></button>
 			}
 
 			<button
@@ -143,27 +145,27 @@
 
 		<div class="bg-white">
 			@for (line of lines$ | async; track idx; let idx = $index) {
-			<div
-				class="meal-line flex gap-1 px-2 py-[2px] select-none"
-				[style.color]="
-					mealColor
-						? (mealColor | toReadableTextColor : '#fff' : 'decorative' : '#4b4b4b')
-						: undefined
-				"
-				[style.border-color]="mealColor"
-			>
-				<div class="flex-none text-center w-[2em]">
-					{{ line.emoji ?? '•' }}
+				<div
+					class="meal-line flex gap-1 px-2 py-[2px] select-none"
+					[style.color]="
+						mealColor
+							? (mealColor | toReadableTextColor: '#fff' : 'decorative' : '#4b4b4b')
+							: undefined
+					"
+					[style.border-color]="mealColor"
+				>
+					<div class="flex-none text-center w-[2em]">
+						{{ line.emoji ?? '•' }}
+					</div>
+					<div class="grow">{{ line.text }}</div>
+					<div class="grow-0">
+						<tui-icon
+							icon="tuiIconClose"
+							class="text-gray-400 !text-[1.2rem] remove-line-icon"
+							(click)="removeLine(idx)"
+						></tui-icon>
+					</div>
 				</div>
-				<div class="grow">{{ line.text }}</div>
-				<div class="grow-0">
-					<tui-icon
-						icon="tuiIconClose"
-						class="text-gray-400 !text-[1.2rem] remove-line-icon"
-						(click)="removeLine(idx)"
-					></tui-icon>
-				</div>
-			</div>
 			}
 		</div>
 	</div>
