@@ -8,6 +8,7 @@ import {
 	TuiCardModule,
 	TuiCellModule,
 	TuiHeaderModule,
+	TuiSkeletonModule,
 	TuiSurfaceModule,
 	TuiTitleModule,
 } from '@taiga-ui/experimental';
@@ -36,6 +37,7 @@ export type MealIdeasDialogOutput = MealIdea | null;
 		TuiRepeatTimesModule,
 		TuiGroupModule,
 		TuiButtonModule,
+		TuiSkeletonModule,
 	],
 	templateUrl: './meal-ideas.component.html',
 	styleUrl: './meal-ideas.component.less',
@@ -55,6 +57,8 @@ export class MealIdeasComponent {
 			notionPageDeeplink: idea.notionPageUrl.replace(/http(s)?:\/\//, 'notion://'),
 		}))
 	);
+
+	readonly isLoading = this.ideasService.areIdeasLoading;
 
 	useIdea(idea: MealIdea) {
 		this.context.completeWith(idea);

@@ -11,10 +11,14 @@ export class MealIdeasService {
 	constructor(private readonly fns: Functions) {}
 
 	readonly ideas = signal<MealIdea[]>([]);
+	private readonly _areIdeasLoading = signal(false);
+	readonly areIdeasLoading = this._areIdeasLoading.asReadonly();
 
 	async fetchIdeas() {
+		this._areIdeasLoading.set(true);
 		const callable = httpsCallable<{}, MealIdea[]>(this.fns, 'notionIdeas');
 		const response = await callable({});
 		this.ideas.set(response.data);
+		this._areIdeasLoading.set(false);
 	}
 }

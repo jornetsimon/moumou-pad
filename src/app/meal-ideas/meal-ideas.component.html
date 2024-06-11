@@ -3,6 +3,10 @@
 </div>
 
 <div class="flex flex-col gap-4 idea-list">
+	@if (isLoading()) {
+		<div class="h-[100px] w-full" *tuiRepeatTimes="let index of 3" [tuiSkeleton]="true"></div>
+	}
+
 	@for (idea of ideas(); track idea.name) {
 		<div tuiSurface="elevated" class="idea-container" (click)="useIdea(idea)">
 			@if (idea.image) {
