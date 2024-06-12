@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, Inject } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { MealIdeasService } from './meal-ideas.service';
-import { NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { TuiButtonModule, TuiDialogContext, TuiGroupModule } from '@taiga-ui/core';
 import {
@@ -17,6 +17,7 @@ import { TuiTagModule } from '@taiga-ui/kit';
 import { ToReadableTextColorPipe } from '../../utils/pipes/to-readable-text-color.pipe';
 import { TuiRepeatTimesModule } from '@taiga-ui/cdk';
 import { MealIdea } from '@functions/model/meal-idea.model';
+import { constructAssetUrl } from '../jow/util';
 
 export type MealIdeasDialogOutput = MealIdea | null;
 
@@ -38,6 +39,7 @@ export type MealIdeasDialogOutput = MealIdea | null;
 		TuiGroupModule,
 		TuiButtonModule,
 		TuiSkeletonModule,
+		NgClass,
 	],
 	templateUrl: './meal-ideas.component.html',
 	styleUrl: './meal-ideas.component.less',
@@ -63,4 +65,6 @@ export class MealIdeasComponent {
 	useIdea(idea: MealIdea) {
 		this.context.completeWith(idea);
 	}
+
+	protected readonly constructAssetUrl = constructAssetUrl;
 }
