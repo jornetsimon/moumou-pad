@@ -12,13 +12,11 @@
 	font-weight: bold;
 	text-transform: uppercase;
 	font-size: smaller;
-	/*box-shadow:
-		0 2px 1px -1px rgb(0 0 0 / 20%),
-		0px 1px 1px 0px rgb(0 0 0 / 14%),
-		0px 1px 3px 0px rgb(0 0 0 / 12%);*/
 }
+
 .selected-recipe {
 	@apply p-4 bg-white;
+	overflow: hidden;
 
 	box-shadow:
 		0 2px 1px -1px #0003,
@@ -27,17 +25,21 @@
 	border-radius: 0 0 @selected-recipe-border-radius @selected-recipe-border-radius;
 	color: @primary;
 	text-align: center;
+
 	.preview {
 		max-width: 250px;
+		border-radius: 50%;
 		&:hover {
 			cursor: pointer;
 		}
 	}
+
 	.title {
 		font-weight: bold;
-		font-size: large;
+		font-size: 1.44rem;
 		margin-bottom: 0.75em;
 	}
+
 	.properties {
 		display: flex;
 		justify-content: center;
@@ -55,6 +57,7 @@
 			}
 		}
 	}
+
 	.actions {
 		margin: 10px 0;
 	}
