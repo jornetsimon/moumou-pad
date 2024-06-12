@@ -23,7 +23,12 @@
 			<div class="grow px-4 py-4 flex items-center gap-4">
 				<div class="grow flex flex-col flex-wrap gap-[0.15rem]">
 					<div>
-						<a class="idea-name" [href]="idea.notionPageDeeplink" target="_blank">
+						<a
+							class="idea-name"
+							[href]="idea.notionPageDeeplink"
+							target="_blank"
+							(click)="$event.stopPropagation()"
+						>
 							{{ idea.name }}
 						</a>
 						<span class="rating text-sm ml-2">
