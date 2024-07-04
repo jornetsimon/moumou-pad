@@ -134,7 +134,6 @@
 
 .day {
 	width: fit-content;
-	align-self: center;
 	background-color: #6edea2;
 	color: white;
 	border-radius: 5px;
@@ -143,7 +142,6 @@
 	user-select: none;
 	cursor: grab;
 
-	/*transform: rotate(358deg);*/
 	z-index: 1;
 	position: relative;
 	top: 8px;
@@ -169,6 +167,11 @@
 	.cdk-drop-list-dragging &:not(.cdk-drag-placeholder):not(.dragging) {
 		background-color: orangered;
 	}
+
+	&.cdk-drag-placeholder {
+		margin-left: -5px;
+		z-index: 2;
+	}
 }
 
 .no-meal-title {
@@ -181,6 +184,7 @@
 	border: 2px dashed rgb(3 169 244 / 100%);
 	box-shadow: 0 0 7px 0 rgb(0 0 0 / 25%);
 	cursor: grabbing;
+	overflow: hidden;
 }
 
 .cdk-drop-list-receiving {
@@ -188,16 +192,14 @@
 	min-height: 27px;
 }
 
-.cdk-drag-placeholder {
-	margin-left: -5px;
-	z-index: 2;
-}
-
 .meal-line {
 	border-bottom: 1px solid;
-	border-top: none !important;
 
-	transition: color 0.5s, border-radius 0.5s;
+	&:not(.cdk-drag-preview) {
+		border-top: none !important;
+	}
+
+	transition: color 0.5s, border-radius 0.5s, opacity 0.5s;
 
 	@media @tui-tablet-min {
 		border: 1px solid;
@@ -215,6 +217,29 @@
 			border-bottom-left-radius: @border-radius;
 		}
 	}
+
+	&.cdk-drag-preview {
+		border-radius: 5px;
+		/*background: #e2ffed;*/
+	}
+
+	/*&.cdk-drag-placeholder {
+		opacity: 0.5;
+	}*/
+
+	.cdk-drop-list-dragging &:not(.cdk-drag-placeholder) {
+		opacity: 0.7;
+	}
+}
+
+/* Animate items as they're being sorted. */
+.cdk-drop-list-dragging .cdk-drag {
+	transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Animate an item that has been dropped. */
+.cdk-drag-animating {
+	transition: transform 100ms cubic-bezier(0, 0, 0.2, 1);
 }
 
 .fallback-actions,
@@ -230,15 +255,4 @@
 
 .meal-line:hover .remove-line-icon {
 	opacity: 1;
-}
-
-:host ::ng-deep tui-swipe-actions {
-  &:not(.enabled) {
-	overflow-x: visible !important;
-	overflow-y: visible !important;
-
-	.t-content {
-	  flex-shrink: initial;
-	}
-  }
 }

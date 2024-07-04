@@ -9,7 +9,12 @@ import {
 	TuiSvgModule,
 } from '@taiga-ui/core';
 import { LOCALE_ID, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {
+	BrowserModule,
+	HAMMER_GESTURE_CONFIG,
+	HammerGestureConfig,
+	HammerModule,
+} from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { environment } from '../environments/environment';
 import { registerLocaleData } from '@angular/common';
@@ -32,8 +37,15 @@ import { TUI_DIALOG_CLOSES_ON_BACK } from '@taiga-ui/cdk';
 import { of } from 'rxjs';
 import { RouterModule } from '@angular/router';
 import { routes } from './app.routes';
+import * as Hammer from 'hammerjs';
 
 registerLocaleData(fr);
+
+export class MyHammerConfig extends HammerGestureConfig {
+	overrides = <any>{
+		swipe: { direction: Hammer.DIRECTION_ALL },
+	};
+}
 
 @NgModule({
 	declarations: [AppComponent],
@@ -79,6 +91,7 @@ registerLocaleData(fr);
 		TuiDataListModule,
 		TuiSvgModule,
 		TuiSelectModule,
+		HammerModule,
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: 'fr' },
@@ -89,6 +102,10 @@ registerLocaleData(fr);
 		{
 			provide: TUI_DIALOG_CLOSES_ON_BACK,
 			useValue: of(true),
+		},
+		{
+			provide: HAMMER_GESTURE_CONFIG,
+			useClass: MyHammerConfig,
 		},
 	],
 	bootstrap: [AppComponent],

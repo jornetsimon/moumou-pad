@@ -43,7 +43,13 @@ import {
 	TuiHintModule,
 	TuiHostedDropdownModule,
 } from '@taiga-ui/core';
-import { CdkDrag, CdkDragDrop, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
+import {
+	CdkDrag,
+	CdkDragDrop,
+	CdkDropList,
+	DragDropModule,
+	moveItemInArray,
+} from '@angular/cdk/drag-drop';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 import { MealFormComponent } from './meal-form/meal-form.component';
 import { constructAssetUrl } from '../../jow/util';
@@ -56,10 +62,6 @@ import { RecipeModalService } from '../../jow/recipe-modal/recipe-modal.service'
 import { Recipe } from '@functions/model/receipe.model';
 import { MealLineInputDialogComponent } from './meal-line-input-dialog/meal-line-input-dialog.component';
 import { ToReadableTextColorPipe } from '../../../utils/pipes/to-readable-text-color.pipe';
-import {
-	TuiSwipeActionsAutoCloseDirective,
-	TuiSwipeActionsComponent,
-} from '../../../vendor/taiga-ui/swipe-action';
 import { pickBy } from 'lodash-es';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BreakpointObserver } from '@angular/cdk/layout';
@@ -98,8 +100,6 @@ import { toRgba, transparentize } from 'color2k';
 		TuiDataListModule,
 		TuiIconModule,
 		ToReadableTextColorPipe,
-		TuiSwipeActionsComponent,
-		TuiSwipeActionsAutoCloseDirective,
 	],
 	providers: [RecipeModalService],
 })
@@ -337,6 +337,8 @@ export class MealComponent implements OnInit, AfterViewInit {
 	}
 
 	openMealLineDialog(event?: MouseEvent) {
+		this.vibrationService.vibrate([15, 50, 15]);
+
 		if (event) {
 			const target = event.target as HTMLElement;
 			target.blur();
@@ -395,5 +397,18 @@ export class MealComponent implements OnInit, AfterViewInit {
 				}, 250);
 			})
 		);
+	}
+
+	lineReordered(event: CdkDragDrop<MealLine[], any>) {
+		console.log('reorder', event);
+		const lines = [...(this.meal.lines || [])];
+		moveItemInArray(lines, event.previousIndex, event.currentIndex);
+		this.meal.lines = lines;
+
+		const meal = this.meal;
+		this.mealService.update(meal.id, {
+			...pickBy(meal, (p) => p !== undefined),
+			lines: this.meal.lines,
+		});
 	}
 }
