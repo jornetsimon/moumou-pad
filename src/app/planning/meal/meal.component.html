@@ -139,7 +139,7 @@
 					cdkDrag
 					cdkDragLockAxis="y"
 					cdkDragBoundary=".lines-container"
-					[cdkDragStartDelay]="(isPointerDevice$ | async) ? 0 : 300"
+					[cdkDragStartDelay]="(isPointerDevice$ | async) ? 0 : 200"
 				>
 					<div class="flex-none text-center w-[2em]">
 						{{ line.emoji ?? '•' }}
