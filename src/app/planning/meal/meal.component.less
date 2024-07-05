@@ -199,7 +199,11 @@
 		border-top: none !important;
 	}
 
-	transition: color 0.5s, border-radius 0.5s, opacity 0.5s;
+	&.cdk-drag-preview {
+		border-top: 1px solid;
+	}
+
+	transition: color 0.5s, border-radius 0.5s, opacity 0.5s, filter 0.5s;
 
 	@media @tui-tablet-min {
 		border: 1px solid;
@@ -219,7 +223,7 @@
 	}
 
 	.cdk-drop-list-dragging &.cdk-drag-placeholder {
-		opacity: 0.5
+		opacity: 0.5;
 	}
 }
 
