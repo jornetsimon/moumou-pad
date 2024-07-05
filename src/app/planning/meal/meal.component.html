@@ -66,14 +66,14 @@
 			[class.has-theme]="!!(mealTheme$ | async)"
 			[class.has-theme-background]="!!(themeBackgroundImage$ | async)"
 			[class.open]="isEditMode()"
-			[class.!rounded-b-none]="(lines$ | async)?.length"
+			[class.!rounded-b-none]="lines().length"
 			[style.background-image]="themeBackgroundImage$ | async"
 			[style.background-color]="mealColor"
 			[style.box-shadow]="themeBoxShadow$ | async"
 			(press)="$event.preventDefault(); openMealLineDialog()"
 		>
 			<div class="color-overlay" [style.background-color]="mealColor"></div>
-			<div class="overlay" [class.!rounded-b-none]="(lines$ | async)?.length"></div>
+			<div class="overlay" [class.!rounded-b-none]="lines().length"></div>
 			<div class="flex" (click)="toggleEdit()" ngxVibration="10" tuiRipple>
 				<div class="header-container select-none">
 					<div
@@ -119,7 +119,7 @@
 			</div>
 		</div>
 
-		@if (lines$ | async; as lines) {
+		@if (lines(); as lines) {
 		<div cdkDropListGroup>
 			<div
 				cdkDropList

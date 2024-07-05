@@ -119,9 +119,11 @@ export class MealComponent implements OnInit, AfterViewInit {
 		@Inject(TuiDialogService) private readonly dialogs: TuiDialogService
 	) {}
 
+	// TODO: refactor to signal
 	@Input() set meal(meal: Meal) {
 		this._meal = meal;
 		this.meal$$.next(meal);
+		this.lines.set(meal.lines || []);
 	}
 	get meal(): Meal {
 		return this._meal;
@@ -226,7 +228,7 @@ export class MealComponent implements OnInit, AfterViewInit {
 		})
 	);
 
-	readonly lines$: Observable<MealLine[]> = this.meal$.pipe(map((meal) => meal.lines || []));
+	lines = signal<MealLine[]>([]);
 
 	readonly isPointerDevice$ = this.breakpointObserver.observe('(pointer: fine)').pipe(
 		map((result) => result.matches),
@@ -339,11 +341,6 @@ export class MealComponent implements OnInit, AfterViewInit {
 	openMealLineDialog(event?: MouseEvent) {
 		this.vibrationService.vibrate([15, 50, 15]);
 
-		if (event) {
-			const target = event.target as HTMLElement;
-			target.blur();
-		}
-
 		this.dialogs
 			.open<MealLine | null>(
 				new PolymorpheusComponent(MealLineInputDialogComponent, this.injector)
@@ -400,15 +397,14 @@ export class MealComponent implements OnInit, AfterViewInit {
 	}
 
 	lineReordered(event: CdkDragDrop<MealLine[], any>) {
-		console.log('reorder', event);
-		const lines = [...(this.meal.lines || [])];
+		const lines = [...this.lines()];
 		moveItemInArray(lines, event.previousIndex, event.currentIndex);
-		this.meal.lines = lines;
+		this.lines.set(lines);
 
 		const meal = this.meal;
 		this.mealService.update(meal.id, {
 			...pickBy(meal, (p) => p !== undefined),
-			lines: this.meal.lines,
+			lines,
 		});
 	}
 }
