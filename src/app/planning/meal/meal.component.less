@@ -156,7 +156,9 @@
 		width: @size;
 	}
 
-	transition: background-color 0.25s ease-out, filter 0.25s ease-out;
+	transition:
+		background-color 0.25s ease-out,
+		filter 0.25s ease-out;
 
 	&.waiting-for-swap {
 	}
@@ -204,7 +206,11 @@
 		background-color: #e6fdf4;
 	}
 
-	transition: color 0.5s, border-radius 0.5s, opacity 0.5s, filter 0.5s;
+	transition:
+		color 0.5s,
+		border-radius 0.5s,
+		opacity 0.5s,
+		filter 0.5s;
 
 	@media @tui-tablet-min {
 		border: 1px solid;
@@ -251,4 +257,15 @@
 
 .meal-line:hover .remove-line-icon {
 	opacity: 1;
+}
+
+:host ::ng-deep tui-swipe-actions {
+	&:not(.enabled) {
+		overflow-x: visible !important;
+		overflow-y: visible !important;
+
+		.t-content {
+			flex-shrink: initial;
+		}
+	}
 }

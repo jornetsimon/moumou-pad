@@ -1,0 +1,9 @@
+<div class="t-content">
+	<ng-content></ng-content>
+</div>
+
+@if (enabled) {
+<div class="t-actions" (waResizeObserver)="onResize($event[0])">
+	<ng-content select="[tuiSwipeAction]"></ng-content>
+</div>
+}

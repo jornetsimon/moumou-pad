@@ -22,7 +22,7 @@
 					[class.waiting-for-swap]="dragDropService.dragging$ | async"
 					[class.cannot-drop]="cannotDropHere$ | async"
 					[tuiHint]="
-						showFullDateInTopper ? '' : (meal.date | date : 'EEEE dd MMMM') || '🤷‍♂️'
+						showFullDateInTopper ? '' : (meal.date | date: 'EEEE dd MMMM') || '🤷‍♂️'
 					"
 					cdkDrag
 					[cdkDragData]="meal"
@@ -31,10 +31,10 @@
 					cdkDragPreviewClass="dragging"
 				>
 					<ng-container *ngIf="showFullDateInTopper; else defaultTopperDateTpl">
-						{{ meal.date | date : 'EEEE dd MMMM' | titlecase }}&nbsp;
+						{{ meal.date | date: 'EEEE dd MMMM' | titlecase }}&nbsp;
 					</ng-container>
 					<ng-template #defaultTopperDateTpl>
-						{{ meal.date | date : 'EEEE' | titlecase }}&nbsp;
+						{{ meal.date | date: 'EEEE' | titlecase }}&nbsp;
 					</ng-template>
 					<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900">
 						light_mode
@@ -48,114 +48,141 @@
 				class="icons w-1/3 flex justify-end items-center flex-wrap gap-x-[10px] gap-y-[5px]"
 			>
 				@if (themeEmoji$ | async; as themeEmoji) {
-				{{ themeEmoji }}
+					{{ themeEmoji }}
 				}
 				<div *ngIf="meal.extras?.prepared" tuiHint="Repas préparé">✅</div>
 				<div *ngIf="meal.recipeMemo" [tuiHint]="meal.recipeMemo" tuiHint="Note">📝</div>
 				@for (emoji of meal.emojis; track emoji) {
-				<div>{{ emoji }}</div>
+					<div>{{ emoji }}</div>
 				}
 			</div>
 		</div>
 
-		<div
-			class="meal lowlight-surface !overflow-visible"
-			tuiSurface
-			[class.empty]="!meal.name"
-			[class.has-jow-recipe]="!!meal.jowRecipe"
-			[class.has-theme]="!!(mealTheme$ | async)"
-			[class.has-theme-background]="!!(themeBackgroundImage$ | async)"
-			[class.open]="isEditMode()"
-			[class.!rounded-b-none]="lines().length"
-			[style.background-image]="themeBackgroundImage$ | async"
-			[style.background-color]="mealColor"
-			[style.box-shadow]="themeBoxShadow$ | async"
-			(press)="$event.preventDefault(); openMealLineDialog()"
+		<tui-swipe-actions
+			[autoClose]="true"
+			[enabled]="!isEditMode()"
+			[class.enabled]="!isEditMode()"
 		>
-			<div class="color-overlay" [style.background-color]="mealColor"></div>
-			<div class="overlay" [class.!rounded-b-none]="lines().length"></div>
-			<div class="flex" (click)="toggleEdit()" ngxVibration="10" tuiRipple>
-				<div class="header-container select-none">
-					<div
-						class="header flex justify-between items-center"
-						[class.has-jow-recipe]="meal.jowRecipe"
-						[class.has-theme]="!!(mealTheme$ | async)"
-					>
-						<div>
-							<div class="flex flex-col">
-								<div class="tui-text_body-l tui-text_bold text-[20px]">
-									@if (meal.name) {
-									{{ meal.name }}
-									} @else {
-									<div class="no-meal-title">Aucun plat</div>
-									}
+			<div
+				class="meal lowlight-surface !overflow-visible"
+				tuiSurface
+				[class.empty]="!meal.name"
+				[class.has-jow-recipe]="!!meal.jowRecipe"
+				[class.has-theme]="!!(mealTheme$ | async)"
+				[class.has-theme-background]="!!(themeBackgroundImage$ | async)"
+				[class.open]="isEditMode()"
+				[class.!rounded-b-none]="lines().length"
+				[style.background-image]="themeBackgroundImage$ | async"
+				[style.background-color]="mealColor"
+				[style.box-shadow]="themeBoxShadow$ | async"
+			>
+				<div class="color-overlay" [style.background-color]="mealColor"></div>
+				<div class="overlay" [class.!rounded-b-none]="lines().length"></div>
+				<div class="flex" (click)="toggleEdit()" ngxVibration="10" tuiRipple>
+					<div class="header-container select-none">
+						<div
+							class="header flex justify-between items-center"
+							[class.has-jow-recipe]="meal.jowRecipe"
+							[class.has-theme]="!!(mealTheme$ | async)"
+						>
+							<div>
+								<div class="flex flex-col">
+									<div class="tui-text_body-l tui-text_bold text-[20px]">
+										@if (meal.name) {
+											{{ meal.name }}
+										} @else {
+											<div class="no-meal-title">Aucun plat</div>
+										}
+									</div>
 								</div>
 							</div>
-						</div>
-						<div
-							class="icons flex justify-end items-center gap-[10px] row-gap-[5px] shrink-0"
-						>
-							@if (isPointerDevice$ | async) {
-							<div class="fallback-actions">
-								<mat-icon (click)="openMealLineDialog(); $event.stopPropagation()">
-									add_circle
-								</mat-icon>
+							<div
+								class="icons flex justify-end items-center gap-[10px] row-gap-[5px] shrink-0"
+							>
+								@if (isPointerDevice$ | async) {
+									<div class="fallback-actions">
+										<mat-icon
+											(click)="openMealLineDialog(); $event.stopPropagation()"
+										>
+											add_circle
+										</mat-icon>
+									</div>
+								}
 							</div>
-							}
+						</div>
+					</div>
+				</div>
+				<div>
+					<div *ngIf="isEditMode()" [@expandOnEnter] [@collapseOnLeave]>
+						<div class="form-container">
+							<cb-meal-form
+								[meal]="meal"
+								[isReadonly]="isReadonly"
+								(mealSaved)="afterSave()"
+							></cb-meal-form>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div>
-				<div *ngIf="isEditMode()" [@expandOnEnter] [@collapseOnLeave]>
-					<div class="form-container">
-						<cb-meal-form
-							[meal]="meal"
-							[isReadonly]="isReadonly"
-							(mealSaved)="afterSave()"
-						></cb-meal-form>
-					</div>
-				</div>
-			</div>
-		</div>
+
+			@if (meal.jowRecipe) {
+				<button
+					iconLeft="tuiIconEye"
+					size="m"
+					[style.background-color]="mealColor"
+					tuiIconButton
+					tuiSwipeAction
+					(click)="openRecipeDialog(meal.jowRecipe)"
+				></button>
+			}
+
+			<button
+				iconLeft="tuiIconPlusCircle"
+				size="m"
+				tuiIconButton
+				tuiSwipeAction
+				(click)="openMealLineDialog($event)"
+			></button>
+		</tui-swipe-actions>
 
 		@if (lines(); as lines) {
-		<div cdkDropListGroup>
-			<div
-				cdkDropList
-				[cdkDropListData]="lines"
-				(cdkDropListDropped)="lineReordered($event)"
-				class="lines-container"
-			>
-				@for (line of lines; track line; let idx = $index) {
+			<div cdkDropListGroup>
 				<div
-					class="meal-line flex gap-1 px-2 py-[2px] select-none bg-white"
-					[style.color]="
-						mealColor
-							? (mealColor | toReadableTextColor : '#fff' : 'decorative' : '#4b4b4b')
-							: undefined
-					"
-					[style.border-color]="mealColor"
-					cdkDrag
-					cdkDragLockAxis="y"
-					cdkDragBoundary=".lines-container"
-					[cdkDragStartDelay]="(isPointerDevice$ | async) ? 0 : 200"
+					cdkDropList
+					[cdkDropListData]="lines"
+					(cdkDropListDropped)="lineReordered($event)"
+					class="lines-container"
 				>
-					<div class="flex-none text-center w-[2em]">
-						{{ line.emoji ?? '•' }}
-					</div>
-					<div class="grow">{{ line.text }}</div>
-					<div class="grow-0">
-						<tui-icon
-							icon="tuiIconClose"
-							class="text-gray-400 !text-[1.2rem] remove-line-icon"
-							(click)="removeLine(idx)"
-						></tui-icon>
-					</div>
+					@for (line of lines; track line; let idx = $index) {
+						<div
+							class="meal-line flex gap-1 px-2 py-[2px] select-none bg-white"
+							[style.color]="
+								mealColor
+									? (mealColor
+										| toReadableTextColor: '#fff' : 'decorative' : '#4b4b4b')
+									: undefined
+							"
+							[style.border-color]="mealColor"
+							cdkDrag
+							cdkDragLockAxis="y"
+							cdkDragBoundary=".lines-container"
+							[cdkDragStartDelay]="(isPointerDevice$ | async) ? 0 : 200"
+						>
+							<div class="flex-none text-center w-[2em]">
+								{{ line.emoji ?? '•' }}
+							</div>
+							<div class="grow">{{ line.text }}</div>
+							<div class="grow-0">
+								<tui-icon
+									icon="tuiIconClose"
+									class="text-gray-400 !text-[1.2rem] remove-line-icon"
+									(click)="removeLine(idx)"
+								></tui-icon>
+							</div>
+						</div>
+					}
 				</div>
-				}
 			</div>
-		</div>
 		}
 	</div>
 </ng-container>

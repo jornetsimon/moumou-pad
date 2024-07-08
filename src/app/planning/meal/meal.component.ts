@@ -66,6 +66,10 @@ import { pickBy } from 'lodash-es';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { toRgba, transparentize } from 'color2k';
+import {
+	TuiSwipeActionsAutoCloseDirective,
+	TuiSwipeActionsComponent,
+} from '../../../vendor/taiga-ui/swipe-action';
 
 @UntilDestroy()
 @Component({
@@ -100,6 +104,8 @@ import { toRgba, transparentize } from 'color2k';
 		TuiDataListModule,
 		TuiIconModule,
 		ToReadableTextColorPipe,
+		TuiSwipeActionsComponent,
+		TuiSwipeActionsAutoCloseDirective,
 	],
 	providers: [RecipeModalService],
 })
