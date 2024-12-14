@@ -12,7 +12,7 @@
   "hosting": [
     {
       "target": "moumou-pad",
-      "source": ".",
+      "public": "dist/moumou-pad",
       "frameworksBackend": {}
     }
   ],
