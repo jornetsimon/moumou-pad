@@ -1,4 +1,26 @@
-import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
+import { registerLocaleData } from '@angular/common';
+import fr from '@angular/common/locales/fr';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
+import {
+	connectFirestoreEmulator,
+	enableIndexedDbPersistence,
+	getFirestore,
+	provideFirestore,
+} from '@angular/fire/firestore';
+import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
+import {
+	BrowserModule,
+	HAMMER_GESTURE_CONFIG,
+	HammerGestureConfig,
+	HammerModule,
+} from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { provideHotToastConfig } from '@ngneat/hot-toast';
+import { TUI_DIALOG_CLOSES_ON_BACK } from '@taiga-ui/cdk';
 import {
 	TUI_SANITIZER,
 	TuiAlertModule,
@@ -8,36 +30,14 @@ import {
 	TuiRootModule,
 	TuiSvgModule,
 } from '@taiga-ui/core';
-import { LOCALE_ID, NgModule } from '@angular/core';
-import {
-	BrowserModule,
-	HAMMER_GESTURE_CONFIG,
-	HammerGestureConfig,
-	HammerModule,
-} from '@angular/platform-browser';
-import { AppComponent } from './app.component';
-import { environment } from '../environments/environment';
-import { registerLocaleData } from '@angular/common';
-import fr from '@angular/common/locales/fr';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ServiceWorkerModule } from '@angular/service-worker';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import {
-	connectFirestoreEmulator,
-	enableIndexedDbPersistence,
-	getFirestore,
-	provideFirestore,
-} from '@angular/fire/firestore';
-import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
-import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
-import { LoginComponent } from './auth/login/login.component';
-import { provideHotToastConfig } from '@ngneat/hot-toast';
 import { TuiAvatarModule, TuiSelectModule } from '@taiga-ui/kit';
-import { TUI_DIALOG_CLOSES_ON_BACK } from '@taiga-ui/cdk';
-import { of } from 'rxjs';
-import { RouterModule } from '@angular/router';
-import { routes } from './app.routes';
+import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
 import * as Hammer from 'hammerjs';
+import { of } from 'rxjs';
+import { environment } from '../environments/environment';
+import { AppComponent } from './app.component';
+import { routes } from './app.routes';
+import { LoginComponent } from './auth/login/login.component';
 
 registerLocaleData(fr);
 
@@ -56,29 +56,6 @@ export class MyHammerConfig extends HammerGestureConfig {
 	declarations: [AppComponent],
 	imports: [
 		BrowserModule,
-		provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-		provideFirestore(() => {
-			const firestore = getFirestore();
-			if (environment.useEmulators) {
-				connectFirestoreEmulator(firestore, 'localhost', 8080);
-			}
-			enableIndexedDbPersistence(firestore);
-			return firestore;
-		}),
-		provideAuth(() => {
-			const auth = getAuth();
-			if (environment.useEmulators) {
-				connectAuthEmulator(auth, 'http://localhost:9099');
-			}
-			return auth;
-		}),
-		provideFunctions(() => {
-			const functions = getFunctions(undefined, 'europe-west1');
-			if (environment.useEmulators) {
-				connectFunctionsEmulator(functions, 'localhost', 5001);
-			}
-			return functions;
-		}),
 		LoginComponent,
 		BrowserAnimationsModule,
 		RouterModule.forRoot(routes),
@@ -102,6 +79,29 @@ export class MyHammerConfig extends HammerGestureConfig {
 		{ provide: LOCALE_ID, useValue: 'fr' },
 		provideHotToastConfig({
 			position: 'bottom-center',
+		}),
+		provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
+		provideFirestore(() => {
+			const firestore = getFirestore();
+			if (environment.useEmulators) {
+				connectFirestoreEmulator(firestore, 'localhost', 8888);
+			}
+			enableIndexedDbPersistence(firestore);
+			return firestore;
+		}),
+		provideAuth(() => {
+			const auth = getAuth();
+			if (environment.useEmulators) {
+				connectAuthEmulator(auth, 'http://localhost:9099');
+			}
+			return auth;
+		}),
+		provideFunctions(() => {
+			const functions = getFunctions(undefined, 'europe-west1');
+			if (environment.useEmulators) {
+				connectFunctionsEmulator(functions, 'localhost', 5001);
+			}
+			return functions;
 		}),
 		{ provide: TUI_SANITIZER, useClass: NgDompurifySanitizer },
 		{
