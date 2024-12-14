@@ -1,16 +1,15 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { CityWeather } from './model/cityWeather';
-import { map, withLatestFrom } from 'rxjs/operators';
-import { WeatherService } from './weather.service';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { tuiFadeIn, TuiHintModule } from '@taiga-ui/core';
+import { Observable } from 'rxjs';
+import { map, withLatestFrom } from 'rxjs/operators';
+import { CityWeather } from './model/cityWeather';
+import { WeatherService } from './weather.service';
 
 @Component({
 	selector: 'cb-weather',
 	standalone: true,
-	imports: [CommonModule, HttpClientModule, TuiHintModule],
+	imports: [CommonModule, TuiHintModule],
 	templateUrl: './weather.component.html',
 	styleUrl: './weather.component.less',
 	changeDetection: ChangeDetectionStrategy.OnPush,

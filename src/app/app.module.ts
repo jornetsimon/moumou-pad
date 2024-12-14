@@ -1,4 +1,5 @@
 import { registerLocaleData } from '@angular/common';
+import { provideHttpClient } from '@angular/common/http';
 import fr from '@angular/common/locales/fr';
 import { LOCALE_ID, NgModule } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -32,7 +33,7 @@ import {
 } from '@taiga-ui/core';
 import { TuiAvatarModule, TuiSelectModule } from '@taiga-ui/kit';
 import { NgDompurifySanitizer } from '@tinkoff/ng-dompurify';
-import * as Hammer from 'hammerjs';
+import Hammer from 'hammerjs';
 import { of } from 'rxjs';
 import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
@@ -112,6 +113,7 @@ export class MyHammerConfig extends HammerGestureConfig {
 			provide: HAMMER_GESTURE_CONFIG,
 			useClass: MyHammerConfig,
 		},
+		provideHttpClient(),
 	],
 	bootstrap: [AppComponent],
 	exports: [],
