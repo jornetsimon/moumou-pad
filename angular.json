@@ -28,7 +28,8 @@
               "dompurify"
             ],
             "outputPath": {
-              "base": "dist/moumou-pad"
+              "base": "dist/moumou-pad",
+              "browser": ""
             },
             "index": "src/index.html",
             "polyfills": [

@@ -13,7 +13,7 @@
     "build": "ng build",
     "build:stats": "ng build --stats-json",
     "deploy-prod": "ng build --configuration=production && firebase deploy",
-    "deploy-prod-only-hosting": "ng build --configuration=production && firebase deploy --only=hosting",
+    "deploy-prod-only-hosting": "ng deploy",
     "analyze": "webpack-bundle-analyzer -p 9999 dist/moumou-pad/stats.json",
     "lint": "ng lint"
   },
