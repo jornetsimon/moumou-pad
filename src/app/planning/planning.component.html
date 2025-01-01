@@ -1,4 +1,4 @@
-<div (tuiSwipe)="onSwipe($event)">
+<div (tuiSwipe)="onSwipe($event)" class="pb-12">
 	<cb-week-navigation />
 
 	<ng-container cdkDropListGroup>
@@ -33,16 +33,12 @@
 			></button>
 		</div>
 	</ng-container>
+
+	<div class="flex p-4 absolute">
+		@if (showMoumouEscapeHint$ | async) {
+			<div class="moumou-escape-hint fade-in" [ngxVibration]="[100, 50, 100]">🐺 375</div>
+		}
+	</div>
 </div>
 
-@if (showMoumouEscapeHint$ | async) {
-	<div style="display: flex; margin-bottom: 30px">
-		<div
-			class="moumou-escape-hint fade-in"
-			style="margin-left: 16px"
-			[ngxVibration]="[100, 50, 100]"
-		>
-			🐺 375
-		</div>
-	</div>
-}
+<cb-idea-bag class="!fixed right-4 bottom-4"></cb-idea-bag>

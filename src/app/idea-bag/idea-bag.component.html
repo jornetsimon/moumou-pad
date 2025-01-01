@@ -1,0 +1,46 @@
+<tui-hosted-dropdown #dropdown [content]="content" [tuiDropdownMaxHeight]="500">
+	<button
+		appearance="custom"
+		tuiIconButton
+		type="button"
+		[pseudoHover]="dropdown.open || null"
+		class="trigger-button slide-in-bottom"
+	>
+		@if (suggestionsCount$ | async; as suggestionsCount) {
+			<tui-badge-notification>
+				{{ suggestionsCount }}
+			</tui-badge-notification>
+		}
+		<mat-icon class="text-white">lightbulb</mat-icon>
+	</button>
+</tui-hosted-dropdown>
+
+<ng-template #content>
+	<div class="p-2 min-w-[150px] max-w-[80vw]">
+		<tui-data-list size="l" class="list" emptyContent="Aucune idée pour le moment 🥹">
+			<tui-opt-group tuiMultiSelectGroup [formControl]="crossedOffItemsCtrl">
+				<tui-opt-group label="Idées du moment" class="!text-base">
+					@for (suggestion of suggestions$ | async; track suggestion.id) {
+						<button
+							tuiOption
+							[value]="suggestion"
+							(click)="suggestionClicked(suggestion)"
+							class="!text-[#7b55b1]"
+						>
+							{{ suggestion.name }}
+						</button>
+					}
+				</tui-opt-group>
+			</tui-opt-group>
+		</tui-data-list>
+		<tui-input
+			[formControl]="newItemCtrl"
+			[tuiTextfieldCleaner]="true"
+			[tuiTextfieldSize]="'m'"
+			(keyup.enter)="addIdea(newItemCtrl.value)"
+		>
+			Ajouter une idée
+			<input tuiTextfield />
+		</tui-input>
+	</div>
+</ng-template>

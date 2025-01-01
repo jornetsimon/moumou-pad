@@ -19,6 +19,9 @@ service cloud.firestore {
             match /meals/{mealUid} {
                 allow read, write: if request.auth != null && request.auth.uid in get(/databases/$(database)/documents/families/$(familyId)).data.members;
             }
+             match /suggestions/{uid} {
+				allow read, write: if request.auth != null && request.auth.uid in get(/databases/$(database)/documents/families/$(familyId)).data.members;
+			}
             match /most-used/{uid} {
                 allow read: if request.auth != null && request.auth.uid in get(/databases/$(database)/documents/families/$(familyId)).data.members;
             }

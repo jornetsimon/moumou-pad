@@ -1,25 +1,26 @@
+import { CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
-import { MealQuery } from './meal/state/meal.query';
+import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+import { TUI_SWIPE_OPTIONS, TuiSwipe, TuiSwipeModule } from '@taiga-ui/cdk';
+import { TuiSwipeOptions } from '@taiga-ui/cdk/interfaces';
+import { TuiButtonModule } from '@taiga-ui/core';
+import { TuiCarouselModule } from '@taiga-ui/kit';
+import { addDays, isBefore, startOfDay } from 'date-fns/esm';
+import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
 import { combineLatest, Observable } from 'rxjs';
-import { Meal } from './meal/state/meal.model';
-import { DragDropService } from './meal/drag-drop.service';
 import { debounceTime, map, startWith, switchMap } from 'rxjs/operators';
 import { AppQuery } from '../../state/app.query';
-import { addDays, isBefore, startOfDay } from 'date-fns/esm';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
-import { MealComponent } from './meal/meal.component';
-import { WeekNavigationComponent } from './week-navigation/week-navigation.component';
-import { TuiCarouselModule } from '@taiga-ui/kit';
-import { TUI_SWIPE_OPTIONS, TuiSwipe, TuiSwipeModule } from '@taiga-ui/cdk';
 import { AppService } from '../../state/app.service';
-import { Router } from '@angular/router';
-import { TuiSwipeOptions } from '@taiga-ui/cdk/interfaces';
-import { CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
-import { MatIconModule } from '@angular/material/icon';
-import { CommonModule } from '@angular/common';
-import { TuiButtonModule } from '@taiga-ui/core';
+import { IdeaBagComponent } from '../idea-bag/idea-bag.component';
 import { MealIdeasService } from '../meal-ideas/meal-ideas.service';
+import { DragDropService } from './meal/drag-drop.service';
+import { MealComponent } from './meal/meal.component';
+import { Meal } from './meal/state/meal.model';
+import { MealQuery } from './meal/state/meal.query';
+import { WeekNavigationComponent } from './week-navigation/week-navigation.component';
 
 @Component({
 	selector: 'cb-planning',
@@ -38,6 +39,7 @@ import { MealIdeasService } from '../meal-ideas/meal-ideas.service';
 		NgxVibrationModule,
 		TuiButtonModule,
 		CdkDropListGroup,
+		IdeaBagComponent,
 	],
 	providers: [
 		{

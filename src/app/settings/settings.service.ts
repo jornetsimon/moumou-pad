@@ -1,27 +1,31 @@
 import { Injectable } from '@angular/core';
-import { AppQuery } from '../../state/app.query';
-import { switchMap } from 'rxjs/operators';
-import { from, Observable, of } from 'rxjs';
-import { Functions, httpsCallable } from '@angular/fire/functions';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 import { DocumentReference } from 'rxfire/firestore/interfaces';
+import { from, Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { AppQuery } from '../../state/app.query';
 import { Family } from '../model/family';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class SettingsService {
-	constructor(private firestore: Firestore, private appQuery: AppQuery, private fns: Functions) {}
+	constructor(
+		private firestore: Firestore,
+		private appQuery: AppQuery,
+		private fns: Functions
+	) {}
 
-	family$: Observable<Family | undefined> = this.appQuery.select().pipe(
+	readonly family$: Observable<Family | undefined> = this.appQuery.select().pipe(
 		switchMap((state) => {
-			if (!state.user) {
+			if (!state.user || !state.userData?.familyName) {
 				return of(undefined);
 			}
 			return docData(
 				doc(
 					this.firestore,
-					`families/${state.userData?.familyName}`
+					`families/${state.userData.familyName}`
 				) as DocumentReference<Family>
 			);
 		})
