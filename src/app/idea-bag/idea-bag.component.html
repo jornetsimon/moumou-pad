@@ -5,6 +5,8 @@
 		type="button"
 		[pseudoHover]="dropdown.open || null"
 		class="trigger-button slide-in-bottom"
+		ngxVibration="10"
+		tuiRipple
 	>
 		@if (suggestionsCount$ | async; as suggestionsCount) {
 			<tui-badge-notification>

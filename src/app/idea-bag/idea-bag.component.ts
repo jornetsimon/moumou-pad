@@ -3,6 +3,7 @@ import { Component, DestroyRef, ViewEncapsulation } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
+import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 import { TuiValueChangesModule } from '@taiga-ui/cdk';
 import {
 	TuiButtonModule,
@@ -13,6 +14,7 @@ import {
 import { TuiBadgeNotificationModule } from '@taiga-ui/experimental';
 import { TuiInputModule, TuiInputMonthModule, TuiMultiSelectModule } from '@taiga-ui/kit';
 import { kebabCase } from 'lodash-es';
+import { NgxVibrationModule } from 'ngx-vibration';
 import { from, scan } from 'rxjs';
 import { delay, map, tap } from 'rxjs/operators';
 import { SuggestionQuery } from './suggestion-query.service';
@@ -35,6 +37,8 @@ import { SuggestionService } from './suggestion.service';
 		TuiTextfieldControllerModule,
 		TuiValueChangesModule,
 		TuiBadgeNotificationModule,
+		NgxVibrationModule,
+		TuiRippleModule,
 	],
 	templateUrl: './idea-bag.component.html',
 	styleUrl: './idea-bag.component.less',
