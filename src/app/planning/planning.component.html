@@ -41,4 +41,6 @@
 	</div>
 </div>
 
-<cb-idea-bag class="!fixed right-4 bottom-4"></cb-idea-bag>
+@if (hasFamily$ | async) {
+	<cb-idea-bag class="!fixed right-4 bottom-4"></cb-idea-bag>
+}

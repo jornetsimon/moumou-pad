@@ -69,7 +69,6 @@ export class IdeaBagComponent {
 	addIdea(value: string) {
 		from(this.suggestionService.add({ name: value, id: kebabCase(value) }))
 			.pipe(
-				//switchMap(() => this.suggestionService.fetch()),
 				tap(() => {
 					this.newItemCtrl.reset();
 				}),

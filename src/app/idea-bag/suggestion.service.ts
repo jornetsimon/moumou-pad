@@ -31,9 +31,9 @@ export class SuggestionService {
 
 	private readonly collectionRef$: Observable<CollectionReference<Suggestion>> =
 		this.appQuery.userData$.pipe(
-			map((userData) => userData?.familyName),
-			map((familyName) => {
-				if (!familyName) {
+			filter(isNotNullOrUndefined),
+			map(({ familyName, isAllowedInFamily }) => {
+				if (!(familyName && isAllowedInFamily)) {
 					return null;
 				}
 

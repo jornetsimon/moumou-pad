@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
-import { AppState, AppStore } from './app.store';
-import { UserConfig } from '../app/model/user-config';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { UserConfig } from '../app/model/user-config';
+import { AppState, AppStore } from './app.store';
 
 @Injectable({ providedIn: 'root' })
 export class AppQuery extends Query<AppState> {
@@ -19,6 +19,10 @@ export class AppQuery extends Query<AppState> {
 	);
 
 	readonly targetPath$ = this.select().pipe(map(AppQuery.extractTargetPath));
+
+	readonly hasFamily$ = this.userData$.pipe(
+		map((userData) => !!userData?.familyName && userData.isAllowedInFamily)
+	);
 
 	getTargetPath(): string {
 		return AppQuery.extractTargetPath(this.getValue());

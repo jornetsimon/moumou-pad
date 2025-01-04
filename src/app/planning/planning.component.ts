@@ -91,6 +91,8 @@ export class PlanningComponent {
 		.select('userData')
 		.pipe(map((userData) => !!userData?.isAllowedInFamily && userData.familyName === 'jornet'));
 
+	readonly hasFamily$ = this.appQuery.hasFamily$;
+
 	trackByFn: TrackByFunction<Meal> = (index, item) => item.id;
 
 	get isXSmall() {
