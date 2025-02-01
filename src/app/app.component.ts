@@ -5,23 +5,23 @@ import {
 	TemplateRef,
 	ViewChild,
 } from '@angular/core';
-import { SwUpdate } from '@angular/service-worker';
-import { AppStore } from '../state/app.store';
-import { UntilDestroy } from '@ngneat/until-destroy';
-import { HotToastService } from '@ngneat/hot-toast';
-import { JowService } from './jow/state/jow.service';
-import { fadeInOnEnterAnimation } from 'angular-animations';
 import { Auth } from '@angular/fire/auth';
+import { SwUpdate } from '@angular/service-worker';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { HotToastService } from '@ngxpert/hot-toast';
+import { fadeInOnEnterAnimation } from 'angular-animations';
 import { filter } from 'rxjs/operators';
+import { AppStore } from '../state/app.store';
+import { JowService } from './jow/state/jow.service';
 
 @UntilDestroy()
 @Component({
-    selector: 'cb-root',
-    templateUrl: './app.component.html',
-    styleUrls: ['./app.component.less'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [fadeInOnEnterAnimation()],
-    standalone: false
+	selector: 'cb-root',
+	templateUrl: './app.component.html',
+	styleUrls: ['./app.component.less'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [fadeInOnEnterAnimation()],
+	standalone: false,
 })
 export class AppComponent implements AfterViewInit {
 	constructor(

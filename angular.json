@@ -53,10 +53,10 @@
               }
             ],
             "styles": [
+              "@ngxpert/hot-toast/styles.css",
               "node_modules/@taiga-ui/core/styles/taiga-ui-theme.less",
               "node_modules/@taiga-ui/core/styles/taiga-ui-fonts.less",
               "node_modules/@taiga-ui/styles/taiga-ui-global.less",
-              "node_modules/@ngneat/hot-toast/src/styles/styles.css",
               "src/styles.less"
             ],
             "scripts": [],
@@ -115,6 +115,7 @@
               "src/manifest.webmanifest"
             ],
             "styles": [
+              "@ngxpert/hot-toast/styles.css",
               "src/styles.less"
             ],
             "scripts": []

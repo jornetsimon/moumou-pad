@@ -2333,13 +2333,6 @@
   dependencies:
     tslib "^2.2.0"
 
-"@ngneat/hot-toast@^7.0.0":
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@ngneat/hot-toast/-/hot-toast-7.0.0.tgz#74c4c5726e3a6f7fc0b2f0697a77edd3c4053ec1"
-  integrity sha512-t/7msPgtZT534HBxAPjvr6dovP0jyf/intibceUq6i+woa4gnt44jSMsAmI3WVz8UoOmwG1wBwJOKu0zdLmCOA==
-  dependencies:
-    tslib "^2.3.0"
-
 "@ngneat/overview@^6.0.0":
   version "6.1.1"
   resolved "https://registry.yarnpkg.com/@ngneat/overview/-/overview-6.1.1.tgz#e053a6c561fd386a595abfcd9d6b7be23bc401da"
@@ -2365,6 +2358,13 @@
   integrity sha512-n6H4sc3bb95BN4wXQDqzIsTMNIeiLQF6J4RzIHNzCOKAHjhpGNogogqsveXjaaeDkmCVH20trUvtTGOoHT73Bw==
   dependencies:
     tslib "^2.5.0"
+
+"@ngxpert/hot-toast@4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@ngxpert/hot-toast/-/hot-toast-4.1.1.tgz#abe3b19f6a7f7992cdc2a06cdc777bd65724a874"
+  integrity sha512-GHNqzw9O9VgNv8ClrxDP+HKGKe5uWxoiX43byU8BAFMMUZSR9sPFi4Q/Rz0VxdCVcWKAOUh/6IUnOM8WzYVjWQ==
+  dependencies:
+    tslib "^2.3.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"

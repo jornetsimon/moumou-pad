@@ -1,4 +1,13 @@
 import {
+	CdkDrag,
+	CdkDragDrop,
+	CdkDropList,
+	DragDropModule,
+	moveItemInArray,
+} from '@angular/cdk/drag-drop';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { CommonModule } from '@angular/common';
+import {
 	AfterViewInit,
 	ChangeDetectionStrategy,
 	Component,
@@ -13,11 +22,29 @@ import {
 	signal,
 	ViewChild,
 } from '@angular/core';
-import { isNextMeal, Meal } from './state/meal.model';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { MatIconModule } from '@angular/material/icon';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MealLine } from '@functions/model/meal.model';
+import { Recipe } from '@functions/model/receipe.model';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { HotToastService } from '@ngxpert/hot-toast';
+import { TuiRippleModule } from '@taiga-ui/addon-mobile';
+import { TuiLetModule } from '@taiga-ui/cdk';
+import {
+	TuiDataListModule,
+	TuiDialogService,
+	TuiHintModule,
+	TuiHostedDropdownModule,
+} from '@taiga-ui/core';
+import { TuiButtonModule, TuiIconModule, TuiSurfaceModule } from '@taiga-ui/experimental';
+import { TuiAccordionModule, TuiIslandModule } from '@taiga-ui/kit';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { collapseOnLeaveAnimation, expandOnEnterAnimation } from 'angular-animations';
-import { MealService } from './state/meal.service';
-import { HotToastService } from '@ngneat/hot-toast';
-import { DragDropService } from './drag-drop.service';
+import { toRgba, transparentize } from 'color2k';
+import { pickBy } from 'lodash-es';
+import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
+import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
 import {
 	delay,
 	distinctUntilChanged,
@@ -27,86 +54,59 @@ import {
 	tap,
 	withLatestFrom,
 } from 'rxjs/operators';
-import { BehaviorSubject, combineLatest, interval, merge, Observable } from 'rxjs';
-import { MealThemeModel } from './theme/meal-theme.model';
-import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../../shared/utilities';
-import { MealThemeService } from './theme/meal-theme.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
-import { TuiAccordionModule, TuiIslandModule } from '@taiga-ui/kit';
-import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
-import {
-	TuiDataListModule,
-	TuiDialogService,
-	TuiHintModule,
-	TuiHostedDropdownModule,
-} from '@taiga-ui/core';
-import {
-	CdkDrag,
-	CdkDragDrop,
-	CdkDropList,
-	DragDropModule,
-	moveItemInArray,
-} from '@angular/cdk/drag-drop';
-import { TuiRippleModule } from '@taiga-ui/addon-mobile';
-import { MealFormComponent } from './meal-form/meal-form.component';
-import { constructAssetUrl } from '../../jow/util';
-import { TuiButtonModule, TuiIconModule, TuiSurfaceModule } from '@taiga-ui/experimental';
-import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
-import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
-import { TuiLetModule } from '@taiga-ui/cdk';
-import { MealLine } from '@functions/model/meal.model';
-import { RecipeModalService } from '../../jow/recipe-modal/recipe-modal.service';
-import { Recipe } from '@functions/model/receipe.model';
-import { MealLineInputDialogComponent } from './meal-line-input-dialog/meal-line-input-dialog.component';
 import { ToReadableTextColorPipe } from '../../../utils/pipes/to-readable-text-color.pipe';
-import { pickBy } from 'lodash-es';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { BreakpointObserver } from '@angular/cdk/layout';
-import { toRgba, transparentize } from 'color2k';
 import {
 	TuiSwipeActionsAutoCloseDirective,
 	TuiSwipeActionsComponent,
 } from '../../../vendor/taiga-ui/swipe-action';
+import { RecipeModalService } from '../../jow/recipe-modal/recipe-modal.service';
+import { constructAssetUrl } from '../../jow/util';
+import { isNotNullOrUndefined, sanitizeString, stringContainsEmoji } from '../../shared/utilities';
+import { DragDropService } from './drag-drop.service';
+import { MealFormComponent } from './meal-form/meal-form.component';
+import { MealLineInputDialogComponent } from './meal-line-input-dialog/meal-line-input-dialog.component';
+import { MealSwapDialogComponent } from './meal-swap-dialog/meal-swap-dialog.component';
+import { isNextMeal, Meal } from './state/meal.model';
+import { MealService } from './state/meal.service';
+import { MealThemeModel } from './theme/meal-theme.model';
+import { MealThemeService } from './theme/meal-theme.service';
 
 @UntilDestroy()
 @Component({
-    selector: 'cb-meal',
-    templateUrl: './meal.component.html',
-    styleUrls: ['./meal.component.less'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    animations: [
-        collapseOnLeaveAnimation({
-            duration: 250,
-        }),
-        expandOnEnterAnimation({
-            duration: 400,
-        }),
-    ],
-    imports: [
-        CommonModule,
-        TuiAccordionModule,
-        MatIconModule,
-        TuiHintModule,
-        TuiButtonModule,
-        NgxVibrationModule,
-        TuiIslandModule,
-        TuiRippleModule,
-        MealFormComponent,
-        TuiSurfaceModule,
-        DragDropModule,
-        TuiLetModule,
-        TuiButtonModule,
-        TuiHostedDropdownModule,
-        TuiDataListModule,
-        TuiIconModule,
-        ToReadableTextColorPipe,
-        TuiSwipeActionsComponent,
-        TuiSwipeActionsAutoCloseDirective,
-    ],
-    providers: [RecipeModalService]
+	selector: 'cb-meal',
+	templateUrl: './meal.component.html',
+	styleUrls: ['./meal.component.less'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	animations: [
+		collapseOnLeaveAnimation({
+			duration: 250,
+		}),
+		expandOnEnterAnimation({
+			duration: 400,
+		}),
+	],
+	imports: [
+		CommonModule,
+		TuiAccordionModule,
+		MatIconModule,
+		TuiHintModule,
+		TuiButtonModule,
+		NgxVibrationModule,
+		TuiIslandModule,
+		TuiRippleModule,
+		MealFormComponent,
+		TuiSurfaceModule,
+		DragDropModule,
+		TuiLetModule,
+		TuiButtonModule,
+		TuiHostedDropdownModule,
+		TuiDataListModule,
+		TuiIconModule,
+		ToReadableTextColorPipe,
+		TuiSwipeActionsComponent,
+		TuiSwipeActionsAutoCloseDirective,
+	],
+	providers: [RecipeModalService],
 })
 export class MealComponent implements OnInit, AfterViewInit {
 	constructor(
