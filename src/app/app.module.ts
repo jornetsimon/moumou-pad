@@ -42,6 +42,7 @@ import { LoginComponent } from './auth/login/login.component';
 
 registerLocaleData(fr);
 
+@Injectable()
 export class MyHammerConfig extends HammerGestureConfig {
 	buildHammer(element: HTMLElement) {
 		return new Hammer(element, {

@@ -4,9 +4,10 @@ import { filter, switchMap, take } from 'rxjs/operators';
 import { programsWithDuration, TvService } from './tv.service';
 
 @Component({
-	selector: 'cb-tv',
-	templateUrl: './tv.component.html',
-	styleUrls: ['./tv.component.less'],
+    selector: 'cb-tv',
+    templateUrl: './tv.component.html',
+    styleUrls: ['./tv.component.less'],
+    standalone: false
 })
 export class TvComponent {
 	constructor(

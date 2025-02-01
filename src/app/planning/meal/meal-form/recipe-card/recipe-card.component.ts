@@ -19,21 +19,20 @@ import { transparentize } from 'color2k';
 
 @UntilDestroy()
 @Component({
-	selector: 'cb-recipe-card',
-	standalone: true,
-	imports: [
-		MatIconModule,
-		NgIf,
-		TuiButtonModule,
-		TuiHintModule,
-		NgOptimizedImage,
-		TuiRippleModule,
-		TuiLetModule,
-		NgStyle,
-	],
-	templateUrl: './recipe-card.component.html',
-	styleUrl: './recipe-card.component.less',
-	changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'cb-recipe-card',
+    imports: [
+        MatIconModule,
+        NgIf,
+        TuiButtonModule,
+        TuiHintModule,
+        NgOptimizedImage,
+        TuiRippleModule,
+        TuiLetModule,
+        NgStyle,
+    ],
+    templateUrl: './recipe-card.component.html',
+    styleUrl: './recipe-card.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecipeCardComponent {
 	readonly jowRecipe = input.required<Recipe>();

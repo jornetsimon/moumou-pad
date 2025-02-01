@@ -13,20 +13,19 @@ import { AppService } from '../../../state/app.service';
 import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 
 @Component({
-	selector: 'cb-week-navigation',
-	standalone: true,
-	imports: [
-		CommonModule,
-		MatIconModule,
-		RouterLink,
-		TuiIconModule,
-		TuiButtonModule,
-		TuiHintModule,
-		TuiRippleModule,
-	],
-	templateUrl: './week-navigation.component.html',
-	styleUrl: './week-navigation.component.less',
-	changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'cb-week-navigation',
+    imports: [
+        CommonModule,
+        MatIconModule,
+        RouterLink,
+        TuiIconModule,
+        TuiButtonModule,
+        TuiHintModule,
+        TuiRippleModule,
+    ],
+    templateUrl: './week-navigation.component.html',
+    styleUrl: './week-navigation.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WeekNavigationComponent {
 	constructor(

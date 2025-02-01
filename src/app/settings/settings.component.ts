@@ -40,26 +40,25 @@ import { weekdays, WeekdayValue } from '@functions/model/weekday.model';
 
 @UntilDestroy()
 @Component({
-	selector: 'cb-settings',
-	templateUrl: './settings.component.html',
-	styleUrls: ['./settings.component.less'],
-	standalone: true,
-	imports: [
-		CommonModule,
-		TuiSelectModule,
-		ReactiveFormsModule,
-		TuiFilterByInputPipeModule,
-		TuiDataListModule,
-		TuiDataListWrapperModule,
-		TuiInputModule,
-		TuiTextfieldControllerModule,
-		TuiButtonModule,
-		TuiLoaderModule,
-		MatIconModule,
-		TuiIslandModule,
-		TuiIconModule,
-	],
-	changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'cb-settings',
+    templateUrl: './settings.component.html',
+    styleUrls: ['./settings.component.less'],
+    imports: [
+        CommonModule,
+        TuiSelectModule,
+        ReactiveFormsModule,
+        TuiFilterByInputPipeModule,
+        TuiDataListModule,
+        TuiDataListWrapperModule,
+        TuiInputModule,
+        TuiTextfieldControllerModule,
+        TuiButtonModule,
+        TuiLoaderModule,
+        MatIconModule,
+        TuiIslandModule,
+        TuiIconModule,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SettingsComponent {
 	constructor(

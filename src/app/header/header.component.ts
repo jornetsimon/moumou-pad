@@ -12,23 +12,22 @@ import { TuiAppBarModule } from '@taiga-ui/addon-mobile';
 import { WeatherComponent } from '../weather/weather.component';
 
 @Component({
-	selector: 'cb-header',
-	templateUrl: './header.component.html',
-	styleUrls: ['./header.component.less'],
-	standalone: true,
-	imports: [
-		TuiSvgModule,
-		CommonModule,
-		TuiDataListModule,
-		RouterLink,
-		RouterLinkActive,
-		MatIconModule,
-		TuiHostedDropdownModule,
-		TuiAvatarModule,
-		TuiAppBarModule,
-		WeatherComponent,
-	],
-	changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'cb-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.less'],
+    imports: [
+        TuiSvgModule,
+        CommonModule,
+        TuiDataListModule,
+        RouterLink,
+        RouterLinkActive,
+        MatIconModule,
+        TuiHostedDropdownModule,
+        TuiAvatarModule,
+        TuiAppBarModule,
+        WeatherComponent,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
 	constructor(

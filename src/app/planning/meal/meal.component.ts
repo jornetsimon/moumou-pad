@@ -73,41 +73,40 @@ import {
 
 @UntilDestroy()
 @Component({
-	selector: 'cb-meal',
-	templateUrl: './meal.component.html',
-	styleUrls: ['./meal.component.less'],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	standalone: true,
-	animations: [
-		collapseOnLeaveAnimation({
-			duration: 250,
-		}),
-		expandOnEnterAnimation({
-			duration: 400,
-		}),
-	],
-	imports: [
-		CommonModule,
-		TuiAccordionModule,
-		MatIconModule,
-		TuiHintModule,
-		TuiButtonModule,
-		NgxVibrationModule,
-		TuiIslandModule,
-		TuiRippleModule,
-		MealFormComponent,
-		TuiSurfaceModule,
-		DragDropModule,
-		TuiLetModule,
-		TuiButtonModule,
-		TuiHostedDropdownModule,
-		TuiDataListModule,
-		TuiIconModule,
-		ToReadableTextColorPipe,
-		TuiSwipeActionsComponent,
-		TuiSwipeActionsAutoCloseDirective,
-	],
-	providers: [RecipeModalService],
+    selector: 'cb-meal',
+    templateUrl: './meal.component.html',
+    styleUrls: ['./meal.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [
+        collapseOnLeaveAnimation({
+            duration: 250,
+        }),
+        expandOnEnterAnimation({
+            duration: 400,
+        }),
+    ],
+    imports: [
+        CommonModule,
+        TuiAccordionModule,
+        MatIconModule,
+        TuiHintModule,
+        TuiButtonModule,
+        NgxVibrationModule,
+        TuiIslandModule,
+        TuiRippleModule,
+        MealFormComponent,
+        TuiSurfaceModule,
+        DragDropModule,
+        TuiLetModule,
+        TuiButtonModule,
+        TuiHostedDropdownModule,
+        TuiDataListModule,
+        TuiIconModule,
+        ToReadableTextColorPipe,
+        TuiSwipeActionsComponent,
+        TuiSwipeActionsAutoCloseDirective,
+    ],
+    providers: [RecipeModalService]
 })
 export class MealComponent implements OnInit, AfterViewInit {
 	constructor(

@@ -23,27 +23,26 @@ export type MealIdeasDialogOutput = MealIdea | null;
 
 @UntilDestroy()
 @Component({
-	selector: 'cb-meal-ideas',
-	standalone: true,
-	imports: [
-		TuiCardModule,
-		TuiHeaderModule,
-		TuiSurfaceModule,
-		TuiTitleModule,
-		NgStyle,
-		TuiCellModule,
-		UrlPreviewPipe,
-		TuiTagModule,
-		ToReadableTextColorPipe,
-		TuiRepeatTimesModule,
-		TuiGroupModule,
-		TuiButtonModule,
-		TuiSkeletonModule,
-		NgClass,
-	],
-	templateUrl: './meal-ideas.component.html',
-	styleUrl: './meal-ideas.component.less',
-	changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'cb-meal-ideas',
+    imports: [
+        TuiCardModule,
+        TuiHeaderModule,
+        TuiSurfaceModule,
+        TuiTitleModule,
+        NgStyle,
+        TuiCellModule,
+        UrlPreviewPipe,
+        TuiTagModule,
+        ToReadableTextColorPipe,
+        TuiRepeatTimesModule,
+        TuiGroupModule,
+        TuiButtonModule,
+        TuiSkeletonModule,
+        NgClass,
+    ],
+    templateUrl: './meal-ideas.component.html',
+    styleUrl: './meal-ideas.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MealIdeasComponent {
 	constructor(

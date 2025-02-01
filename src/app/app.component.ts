@@ -16,11 +16,12 @@ import { filter } from 'rxjs/operators';
 
 @UntilDestroy()
 @Component({
-	selector: 'cb-root',
-	templateUrl: './app.component.html',
-	styleUrls: ['./app.component.less'],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	animations: [fadeInOnEnterAnimation()],
+    selector: 'cb-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    animations: [fadeInOnEnterAnimation()],
+    standalone: false
 })
 export class AppComponent implements AfterViewInit {
 	constructor(

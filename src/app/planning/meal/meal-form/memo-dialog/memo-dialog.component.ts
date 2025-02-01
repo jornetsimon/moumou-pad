@@ -10,19 +10,18 @@ export type MemoDialogInput = string | undefined;
 export type MemoDialogOutput = string | null;
 
 @Component({
-	selector: 'cb-memo-dialog',
-	templateUrl: './memo-dialog.component.html',
-	styleUrls: ['./memo-dialog.component.less'],
-	standalone: true,
-	imports: [
-		CommonModule,
-		TuiTextareaModule,
-		TuiButtonModule,
-		TuiTextfieldControllerModule,
-		TuiSwipeModule,
-		ReactiveFormsModule,
-		TuiAutoFocusModule,
-	],
+    selector: 'cb-memo-dialog',
+    templateUrl: './memo-dialog.component.html',
+    styleUrls: ['./memo-dialog.component.less'],
+    imports: [
+        CommonModule,
+        TuiTextareaModule,
+        TuiButtonModule,
+        TuiTextfieldControllerModule,
+        TuiSwipeModule,
+        ReactiveFormsModule,
+        TuiAutoFocusModule,
+    ]
 })
 export class MemoDialogComponent {
 	constructor(

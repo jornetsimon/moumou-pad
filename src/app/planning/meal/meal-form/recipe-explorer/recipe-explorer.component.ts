@@ -31,26 +31,25 @@ import { distinctUntilArrayChanged } from '../../../../../utils/distinct-until-a
 import { ToReadableTextColorPipe } from '../../../../../utils/pipes/to-readable-text-color.pipe';
 
 @Component({
-	selector: 'cb-recipe-explorer',
-	standalone: true,
-	imports: [
-		CommonModule,
-		TuiInputModule,
-		ReactiveFormsModule,
-		TuiTextfieldControllerModule,
-		TuiDataListWrapperModule,
-		AsyncPipe,
-		TuiDataListModule,
-		TuiSvgModule,
-		TuiLoaderModule,
-		TuiIslandModule,
-		TuiLetModule,
-		TuiChipModule,
-		ToReadableTextColorPipe,
-	],
-	templateUrl: './recipe-explorer.component.html',
-	styleUrl: './recipe-explorer.component.less',
-	changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'cb-recipe-explorer',
+    imports: [
+        CommonModule,
+        TuiInputModule,
+        ReactiveFormsModule,
+        TuiTextfieldControllerModule,
+        TuiDataListWrapperModule,
+        AsyncPipe,
+        TuiDataListModule,
+        TuiSvgModule,
+        TuiLoaderModule,
+        TuiIslandModule,
+        TuiLetModule,
+        TuiChipModule,
+        ToReadableTextColorPipe,
+    ],
+    templateUrl: './recipe-explorer.component.html',
+    styleUrl: './recipe-explorer.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecipeExplorerComponent {
 	constructor(

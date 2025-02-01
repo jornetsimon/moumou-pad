@@ -5,11 +5,10 @@ import { HeaderComponent } from '../app/header/header.component';
 import { MealIdeasComponent } from '../app/meal-ideas/meal-ideas.component';
 
 @Component({
-	selector: 'cb-shell',
-	standalone: true,
-	imports: [RouterOutlet, TuiRootModule, HeaderComponent, MealIdeasComponent],
-	templateUrl: './shell.component.html',
-	styleUrl: './shell.component.less',
-	changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'cb-shell',
+    imports: [RouterOutlet, TuiRootModule, HeaderComponent, MealIdeasComponent],
+    templateUrl: './shell.component.html',
+    styleUrl: './shell.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ShellComponent {}
