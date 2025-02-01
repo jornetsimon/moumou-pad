@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { TuiButtonModule, TuiIconModule } from '@taiga-ui/experimental';
 import { TuiHintModule } from '@taiga-ui/core';
 import { Observable } from 'rxjs';
@@ -15,14 +15,13 @@ import { TuiRippleModule } from '@taiga-ui/addon-mobile';
 @Component({
     selector: 'cb-week-navigation',
     imports: [
-        CommonModule,
-        MatIconModule,
-        RouterLink,
-        TuiIconModule,
-        TuiButtonModule,
-        TuiHintModule,
-        TuiRippleModule,
-    ],
+    CommonModule,
+    MatIconModule,
+    TuiIconModule,
+    TuiButtonModule,
+    TuiHintModule,
+    TuiRippleModule
+],
     templateUrl: './week-navigation.component.html',
     styleUrl: './week-navigation.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush

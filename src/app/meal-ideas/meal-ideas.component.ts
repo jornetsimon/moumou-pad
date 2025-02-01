@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, computed, Inject } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { MealIdeasService } from './meal-ideas.service';
-import { NgClass, NgStyle } from '@angular/common';
+import { NgStyle } from '@angular/common';
 import { POLYMORPHEUS_CONTEXT } from '@tinkoff/ng-polymorpheus';
 import { TuiButtonModule, TuiDialogContext, TuiGroupModule } from '@taiga-ui/core';
 import {
@@ -25,21 +25,20 @@ export type MealIdeasDialogOutput = MealIdea | null;
 @Component({
     selector: 'cb-meal-ideas',
     imports: [
-        TuiCardModule,
-        TuiHeaderModule,
-        TuiSurfaceModule,
-        TuiTitleModule,
-        NgStyle,
-        TuiCellModule,
-        UrlPreviewPipe,
-        TuiTagModule,
-        ToReadableTextColorPipe,
-        TuiRepeatTimesModule,
-        TuiGroupModule,
-        TuiButtonModule,
-        TuiSkeletonModule,
-        NgClass,
-    ],
+    TuiCardModule,
+    TuiHeaderModule,
+    TuiSurfaceModule,
+    TuiTitleModule,
+    NgStyle,
+    TuiCellModule,
+    UrlPreviewPipe,
+    TuiTagModule,
+    ToReadableTextColorPipe,
+    TuiRepeatTimesModule,
+    TuiGroupModule,
+    TuiButtonModule,
+    TuiSkeletonModule
+],
     templateUrl: './meal-ideas.component.html',
     styleUrl: './meal-ideas.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush

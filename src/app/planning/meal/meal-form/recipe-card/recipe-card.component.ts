@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf, NgOptimizedImage, NgStyle } from '@angular/common';
+import { NgIf, NgStyle } from '@angular/common';
 import { TuiButtonModule, TuiHintModule } from '@taiga-ui/core';
 import { Recipe } from '../../../../model/receipe';
 import { constructAssetUrl } from '../../../../jow/util';
@@ -21,15 +21,14 @@ import { transparentize } from 'color2k';
 @Component({
     selector: 'cb-recipe-card',
     imports: [
-        MatIconModule,
-        NgIf,
-        TuiButtonModule,
-        TuiHintModule,
-        NgOptimizedImage,
-        TuiRippleModule,
-        TuiLetModule,
-        NgStyle,
-    ],
+    MatIconModule,
+    NgIf,
+    TuiButtonModule,
+    TuiHintModule,
+    TuiRippleModule,
+    TuiLetModule,
+    NgStyle
+],
     templateUrl: './recipe-card.component.html',
     styleUrl: './recipe-card.component.less',
     changeDetection: ChangeDetectionStrategy.OnPush
