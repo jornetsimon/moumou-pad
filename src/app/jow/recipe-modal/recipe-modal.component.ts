@@ -21,23 +21,22 @@ export interface RecipeModalData {
 }
 
 @Component({
-	selector: 'cb-recipe-modal',
-	templateUrl: './recipe-modal.component.html',
-	styleUrls: ['./recipe-modal.component.less'],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	imports: [
-		CommonModule,
-		TuiLetModule,
-		MatIconModule,
-		TuiButtonModule,
-		TuiIconModule,
-		TuiHeaderModule,
-		TuiTitleModule,
-		TuiTilesModule,
-		TuiHintModule,
-		TuiSwipeModule,
-	],
-	standalone: true,
+    selector: 'cb-recipe-modal',
+    templateUrl: './recipe-modal.component.html',
+    styleUrls: ['./recipe-modal.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        TuiLetModule,
+        MatIconModule,
+        TuiButtonModule,
+        TuiIconModule,
+        TuiHeaderModule,
+        TuiTitleModule,
+        TuiTilesModule,
+        TuiHintModule,
+        TuiSwipeModule,
+    ]
 })
 export class RecipeModalComponent {
 	constructor(

@@ -28,29 +28,27 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { TuiLetModule } from '@taiga-ui/cdk';
 import { TuiChipModule } from '@taiga-ui/experimental';
 import { distinctUntilArrayChanged } from '../../../../../utils/distinct-until-array-changed';
-import { ToReadableTextColorPipe } from '../../../../../utils/pipes/to-readable-text-color.pipe';
+
 
 @Component({
-	selector: 'cb-recipe-explorer',
-	standalone: true,
-	imports: [
-		CommonModule,
-		TuiInputModule,
-		ReactiveFormsModule,
-		TuiTextfieldControllerModule,
-		TuiDataListWrapperModule,
-		AsyncPipe,
-		TuiDataListModule,
-		TuiSvgModule,
-		TuiLoaderModule,
-		TuiIslandModule,
-		TuiLetModule,
-		TuiChipModule,
-		ToReadableTextColorPipe,
-	],
-	templateUrl: './recipe-explorer.component.html',
-	styleUrl: './recipe-explorer.component.less',
-	changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'cb-recipe-explorer',
+    imports: [
+    CommonModule,
+    TuiInputModule,
+    ReactiveFormsModule,
+    TuiTextfieldControllerModule,
+    TuiDataListWrapperModule,
+    AsyncPipe,
+    TuiDataListModule,
+    TuiSvgModule,
+    TuiLoaderModule,
+    TuiIslandModule,
+    TuiLetModule,
+    TuiChipModule
+],
+    templateUrl: './recipe-explorer.component.html',
+    styleUrl: './recipe-explorer.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RecipeExplorerComponent {
 	constructor(

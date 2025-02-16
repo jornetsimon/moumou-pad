@@ -14,19 +14,18 @@ export type EmojiInputDialogOutput = string | null;
 
 @UntilDestroy()
 @Component({
-	selector: 'cb-emoji-input-dialog',
-	standalone: true,
-	imports: [
-		TuiInputModule,
-		TuiErrorModule,
-		ReactiveFormsModule,
-		TuiFieldErrorPipeModule,
-		AsyncPipe,
-		TuiButtonModule,
-		TuiAutoFocusModule,
-	],
-	templateUrl: './emoji-input-dialog.component.html',
-	styleUrl: './emoji-input-dialog.component.less',
+    selector: 'cb-emoji-input-dialog',
+    imports: [
+        TuiInputModule,
+        TuiErrorModule,
+        ReactiveFormsModule,
+        TuiFieldErrorPipeModule,
+        AsyncPipe,
+        TuiButtonModule,
+        TuiAutoFocusModule,
+    ],
+    templateUrl: './emoji-input-dialog.component.html',
+    styleUrl: './emoji-input-dialog.component.less'
 })
 export class EmojiInputDialogComponent {
 	constructor(

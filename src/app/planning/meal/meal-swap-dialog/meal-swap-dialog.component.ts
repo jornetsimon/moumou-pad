@@ -16,20 +16,19 @@ export interface MealSwapDialogData {
 }
 
 @Component({
-	selector: 'cb-meal-swap-dialog',
-	templateUrl: './meal-swap-dialog.component.html',
-	styleUrls: ['./meal-swap-dialog.component.less'],
-	standalone: true,
-	imports: [
-		CommonModule,
-		TuiButtonModule,
-		TuiChipModule,
-		TuiSwipeModule,
-		TuiRippleModule,
-		TuiIslandModule,
-		TuiIconModule,
-		MatIconModule,
-	],
+    selector: 'cb-meal-swap-dialog',
+    templateUrl: './meal-swap-dialog.component.html',
+    styleUrls: ['./meal-swap-dialog.component.less'],
+    imports: [
+        CommonModule,
+        TuiButtonModule,
+        TuiChipModule,
+        TuiSwipeModule,
+        TuiRippleModule,
+        TuiIslandModule,
+        TuiIconModule,
+        MatIconModule,
+    ]
 })
 export class MealSwapDialogComponent {
 	constructor(

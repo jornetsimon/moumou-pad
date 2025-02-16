@@ -14,21 +14,20 @@ import { MealLine } from '@functions/model/meal.model';
 import { MealEmojisService } from '../meal-form/meal-emojis.service';
 
 @Component({
-	selector: 'cb-meal-line-input-dialog',
-	standalone: true,
-	imports: [
-		AsyncPipe,
-		TuiAutoFocusModule,
-		TuiErrorModule,
-		TuiFieldErrorPipeModule,
-		TuiInputModule,
-		TuiTextareaModule,
-		TuiTextfieldControllerModule,
-		ReactiveFormsModule,
-		TuiButtonModule,
-	],
-	templateUrl: './meal-line-input-dialog.component.html',
-	styleUrl: './meal-line-input-dialog.component.less',
+    selector: 'cb-meal-line-input-dialog',
+    imports: [
+        AsyncPipe,
+        TuiAutoFocusModule,
+        TuiErrorModule,
+        TuiFieldErrorPipeModule,
+        TuiInputModule,
+        TuiTextareaModule,
+        TuiTextfieldControllerModule,
+        ReactiveFormsModule,
+        TuiButtonModule,
+    ],
+    templateUrl: './meal-line-input-dialog.component.html',
+    styleUrl: './meal-line-input-dialog.component.less'
 })
 export class MealLineInputDialogComponent {
 	constructor(

@@ -7,14 +7,13 @@ import { CityWeather } from './model/cityWeather';
 import { WeatherService } from './weather.service';
 
 @Component({
-	selector: 'cb-weather',
-	standalone: true,
-	imports: [CommonModule, TuiHintModule],
-	templateUrl: './weather.component.html',
-	styleUrl: './weather.component.less',
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	providers: [WeatherService],
-	animations: [tuiFadeIn],
+    selector: 'cb-weather',
+    imports: [CommonModule, TuiHintModule],
+    templateUrl: './weather.component.html',
+    styleUrl: './weather.component.less',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    providers: [WeatherService],
+    animations: [tuiFadeIn]
 })
 export class WeatherComponent {
 	constructor(private readonly weatherService: WeatherService) {}

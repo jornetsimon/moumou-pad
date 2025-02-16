@@ -4,9 +4,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime, filter, switchMap } from 'rxjs/operators';
 
 @Component({
-	selector: 'cb-search',
-	templateUrl: './search.component.html',
-	styleUrls: ['./search.component.less'],
+    selector: 'cb-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.less'],
+    standalone: false
 })
 export class SearchComponent {
 	constructor(private searchService: SearchService) {}

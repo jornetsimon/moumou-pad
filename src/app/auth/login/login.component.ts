@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { Auth, GoogleAuthProvider, signInWithPopup } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 import { UntilDestroy } from '@ngneat/until-destroy';
-import { HotToastService } from '@ngneat/hot-toast';
+import { HotToastService } from '@ngxpert/hot-toast';
 
 @UntilDestroy()
 @Component({

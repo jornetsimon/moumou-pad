@@ -1,8 +1,30 @@
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Functions, httpsCallable } from '@angular/fire/functions';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { Router } from '@angular/router';
+import { weekdays, WeekdayValue } from '@functions/model/weekday.model';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { AppService } from '../../state/app.service';
-import { AppQuery } from '../../state/app.query';
+import { HotToastService } from '@ngxpert/hot-toast';
+import {
+	TuiButtonModule,
+	TuiDataListModule,
+	TuiLoaderModule,
+	TuiTextfieldControllerModule,
+	TuiValueContentContext,
+} from '@taiga-ui/core';
+import { TuiIconModule } from '@taiga-ui/experimental';
+import {
+	TuiDataListWrapperModule,
+	TuiFilterByInputPipeModule,
+	TuiInputModule,
+	TuiIslandModule,
+	TuiSelectModule,
+} from '@taiga-ui/kit';
+import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
+import { isEqual } from 'lodash-es';
+import { BehaviorSubject, combineLatest, from, Observable } from 'rxjs';
 import {
 	distinctUntilChanged,
 	finalize,
@@ -12,38 +34,15 @@ import {
 	switchMap,
 	tap,
 } from 'rxjs/operators';
-import { HotToastService } from '@ngneat/hot-toast';
-import { Router } from '@angular/router';
+import { AppQuery } from '../../state/app.query';
+import { AppService } from '../../state/app.service';
 import { SettingsService } from './settings.service';
-import { BehaviorSubject, combineLatest, from, Observable } from 'rxjs';
-import { Functions, httpsCallable } from '@angular/fire/functions';
-import { isEqual } from 'lodash-es';
-import { CommonModule, TitleCasePipe } from '@angular/common';
-import {
-	TuiDataListWrapperModule,
-	TuiFilterByInputPipeModule,
-	TuiInputModule,
-	TuiIslandModule,
-	TuiSelectModule,
-} from '@taiga-ui/kit';
-import {
-	TuiButtonModule,
-	TuiDataListModule,
-	TuiLoaderModule,
-	TuiTextfieldControllerModule,
-	TuiValueContentContext,
-} from '@taiga-ui/core';
-import { PolymorpheusContent } from '@tinkoff/ng-polymorpheus';
-import { MatIconModule } from '@angular/material/icon';
-import { TuiIconModule } from '@taiga-ui/experimental';
-import { weekdays, WeekdayValue } from '@functions/model/weekday.model';
 
 @UntilDestroy()
 @Component({
 	selector: 'cb-settings',
 	templateUrl: './settings.component.html',
 	styleUrls: ['./settings.component.less'],
-	standalone: true,
 	imports: [
 		CommonModule,
 		TuiSelectModule,

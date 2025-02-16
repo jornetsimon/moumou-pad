@@ -23,30 +23,29 @@ import { MealQuery } from './meal/state/meal.query';
 import { WeekNavigationComponent } from './week-navigation/week-navigation.component';
 
 @Component({
-	selector: 'cb-planning',
-	templateUrl: './planning.component.html',
-	styleUrls: ['./planning.component.less'],
-	changeDetection: ChangeDetectionStrategy.OnPush,
-	standalone: true,
-	imports: [
-		CommonModule,
-		MealComponent,
-		WeekNavigationComponent,
-		TuiCarouselModule,
-		TuiSwipeModule,
-		CdkDropList,
-		MatIconModule,
-		NgxVibrationModule,
-		TuiButtonModule,
-		CdkDropListGroup,
-		IdeaBagComponent,
-	],
-	providers: [
-		{
-			provide: TUI_SWIPE_OPTIONS,
-			useValue: { threshold: 150, timeout: 500 } satisfies TuiSwipeOptions,
-		},
-	],
+    selector: 'cb-planning',
+    templateUrl: './planning.component.html',
+    styleUrls: ['./planning.component.less'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    imports: [
+        CommonModule,
+        MealComponent,
+        WeekNavigationComponent,
+        TuiCarouselModule,
+        TuiSwipeModule,
+        CdkDropList,
+        MatIconModule,
+        NgxVibrationModule,
+        TuiButtonModule,
+        CdkDropListGroup,
+        IdeaBagComponent,
+    ],
+    providers: [
+        {
+            provide: TUI_SWIPE_OPTIONS,
+            useValue: { threshold: 150, timeout: 500 } satisfies TuiSwipeOptions,
+        },
+    ]
 })
 export class PlanningComponent {
 	constructor(
