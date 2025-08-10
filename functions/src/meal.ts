@@ -1,37 +1,43 @@
-import * as functions from 'firebase-functions';
-import { db } from './init';
-import { Meal } from './model/meal.model';
+import { FieldValue } from 'firebase-admin/firestore';
+import { ParamsOf } from 'firebase-functions';
+import {
+	Change,
+	DocumentSnapshot,
+	FirestoreEvent,
+	onDocumentWritten,
+} from 'firebase-functions/v2/firestore';
+import slugify from 'slugify';
+import { isNotNullOrUndefined } from './helpers/is-not-null-or-undefined.helper';
+import { normalizeString } from './helpers/normalize-string';
 import { PickByType } from './helpers/pick-by-type';
 import { RecursiveKeyOf } from './helpers/recursive-key-of';
-import { normalizeString } from './helpers/normalize-string';
-import { firestore } from 'firebase-admin';
-import { isNotNullOrUndefined } from './helpers/is-not-null-or-undefined.helper';
-import slugify from 'slugify';
-import { Change, EventContext } from 'firebase-functions/lib/cloud-functions';
-import { DocumentSnapshot } from 'firebase-functions/lib/providers/firestore';
+import { db } from './init';
+import { Meal } from './model/meal.model';
 import { Recipe } from './model/receipe.model';
 import get = require('lodash/get');
 import uniq = require('lodash/uniq');
-import FieldValue = firestore.FieldValue;
 
-export const createMeal = functions
-	.region('europe-west1')
-	.firestore.document('users/{targetId}/meals/{mealId}')
-	.onWrite(onMealCreated('users'));
+export const createMeal = onDocumentWritten('users/{targetId}/meals/{mealId}', (event) =>
+	onMealCreated('users')(event)
+);
 
-export const createFamilyMeal = functions
-	.region('europe-west1')
-	.firestore.document('families/{targetId}/meals/{mealId}')
-	.onWrite(onMealCreated('families'));
+export const createFamilyMeal = onDocumentWritten('families/{targetId}/meals/{mealId}', (event) => {
+	return onMealCreated('families')(event);
+});
 
-export function onMealCreated(targetLocation: 'users' | 'families') {
-	return (change: Change<DocumentSnapshot>, context: EventContext): void => {
-		const mostUsedRef = db.collection(`${targetLocation}/${context.params.targetId}/most-used`);
+export function onMealCreated<Document extends string>(targetLocation: 'users' | 'families') {
+	return (
+		event: FirestoreEvent<Change<DocumentSnapshot> | undefined, ParamsOf<Document>>
+	): void => {
+		const change = event.data;
+		const params = event.params;
+
+		const mostUsedRef = db.collection(`${targetLocation}/${params.targetId}/most-used`);
 		const mostUsedRecipesRef = db.collection(
-			`${targetLocation}/${context.params.targetId}/most-used-recipes`
+			`${targetLocation}/${params.targetId}/most-used-recipes`
 		);
-		const mealBefore = change.before.exists ? (change.before.data() as Meal) : undefined;
-		const mealAfter = change.after.exists ? (change.after.data() as Meal) : undefined;
+		const mealBefore = change?.before?.exists ? (change.before.data() as Meal) : undefined;
+		const mealAfter = change?.after?.exists ? (change.after.data() as Meal) : undefined;
 		const removedNames: string[] = mealBefore ? getMealCustomNames(mealBefore) : [];
 		const addedNames: string[] = mealAfter ? getMealCustomNames(mealAfter) : [];
 
@@ -94,7 +100,7 @@ export function onMealCreated(targetLocation: 'users' | 'families') {
 		}
 
 		batch.commit().then(() => {
-			if (mealAfter) {
+			if (mealAfter && change) {
 				// The document has not been created or updated
 				const searchKeys = generateMealSearchKeys(mealAfter);
 				db.doc(change.after.ref.path).update({ searchKeys });

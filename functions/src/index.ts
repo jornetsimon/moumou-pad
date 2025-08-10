@@ -1,10 +1,13 @@
-import { featured, get, search as jowSearch } from './jow';
+import { setGlobalOptions } from 'firebase-functions';
 import { createUser } from './auth';
 import { approveOrDenyNewFamilyMember, joinFamily } from './family';
-import { primeTimePrograms } from './tv';
-import { search } from './search';
+import { featured, get, search as jowSearch } from './jow';
 import { createFamilyMeal, createMeal } from './meal';
 import { notionIdeas } from './notion-ideas';
+import { search } from './search';
+import { primeTimePrograms } from './tv';
+
+setGlobalOptions({ region: 'europe-west1' });
 
 exports.createUser = createUser;
 exports.joinFamily = joinFamily;

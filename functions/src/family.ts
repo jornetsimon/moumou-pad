@@ -1,14 +1,13 @@
-import * as functions from 'firebase-functions';
+import { FieldValue } from 'firebase-admin/firestore';
+import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { db } from './init';
-import { firestore } from 'firebase-admin';
-import FieldValue = firestore.FieldValue;
 
-export const joinFamily = functions.region('europe-west1').https.onCall(async (data, context) => {
-	const uid = context.auth?.uid;
+export const joinFamily = onCall(async (request) => {
+	const uid = request.auth?.uid;
 	if (!uid) {
-		throw new functions.https.HttpsError('failed-precondition', 'not_authenticated');
+		throw new HttpsError('failed-precondition', 'not_authenticated');
 	}
-	const familyName = data.name.toLowerCase();
+	const familyName = request.data.name.toLowerCase();
 	const familyRef = db.collection('families').doc(familyName);
 	const familySnap = await familyRef.get();
 
@@ -27,41 +26,36 @@ export const joinFamily = functions.region('europe-west1').https.onCall(async (d
 	await db.collection('users').doc(uid).update(userData);
 });
 
-export const approveOrDenyNewFamilyMember = functions
-	.region('europe-west1')
-	.https.onCall(async (data, context) => {
-		const uid = context.auth?.uid;
-		if (!uid) {
-			throw new functions.https.HttpsError('failed-precondition', 'not_authenticated');
-		}
-		const userRef = db.collection('users').doc(uid);
-		const user = (await userRef.get()).data();
-		const familyRef = db.collection('families').doc(user?.familyName);
-		const family = (await familyRef.get()).data();
-		if (family?.manager !== uid) {
-			throw new functions.https.HttpsError(
-				'failed-precondition',
-				'user_is_not_family_manager'
-			);
-		}
-		const memberUid: string = data.memberUid;
-		const newMemberRef = db.collection('users').doc(memberUid);
-		const action: 'approve' | 'deny' = data.action;
+export const approveOrDenyNewFamilyMember = onCall(async (request) => {
+	const uid = request.auth?.uid;
+	if (!uid) {
+		throw new HttpsError('failed-precondition', 'not_authenticated');
+	}
+	const userRef = db.collection('users').doc(uid);
+	const user = (await userRef.get()).data();
+	const familyRef = db.collection('families').doc(user?.familyName);
+	const family = (await familyRef.get()).data();
+	if (family?.manager !== uid) {
+		throw new HttpsError('failed-precondition', 'user_is_not_family_manager');
+	}
+	const memberUid: string = request.data.memberUid;
+	const newMemberRef = db.collection('users').doc(memberUid);
+	const action: 'approve' | 'deny' = request.data.action;
 
-		if (action === 'approve') {
-			await familyRef.update({
-				pending: FieldValue.arrayRemove(memberUid),
-				members: FieldValue.arrayUnion(memberUid),
-			});
+	if (action === 'approve') {
+		await familyRef.update({
+			pending: FieldValue.arrayRemove(memberUid),
+			members: FieldValue.arrayUnion(memberUid),
+		});
 
-			await newMemberRef.update({
-				isAllowedInFamily: true,
-			});
-			return;
-		} else {
-			await familyRef.update({ pending: FieldValue.arrayRemove(memberUid) });
-			await newMemberRef.update({
-				familyName: null,
-			});
-		}
-	});
+		await newMemberRef.update({
+			isAllowedInFamily: true,
+		});
+		return;
+	} else {
+		await familyRef.update({ pending: FieldValue.arrayRemove(memberUid) });
+		await newMemberRef.update({
+			familyName: null,
+		});
+	}
+});

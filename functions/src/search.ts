@@ -1,14 +1,14 @@
-import * as functions from 'firebase-functions';
-import { db } from './init';
+import * as assert from 'assert';
+import { onCall } from 'firebase-functions/v2/https';
 import { assertAuthenticated } from './helpers/assert';
 import { normalizeString } from './helpers/normalize-string';
-import * as assert from 'assert';
+import { db } from './init';
 import { User } from './model/user.model';
 
-export const search = functions.region('europe-west1').https.onCall(async (data, context) => {
-	const uid = context.auth?.uid;
+export const search = onCall(async (request) => {
+	const uid = request.auth?.uid;
 	assertAuthenticated(uid);
-	const inputTerm: string | undefined = data.term;
+	const inputTerm: string | undefined = request.data.term;
 	console.log({ inputTerm });
 	assert(
 		inputTerm && inputTerm.length >= 2,

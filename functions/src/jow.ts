@@ -1,9 +1,9 @@
-import * as functions from 'firebase-functions';
+import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import * as request from 'request';
 
 const baseUrl = 'https://api.jow.fr/public';
 
-export const featured = functions.region('europe-west1').https.onCall(() => {
+export const featured = onCall(() => {
 	return new Promise((resolve, reject) => {
 		request.get(
 			{
@@ -23,8 +23,9 @@ export const featured = functions.region('europe-west1').https.onCall(() => {
 		);
 	});
 });
-export const search = functions.region('europe-west1').https.onCall((data) => {
-	const searchTerm: string = data.term;
+
+export const search = onCall((req) => {
+	const searchTerm: string = req.data.term;
 	return new Promise((resolve, reject) => {
 		request.post(
 			{
@@ -46,10 +47,11 @@ export const search = functions.region('europe-west1').https.onCall((data) => {
 		);
 	});
 });
-export const get = functions.region('europe-west1').https.onCall((data) => {
-	const id: string = data.id;
+
+export const get = onCall((req) => {
+	const id: string = req.data.id;
 	if (!id) {
-		throw new functions.https.HttpsError('invalid-argument', 'missing_recipe_id');
+		throw new HttpsError('invalid-argument', 'missing_recipe_id');
 	}
 	return new Promise((resolve, reject) => {
 		request.get(
