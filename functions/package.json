@@ -21,11 +21,13 @@
     "dotenv": "^17.2.1",
     "firebase-admin": "^13.1.0",
     "firebase-functions": "^6.4.0",
+    "lodash": "^4.17.21",
     "request": "^2.88.2",
     "slugify": "^1.6.5",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
+    "@types/lodash": "^4.17.13",
     "@types/request": "^2.48.5",
     "@types/ws": "8.5.4",
     "@typescript-eslint/eslint-plugin": "^3.9.1",

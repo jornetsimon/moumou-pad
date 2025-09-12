@@ -15,6 +15,7 @@ import { db } from './init';
 import { Meal } from './model/meal.model';
 import { Recipe } from './model/receipe.model';
 import get = require('lodash/get');
+import isEqual = require('lodash/isEqual');
 import uniq = require('lodash/uniq');
 
 export const createMeal = onDocumentWritten('users/{targetId}/meals/{mealId}', (event) =>
@@ -26,9 +27,9 @@ export const createFamilyMeal = onDocumentWritten('families/{targetId}/meals/{me
 });
 
 export function onMealCreated<Document extends string>(targetLocation: 'users' | 'families') {
-	return (
+	return async (
 		event: FirestoreEvent<Change<DocumentSnapshot> | undefined, ParamsOf<Document>>
-	): void => {
+	): Promise<void> => {
 		const change = event.data;
 		const params = event.params;
 
@@ -99,13 +100,16 @@ export function onMealCreated<Document extends string>(targetLocation: 'users' |
 			}
 		}
 
-		batch.commit().then(() => {
-			if (mealAfter && change) {
-				// The document has not been created or updated
-				const searchKeys = generateMealSearchKeys(mealAfter);
-				db.doc(change.after.ref.path).update({ searchKeys });
+		if (mealAfter && change) {
+			const newSearchKeys = generateMealSearchKeys(mealAfter);
+			const currentSearchKeys = mealAfter.searchKeys || [];
+
+			if (!isEqual([...(newSearchKeys || [])]?.sort(), [...currentSearchKeys].sort())) {
+				batch.update(db.doc(change.after.ref.path), { searchKeys: newSearchKeys });
 			}
-		});
+		}
+
+		await batch.commit();
 	};
 }
 
