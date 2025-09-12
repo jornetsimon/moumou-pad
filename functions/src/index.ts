@@ -1,22 +1,21 @@
 import { setGlobalOptions } from 'firebase-functions';
-import { createUser } from './auth';
-import { approveOrDenyNewFamilyMember, joinFamily } from './family';
-import { featured, get, search as jowSearch } from './jow';
-import { createFamilyMeal, createMeal } from './meal';
-import { notionIdeas } from './notion-ideas';
-import { search } from './search';
-import { primeTimePrograms } from './tv';
 
 setGlobalOptions({ region: 'europe-west1' });
 
-exports.createUser = createUser;
-exports.joinFamily = joinFamily;
-exports.approveOrDenyNewFamilyMember = approveOrDenyNewFamilyMember;
-exports.jowFeaturedRecipes = featured;
-exports.jowRecipeSearch = jowSearch;
-exports.jowRecipe = get;
-exports.search = search;
-exports.primeTimePrograms = primeTimePrograms;
-exports.createMeal = createMeal;
-exports.createFamilyMeal = createFamilyMeal;
-exports.notionIdeas = notionIdeas;
+export { createUser } from './auth';
+
+export { joinFamily } from './family';
+export { approveOrDenyNewFamilyMember } from './family';
+
+export { search as jowRecipeSearch } from './jow';
+export { get as jowRecipe } from './jow';
+export { featured as jowFeaturedRecipes } from './jow';
+
+export { search } from './search';
+
+export { primeTimePrograms } from './tv';
+
+export { createMeal } from './meal';
+export { createFamilyMeal } from './meal';
+
+export { notionIdeas } from './notion-ideas';
