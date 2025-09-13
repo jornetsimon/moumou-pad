@@ -17,7 +17,7 @@ type MappedProgram = Omit<Programme, '_attributes'> & {
 
 const getAllPrograms = async (): Promise<MappedProgram[]> => {
 	const response = await axios.get<string>(PROGRAM_URL);
-	const json: { tv: Tv } = JSON.parse(xml2json(response.data, { compact: true }));
+	const json = JSON.parse(xml2json(response.data, { compact: true })) as { tv: Tv };
 	const channels = json.tv.channel;
 	const programs = json.tv.programme;
 
@@ -43,21 +43,23 @@ const getAllPrograms = async (): Promise<MappedProgram[]> => {
 	});
 };
 
-export const primeTimePrograms = onCall(async (request): Promise<MappedProgram[]> => {
-	const uid = request.auth?.uid;
-	if (!uid) {
-		throw new HttpsError('failed-precondition', 'not_authenticated');
+export const primeTimePrograms = onCall<{ targetRange: { from: Date; to: Date } }>(
+	async (request): Promise<MappedProgram[]> => {
+		const uid = request.auth?.uid;
+		if (!uid) {
+			throw new HttpsError('failed-precondition', 'not_authenticated');
+		}
+
+		const programs = await getAllPrograms();
+
+		return programs.filter((program) => {
+			const programStart = parseISO(program._attributes.start);
+			const targetRangeFrom = parseISO(request.data.targetRange?.from.toString());
+			const targetRangeTo = parseISO(request.data.targetRange?.to.toString());
+			return (
+				program._attributes.durationHours > 0.75 &&
+				isWithinInterval(programStart, { start: targetRangeFrom, end: targetRangeTo })
+			);
+		});
 	}
-
-	const programs = await getAllPrograms();
-
-	return programs.filter((program) => {
-		const programStart = parseISO(program._attributes.start);
-		const targetRangeFrom = parseISO(request.data.targetRange?.from);
-		const targetRangeTo = parseISO(request.data.targetRange?.to);
-		return (
-			program._attributes.durationHours > 0.75 &&
-			isWithinInterval(programStart, { start: targetRangeFrom, end: targetRangeTo })
-		);
-	});
-});
+);

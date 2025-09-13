@@ -5,6 +5,7 @@ const baseUrl = 'https://api.jow.fr/public';
 
 export const featured = onCall(() => {
 	return new Promise((resolve, reject) => {
+		// eslint-disable-next-line import/namespace
 		request.get(
 			{
 				url: `${baseUrl}/recipes/featured`,
@@ -12,10 +13,10 @@ export const featured = onCall(() => {
 				headers: { 'User-Agent': 'request' },
 			},
 			(err, res, data) => {
-				if (err) {
+				if (err instanceof Error) {
 					reject(err);
 				} else if (res.statusCode !== 200) {
-					reject(`Status code : ${res.statusCode}`);
+					reject(new Error(`Status code : ${res.statusCode}`));
 				} else {
 					resolve(data);
 				}
@@ -24,9 +25,10 @@ export const featured = onCall(() => {
 	});
 });
 
-export const search = onCall((req) => {
+export const search = onCall<{ term: string }>((req) => {
 	const searchTerm: string = req.data.term;
 	return new Promise((resolve, reject) => {
+		// eslint-disable-next-line import/namespace
 		request.post(
 			{
 				url: `${baseUrl}/recipe/quicksearch?query=${encodeURIComponent(
@@ -36,10 +38,10 @@ export const search = onCall((req) => {
 				headers: { 'User-Agent': 'request' },
 			},
 			(err, res, data) => {
-				if (err) {
+				if (err instanceof Error) {
 					reject(err);
 				} else if (res.statusCode !== 200) {
-					reject(`Status code : ${res.statusCode}`);
+					reject(new Error(`Status code : ${res.statusCode}`));
 				} else {
 					resolve(data);
 				}
@@ -48,12 +50,13 @@ export const search = onCall((req) => {
 	});
 });
 
-export const get = onCall((req) => {
-	const id: string = req.data.id;
+export const get = onCall<{ id: string }>((req) => {
+	const id = req.data.id;
 	if (!id) {
 		throw new HttpsError('invalid-argument', 'missing_recipe_id');
 	}
 	return new Promise((resolve, reject) => {
+		// eslint-disable-next-line import/namespace
 		request.get(
 			{
 				url: `${baseUrl}/recipe/${id}`,
@@ -61,10 +64,10 @@ export const get = onCall((req) => {
 				headers: { 'User-Agent': 'request' },
 			},
 			(err, res, data) => {
-				if (err) {
+				if (err instanceof Error) {
 					reject(err);
 				} else if (res.statusCode !== 200) {
-					reject(`Status code : ${res.statusCode}`);
+					reject(new Error(`Status code : ${res.statusCode}`));
 				} else {
 					resolve(data);
 				}

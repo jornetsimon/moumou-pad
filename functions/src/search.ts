@@ -5,7 +5,7 @@ import { normalizeString } from './helpers/normalize-string';
 import { db } from './init';
 import { User } from './model/user.model';
 
-export const search = onCall(async (request) => {
+export const search = onCall<{ term: string }>(async (request) => {
 	const uid = request.auth?.uid;
 	assertAuthenticated(uid);
 	const inputTerm: string | undefined = request.data.term;

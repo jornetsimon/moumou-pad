@@ -6,6 +6,7 @@ import {
 	FirestoreEvent,
 	onDocumentWritten,
 } from 'firebase-functions/v2/firestore';
+import { get, isEqual, uniq } from 'lodash';
 import slugify from 'slugify';
 import { isNotNullOrUndefined } from './helpers/is-not-null-or-undefined.helper';
 import { normalizeString } from './helpers/normalize-string';
@@ -14,9 +15,6 @@ import { RecursiveKeyOf } from './helpers/recursive-key-of';
 import { db } from './init';
 import { Meal } from './model/meal.model';
 import { Recipe } from './model/receipe.model';
-import get = require('lodash/get');
-import isEqual = require('lodash/isEqual');
-import uniq = require('lodash/uniq');
 
 export const createMeal = onDocumentWritten('users/{targetId}/meals/{mealId}', (event) =>
 	onMealCreated('users')(event)
@@ -132,7 +130,7 @@ function generateMealSearchKeys(meal: Meal): Meal['searchKeys'] {
 
 	const splitValues = values
 		.map((val) =>
-			`${val}`
+			String(val)
 				.split(' ')
 				.filter((val) => val.length > 1)
 				.map((val) => val.replace(',', ''))
