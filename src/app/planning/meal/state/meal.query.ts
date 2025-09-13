@@ -1,11 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Order, QueryConfig, QueryEntity } from '@datorama/akita';
-import { MealsStore, MealState } from './meals.store';
-import { map, shareReplay, switchMap } from 'rxjs/operators';
-import { eachDayOfInterval, fromUnixTime, isSameDay } from 'date-fns';
-import { createMeal, Meal, MealType } from './meal.model';
-import { Period } from '../../../model/period';
-import { Observable } from 'rxjs';
 import {
 	collection,
 	collectionData,
@@ -15,10 +8,17 @@ import {
 	query,
 	where,
 } from '@angular/fire/firestore';
+import { Order, QueryConfig, QueryEntity } from '@datorama/akita';
+import { eachDayOfInterval, fromUnixTime, isSameDay } from 'date-fns';
+import { Observable } from 'rxjs';
+import { map, shareReplay, switchMap } from 'rxjs/operators';
 import { AppQuery } from '../../../../state/app.query';
-import { CollectionReference } from '@firebase/firestore';
-import { Recipe } from '../../../model/receipe';
+import { getFirestoreConverter } from '../../../../utils/firestore-converter';
 import { adaptRecipe } from '../../../jow/util';
+import { Period } from '../../../model/period';
+import { Recipe } from '../../../model/receipe';
+import { createMeal, Meal, MealType } from './meal.model';
+import { MealsStore, MealState } from './meals.store';
 
 @QueryConfig({ sortBy: 'date', sortByOrder: Order.ASC })
 @Injectable({ providedIn: 'root' })
@@ -33,15 +33,14 @@ export class MealQuery extends QueryEntity<MealState> {
 
 	nameSuggestions$: Observable<string[]> = this.appQuery.targetPath$.pipe(
 		switchMap((targetPath) =>
-			collectionData<{
-				name: string;
-				count: number;
-			}>(
+			collectionData(
 				query(
-					collection(this.firestore, `${targetPath}/most-used`) as CollectionReference<{
-						name: string;
-						count: number;
-					}>,
+					collection(this.firestore, `${targetPath}/most-used`).withConverter(
+						getFirestoreConverter<{
+							name: string;
+							count: number;
+						}>()
+					),
 					where('count', '>', 0),
 					orderBy('count', 'desc'),
 					limit(5)
@@ -55,18 +54,14 @@ export class MealQuery extends QueryEntity<MealState> {
 	lessUsedRecipes$: Observable<Array<Recipe & { useCount: number }>> =
 		this.appQuery.targetPath$.pipe(
 			switchMap((targetPath) =>
-				collectionData<{
-					recipe: Recipe;
-					count: number;
-				}>(
+				collectionData(
 					query(
-						collection(
-							this.firestore,
-							`${targetPath}/most-used-recipes`
-						) as CollectionReference<{
-							recipe: Recipe;
-							count: number;
-						}>,
+						collection(this.firestore, `${targetPath}/most-used-recipes`).withConverter(
+							getFirestoreConverter<{
+								recipe: Recipe;
+								count: number;
+							}>()
+						),
 						where('count', '>', 0),
 						orderBy('count', 'asc'),
 						limit(25)
@@ -82,18 +77,14 @@ export class MealQuery extends QueryEntity<MealState> {
 	mostUsedRecipes$: Observable<Array<Recipe & { useCount: number }>> =
 		this.appQuery.targetPath$.pipe(
 			switchMap((targetPath) =>
-				collectionData<{
-					recipe: Recipe;
-					count: number;
-				}>(
+				collectionData(
 					query(
-						collection(
-							this.firestore,
-							`${targetPath}/most-used-recipes`
-						) as CollectionReference<{
-							recipe: Recipe;
-							count: number;
-						}>,
+						collection(this.firestore, `${targetPath}/most-used-recipes`).withConverter(
+							getFirestoreConverter<{
+								recipe: Recipe;
+								count: number;
+							}>()
+						),
 						where('count', '>', 0),
 						orderBy('count', 'desc'),
 						limit(30)

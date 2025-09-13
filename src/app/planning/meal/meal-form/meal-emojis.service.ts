@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { AppQuery } from '../../../../state/app.query';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { isEqual } from 'lodash-es';
 import { doc, Firestore, updateDoc } from '@angular/fire/firestore';
-import { DocumentReference } from 'rxfire/firestore/interfaces';
+import { isEqual } from 'lodash-es';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AppQuery } from '../../../../state/app.query';
+import { getFirestoreConverter } from '../../../../utils/firestore-converter';
 import { UserData } from '../../../model/user-data';
 
 @Injectable()
@@ -62,7 +62,9 @@ export class MealEmojisService {
 
 	private updateEmojis(emojis: UserData['emojis']) {
 		const uid = this.appQuery.getValue().user!.uid;
-		const userDoc = doc(this.firestore, `/users/${uid}`) as DocumentReference<UserData>;
+		const userDoc = doc(this.firestore, `/users/${uid}`).withConverter(
+			getFirestoreConverter<UserData>()
+		);
 		return updateDoc(userDoc, { emojis });
 	}
 }

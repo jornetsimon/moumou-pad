@@ -22,26 +22,26 @@ import { Suggestion } from './suggestion.model';
 import { SuggestionService } from './suggestion.service';
 
 @Component({
-    selector: 'cb-idea-bag',
-    imports: [
-        TuiHostedDropdownModule,
-        TuiButtonModule,
-        MatIcon,
-        TuiDataListModule,
-        TuiMultiSelectModule,
-        AsyncPipe,
-        ReactiveFormsModule,
-        TuiInputModule,
-        TuiInputMonthModule,
-        TuiTextfieldControllerModule,
-        TuiValueChangesModule,
-        TuiBadgeNotificationModule,
-        NgxVibrationModule,
-        TuiRippleModule,
-    ],
-    templateUrl: './idea-bag.component.html',
-    styleUrl: './idea-bag.component.less',
-    encapsulation: ViewEncapsulation.None
+	selector: 'cb-idea-bag',
+	imports: [
+		TuiHostedDropdownModule,
+		TuiButtonModule,
+		MatIcon,
+		TuiDataListModule,
+		TuiMultiSelectModule,
+		AsyncPipe,
+		ReactiveFormsModule,
+		TuiInputModule,
+		TuiInputMonthModule,
+		TuiTextfieldControllerModule,
+		TuiValueChangesModule,
+		TuiBadgeNotificationModule,
+		NgxVibrationModule,
+		TuiRippleModule,
+	],
+	templateUrl: './idea-bag.component.html',
+	styleUrl: './idea-bag.component.less',
+	encapsulation: ViewEncapsulation.None,
 })
 export class IdeaBagComponent {
 	constructor(

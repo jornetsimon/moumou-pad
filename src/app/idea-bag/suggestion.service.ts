@@ -14,6 +14,7 @@ import { Suggestion } from '@functions/model/suggestion.model';
 import { firstValueFrom, Observable } from 'rxjs';
 import { filter, first, map, switchMap, tap } from 'rxjs/operators';
 import { AppQuery } from '../../state/app.query';
+import { getFirestoreConverter } from '../../utils/firestore-converter';
 import { isNotNullOrUndefined } from '../shared/utilities';
 import { SuggestionStore } from './suggestion-store.service';
 
@@ -40,7 +41,7 @@ export class SuggestionService {
 				return collection(
 					this.firestore,
 					`families/${familyName}/suggestions`
-				) as CollectionReference<Suggestion>;
+				).withConverter(getFirestoreConverter<Suggestion>());
 			}),
 			filter(isNotNullOrUndefined)
 		);
@@ -51,7 +52,7 @@ export class SuggestionService {
 
 	syncCollection() {
 		return this.collectionRef$.pipe(
-			switchMap((collectionRef) => collectionData<Suggestion>(query(collectionRef))),
+			switchMap((collectionRef) => collectionData(query(collectionRef))),
 			tap((suggestions) => this.store.set(suggestions))
 		);
 	}
