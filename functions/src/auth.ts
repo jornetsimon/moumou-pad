@@ -1,4 +1,4 @@
-import functions = require('firebase-functions/v1');
+import * as functions from 'firebase-functions/v1';
 import { db } from './init';
 
 // Note: Firebase Functions v2 does not support Auth triggers.
