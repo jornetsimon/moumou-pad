@@ -10,12 +10,14 @@ import {
 	writeBatch,
 } from '@angular/fire/firestore';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { addDays, format, startOfWeek } from 'date-fns/esm';
 import { combineLatest, firstValueFrom } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { AppQuery } from '../../../../state/app.query';
 import { AppService } from '../../../../state/app.service';
 import { getFirestoreConverter } from '../../../../utils/firestore-converter';
 import { mapUndefinedToNull } from '../../../../utils/map-undefined-to-null';
+import type { MealType } from './meal.model';
 import { Meal } from './meal.model';
 import { MealsStore } from './meals.store';
 
@@ -115,5 +117,56 @@ export class MealService {
 				})
 			)
 		);
+	}
+
+	moveMealTo(meal: Meal, target: { date: Date; type: MealType }): Promise<void> {
+		const destination = {
+			...meal,
+			id: format(target.date, 'yyyy-MM-dd-') + target.type,
+			date: target.date,
+			type: target.type,
+			timestamp: target.date.getTime() / 1000,
+		} satisfies Meal;
+
+		return firstValueFrom(
+			this.collectionRef$.pipe(
+				switchMap((collectionRef) => {
+					const batch = writeBatch(this.firestore);
+					batch.set(doc(collectionRef, destination.id), mapUndefinedToNull(destination));
+					batch.delete(doc(collectionRef, meal.id));
+					return batch.commit();
+				}),
+				tap(() => {
+					// Optimistic store update: upsert destination, remove source
+					// because we don't sync earlier in the week
+					this.store.upsert(destination.id, destination);
+					this.store.remove(meal.id);
+				})
+			)
+		);
+	}
+
+	getFirstAvailableSlotInNextWeek(meal: Meal): { date: Date; type: MealType } | null {
+		const nextWeekMonday = addDays(startOfWeek(meal.date, { weekStartsOn: 1 }), 7);
+		const entities = this.store.getValue().entities as Record<string, Meal | undefined>;
+
+		for (let i = 0; i < 7; i++) {
+			const candidate = addDays(nextWeekMonday, i);
+			const id = format(candidate, 'yyyy-MM-dd-') + meal.type;
+			if (!entities[id]) {
+				return { date: candidate, type: meal.type };
+			}
+		}
+
+		const otherType: MealType = meal.type === 'lunch' ? 'dinner' : 'lunch';
+
+		for (let i = 0; i < 7; i++) {
+			const candidate = addDays(nextWeekMonday, i);
+			const id = format(candidate, 'yyyy-MM-dd-') + otherType;
+			if (!entities[id]) {
+				return { date: candidate, type: otherType };
+			}
+		}
+		return null;
 	}
 }

@@ -1,13 +1,22 @@
-import { CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, CdkDropList, CdkDropListGroup } from '@angular/cdk/drag-drop';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, TrackByFunction } from '@angular/core';
+import {
+	ChangeDetectionStrategy,
+	Component,
+	DestroyRef,
+	Injector,
+	TrackByFunction,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { HotToastService } from '@ngxpert/hot-toast';
 import { TUI_SWIPE_OPTIONS, TuiSwipe, TuiSwipeModule } from '@taiga-ui/cdk';
 import { TuiSwipeOptions } from '@taiga-ui/cdk/interfaces';
-import { TuiButtonModule } from '@taiga-ui/core';
+import { TuiButtonModule, TuiDialogService } from '@taiga-ui/core';
 import { TuiCarouselModule } from '@taiga-ui/kit';
+import { PolymorpheusComponent } from '@tinkoff/ng-polymorpheus';
 import { addDays, isBefore, startOfDay } from 'date-fns/esm';
 import { NgxVibrationModule, NgxVibrationService } from 'ngx-vibration';
 import { combineLatest, Observable } from 'rxjs';
@@ -17,35 +26,37 @@ import { AppService } from '../../state/app.service';
 import { IdeaBagComponent } from '../idea-bag/idea-bag.component';
 import { MealIdeasService } from '../meal-ideas/meal-ideas.service';
 import { DragDropService } from './meal/drag-drop.service';
+import { MealRescheduleDialogComponent } from './meal/meal-reschedule-dialog/meal-reschedule-dialog.component';
 import { MealComponent } from './meal/meal.component';
 import { Meal } from './meal/state/meal.model';
 import { MealQuery } from './meal/state/meal.query';
+import { MealService } from './meal/state/meal.service';
 import { WeekNavigationComponent } from './week-navigation/week-navigation.component';
 
 @Component({
-    selector: 'cb-planning',
-    templateUrl: './planning.component.html',
-    styleUrls: ['./planning.component.less'],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [
-        CommonModule,
-        MealComponent,
-        WeekNavigationComponent,
-        TuiCarouselModule,
-        TuiSwipeModule,
-        CdkDropList,
-        MatIconModule,
-        NgxVibrationModule,
-        TuiButtonModule,
-        CdkDropListGroup,
-        IdeaBagComponent,
-    ],
-    providers: [
-        {
-            provide: TUI_SWIPE_OPTIONS,
-            useValue: { threshold: 150, timeout: 500 } satisfies TuiSwipeOptions,
-        },
-    ]
+	selector: 'cb-planning',
+	templateUrl: './planning.component.html',
+	styleUrls: ['./planning.component.less'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	imports: [
+		CommonModule,
+		MealComponent,
+		WeekNavigationComponent,
+		TuiCarouselModule,
+		TuiSwipeModule,
+		CdkDropList,
+		MatIconModule,
+		NgxVibrationModule,
+		TuiButtonModule,
+		CdkDropListGroup,
+		IdeaBagComponent,
+	],
+	providers: [
+		{
+			provide: TUI_SWIPE_OPTIONS,
+			useValue: { threshold: 150, timeout: 500 } satisfies TuiSwipeOptions,
+		},
+	],
 })
 export class PlanningComponent {
 	constructor(
@@ -56,7 +67,12 @@ export class PlanningComponent {
 		private readonly appService: AppService,
 		private readonly breakpointObserver: BreakpointObserver,
 		private readonly router: Router,
-		private readonly ideasService: MealIdeasService
+		private readonly ideasService: MealIdeasService,
+		private readonly dialogs: TuiDialogService,
+		private readonly injector: Injector,
+		private readonly mealService: MealService,
+		private readonly toastService: HotToastService,
+		private readonly destroyRef: DestroyRef
 	) {
 		this.ideasService.fetchIdeas();
 	}
@@ -134,6 +150,24 @@ export class PlanningComponent {
 			return index * 50 + 'ms';
 		}
 		return Math.pow(1.25, index) * 50 + 'ms';
+	}
+
+	onRescheduleDrop(drop: CdkDragDrop<unknown, unknown, Meal>) {
+		this.dragDropService.dragStop();
+		this.vibrationService.vibrate([150]);
+
+		const meal = drop.item.data;
+		if (!meal || !meal.date) {
+			return;
+		}
+
+		this.dialogs
+			.open<boolean>(
+				new PolymorpheusComponent(MealRescheduleDialogComponent, this.injector),
+				{ data: { meal } }
+			)
+			.pipe(takeUntilDestroyed(this.destroyRef))
+			.subscribe();
 	}
 
 	async onSwipe(swipe: TuiSwipe) {

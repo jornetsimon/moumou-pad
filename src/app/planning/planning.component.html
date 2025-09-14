@@ -21,14 +21,13 @@
 		<div
 			class="drag-cancel"
 			cdkDropList
-			[cdkDropListData]="{ id: 'cancel' }"
 			[class.show]="showDragCancelButton$ | async"
-			(cdkDropListDropped)="onDrop()"
+			(cdkDropListDropped)="onRescheduleDrop($event)"
 		>
 			<button
 				tuiIconButton
 				type="button"
-				icon="tuiIconCloseLarge"
+				icon="tuiIconCalendar"
 				class="!rounded-full"
 			></button>
 		</div>

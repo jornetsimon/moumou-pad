@@ -1,0 +1,60 @@
+<div class="flex flex-col gap-8" (tuiSwipe)="onSwipe($event)">
+	<div class="tui-text_h3">Reporter ce menu à la semaine prochaine ?</div>
+
+	<div>
+		<div class="aligner flex-col sm:flex-row">
+			<ng-container *ngIf="nextSlot as slot">
+				<ng-container
+					*ngTemplateOutlet="
+						nextPreview;
+						context: { meal: data.meal, nextDate: slot.date }
+					"
+				></ng-container>
+			</ng-container>
+		</div>
+	</div>
+
+	<div class="flex justify-end items-center gap-4 flex-wrap">
+		<button tuiButton appearance="secondary" (click)="cancel()">Annuler</button>
+
+		<tui-loader [overlay]="true" [showLoader]="loading()">
+			<button
+				tuiButton
+				appearance="primary"
+				iconLeft="tuiIconCalendar"
+				(click)="confirm()"
+				[disabled]="loading() || !nextSlot"
+			>
+				Reporter à la semaine prochaine
+			</button>
+		</tui-loader>
+	</div>
+</div>
+
+<ng-template #nextPreview let-meal="meal" let-nextDate="nextDate">
+	<div class="meal">
+		<div class="day text-center">
+			{{ nextDate | date: 'EEEE d MMM' | titlecase }}&nbsp;
+			<mat-icon *ngIf="meal.type === 'lunch'" style="color: #fff900"> light_mode </mat-icon>
+			<mat-icon *ngIf="meal.type === 'dinner'" style="color: #41658a"> dark_mode </mat-icon>
+		</div>
+		<div class="name text-center" *ngIf="meal.name; else noNameTpl2">
+			{{ meal.name }}
+		</div>
+		<ng-template #noNameTpl2>
+			<div class="no-name">Rien de prévu</div>
+		</ng-template>
+
+		<tui-island class="selected-recipe" *ngIf="meal.jowRecipe as jowRecipe">
+			<div class="flex flex-col items-center" [style.color]="jowRecipe.backgroundColor">
+				<img
+					class="preview"
+					[src]="constructAssetUrl(jowRecipe.imageUrl)"
+					[alt]="jowRecipe.title"
+					tuiRipple
+				/>
+				<div class="title" [style.color]="jowRecipe.smartColor">{{ jowRecipe.title }}</div>
+			</div>
+		</tui-island>
+	</div>
+</ng-template>
