@@ -1,8 +1,4 @@
 import { Injectable } from '@angular/core';
-import { MealsStore } from './meals.store';
-import { AppQuery } from '../../../../state/app.query';
-import { Meal } from './meal.model';
-import { mapUndefinedToNull } from '../../../../utils/map-undefined-to-null';
 import {
 	collection,
 	collectionData,
@@ -13,11 +9,15 @@ import {
 	where,
 	writeBatch,
 } from '@angular/fire/firestore';
-import { CollectionReference } from '@firebase/firestore';
-import { filter, map, switchMap, tap } from 'rxjs/operators';
-import { AppService } from '../../../../state/app.service';
-import { combineLatest, firstValueFrom } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { combineLatest, firstValueFrom } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { AppQuery } from '../../../../state/app.query';
+import { AppService } from '../../../../state/app.service';
+import { getFirestoreConverter } from '../../../../utils/firestore-converter';
+import { mapUndefinedToNull } from '../../../../utils/map-undefined-to-null';
+import { Meal } from './meal.model';
+import { MealsStore } from './meals.store';
 
 @UntilDestroy()
 @Injectable({ providedIn: 'root' })
@@ -32,9 +32,10 @@ export class MealService {
 	}
 
 	private readonly collectionRef$ = this.appQuery.targetPath$.pipe(
-		map(
-			(targetPath) =>
-				collection(this.firestore, `${targetPath}/meals`) as CollectionReference<Meal>
+		map((targetPath) =>
+			collection(this.firestore, `${targetPath}/meals`).withConverter(
+				getFirestoreConverter<Meal>()
+			)
 		)
 	);
 

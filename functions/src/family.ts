@@ -1,15 +1,18 @@
-import * as functions from 'firebase-functions';
+import { FieldValue } from 'firebase-admin/firestore';
+import { HttpsError, onCall } from 'firebase-functions/v2/https';
+import { getFirestoreConverter } from './helpers/firestore-converter';
 import { db } from './init';
-import { firestore } from 'firebase-admin';
-import FieldValue = firestore.FieldValue;
+import { Family } from './model/family.model';
 
-export const joinFamily = functions.region('europe-west1').https.onCall(async (data, context) => {
-	const uid = context.auth?.uid;
+const familyConverter = getFirestoreConverter<Family>();
+
+export const joinFamily = onCall<{ name: string }>(async (request) => {
+	const uid = request.auth?.uid;
 	if (!uid) {
-		throw new functions.https.HttpsError('failed-precondition', 'not_authenticated');
+		throw new HttpsError('failed-precondition', 'not_authenticated');
 	}
-	const familyName = data.name.toLowerCase();
-	const familyRef = db.collection('families').doc(familyName);
+	const familyName = request.data.name.toLowerCase();
+	const familyRef = db.collection('families').withConverter(familyConverter).doc(familyName);
 	const familySnap = await familyRef.get();
 
 	const userData: { familyName: string; isAllowedInFamily: boolean } = {
@@ -17,51 +20,54 @@ export const joinFamily = functions.region('europe-west1').https.onCall(async (d
 		isAllowedInFamily: false,
 	};
 	// TODO: should be a transaction
-	if (familySnap.exists && familySnap.data()?.members?.length > 0) {
+	if (familySnap.exists && (familySnap.data() as Family).members.length > 0) {
 		await familyRef.update({ pending: FieldValue.arrayUnion(uid) });
 	} else {
 		// The user will be the family manager
 		userData.isAllowedInFamily = true;
-		await familyRef.set({ members: [uid], manager: uid });
+		await familyRef.set({ members: [uid], pending: [], manager: uid });
 	}
 	await db.collection('users').doc(uid).update(userData);
 });
 
-export const approveOrDenyNewFamilyMember = functions
-	.region('europe-west1')
-	.https.onCall(async (data, context) => {
-		const uid = context.auth?.uid;
-		if (!uid) {
-			throw new functions.https.HttpsError('failed-precondition', 'not_authenticated');
-		}
-		const userRef = db.collection('users').doc(uid);
-		const user = (await userRef.get()).data();
-		const familyRef = db.collection('families').doc(user?.familyName);
-		const family = (await familyRef.get()).data();
-		if (family?.manager !== uid) {
-			throw new functions.https.HttpsError(
-				'failed-precondition',
-				'user_is_not_family_manager'
-			);
-		}
-		const memberUid: string = data.memberUid;
-		const newMemberRef = db.collection('users').doc(memberUid);
-		const action: 'approve' | 'deny' = data.action;
+export const approveOrDenyNewFamilyMember = onCall<{
+	memberUid: string;
+	action: 'approve' | 'deny';
+}>(async (request) => {
+	const uid = request.auth?.uid;
+	if (!uid) {
+		throw new HttpsError('failed-precondition', 'not_authenticated');
+	}
+	const userRef = db.collection('users').doc(uid);
+	const user = (await userRef.get()).data() as { familyName?: string } | undefined;
+	const familyName = user?.familyName;
+	if (!familyName) {
+		throw new HttpsError('failed-precondition', 'user_has_no_family');
+	}
+	const familyRef = db.collection('families').withConverter(familyConverter).doc(familyName);
 
-		if (action === 'approve') {
-			await familyRef.update({
-				pending: FieldValue.arrayRemove(memberUid),
-				members: FieldValue.arrayUnion(memberUid),
-			});
+	const family = (await familyRef.get()).data();
+	if (family?.manager !== uid) {
+		throw new HttpsError('failed-precondition', 'user_is_not_family_manager');
+	}
+	const memberUid: string = request.data.memberUid;
+	const newMemberRef = db.collection('users').doc(memberUid);
+	const action: 'approve' | 'deny' = request.data.action;
 
-			await newMemberRef.update({
-				isAllowedInFamily: true,
-			});
-			return;
-		} else {
-			await familyRef.update({ pending: FieldValue.arrayRemove(memberUid) });
-			await newMemberRef.update({
-				familyName: null,
-			});
-		}
-	});
+	if (action === 'approve') {
+		await familyRef.update({
+			pending: FieldValue.arrayRemove(memberUid),
+			members: FieldValue.arrayUnion(memberUid),
+		});
+
+		await newMemberRef.update({
+			isAllowedInFamily: true,
+		});
+		return;
+	} else {
+		await familyRef.update({ pending: FieldValue.arrayRemove(memberUid) });
+		await newMemberRef.update({
+			familyName: null,
+		});
+	}
+});

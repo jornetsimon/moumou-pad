@@ -1,10 +1,11 @@
-import * as functions from 'firebase-functions';
+import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import * as request from 'request';
 
 const baseUrl = 'https://api.jow.fr/public';
 
-export const featured = functions.region('europe-west1').https.onCall(() => {
+export const featured = onCall(() => {
 	return new Promise((resolve, reject) => {
+		// eslint-disable-next-line import/namespace
 		request.get(
 			{
 				url: `${baseUrl}/recipes/featured`,
@@ -12,10 +13,10 @@ export const featured = functions.region('europe-west1').https.onCall(() => {
 				headers: { 'User-Agent': 'request' },
 			},
 			(err, res, data) => {
-				if (err) {
+				if (err instanceof Error) {
 					reject(err);
 				} else if (res.statusCode !== 200) {
-					reject(`Status code : ${res.statusCode}`);
+					reject(new Error(`Status code : ${res.statusCode}`));
 				} else {
 					resolve(data);
 				}
@@ -23,9 +24,11 @@ export const featured = functions.region('europe-west1').https.onCall(() => {
 		);
 	});
 });
-export const search = functions.region('europe-west1').https.onCall((data) => {
-	const searchTerm: string = data.term;
+
+export const search = onCall<{ term: string }>((req) => {
+	const searchTerm: string = req.data.term;
 	return new Promise((resolve, reject) => {
+		// eslint-disable-next-line import/namespace
 		request.post(
 			{
 				url: `${baseUrl}/recipe/quicksearch?query=${encodeURIComponent(
@@ -35,10 +38,10 @@ export const search = functions.region('europe-west1').https.onCall((data) => {
 				headers: { 'User-Agent': 'request' },
 			},
 			(err, res, data) => {
-				if (err) {
+				if (err instanceof Error) {
 					reject(err);
 				} else if (res.statusCode !== 200) {
-					reject(`Status code : ${res.statusCode}`);
+					reject(new Error(`Status code : ${res.statusCode}`));
 				} else {
 					resolve(data);
 				}
@@ -46,12 +49,14 @@ export const search = functions.region('europe-west1').https.onCall((data) => {
 		);
 	});
 });
-export const get = functions.region('europe-west1').https.onCall((data) => {
-	const id: string = data.id;
+
+export const get = onCall<{ id: string }>((req) => {
+	const id = req.data.id;
 	if (!id) {
-		throw new functions.https.HttpsError('invalid-argument', 'missing_recipe_id');
+		throw new HttpsError('invalid-argument', 'missing_recipe_id');
 	}
 	return new Promise((resolve, reject) => {
+		// eslint-disable-next-line import/namespace
 		request.get(
 			{
 				url: `${baseUrl}/recipe/${id}`,
@@ -59,10 +64,10 @@ export const get = functions.region('europe-west1').https.onCall((data) => {
 				headers: { 'User-Agent': 'request' },
 			},
 			(err, res, data) => {
-				if (err) {
+				if (err instanceof Error) {
 					reject(err);
 				} else if (res.statusCode !== 200) {
-					reject(`Status code : ${res.statusCode}`);
+					reject(new Error(`Status code : ${res.statusCode}`));
 				} else {
 					resolve(data);
 				}

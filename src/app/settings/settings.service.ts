@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { doc, docData, Firestore } from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
-import { DocumentReference } from 'rxfire/firestore/interfaces';
 import { from, Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { AppQuery } from '../../state/app.query';
+import { getFirestoreConverter } from '../../utils/firestore-converter';
 import { Family } from '../model/family';
 
 @Injectable({
@@ -23,10 +23,9 @@ export class SettingsService {
 				return of(undefined);
 			}
 			return docData(
-				doc(
-					this.firestore,
-					`families/${state.userData.familyName}`
-				) as DocumentReference<Family>
+				doc(this.firestore, `families/${state.userData.familyName}`).withConverter(
+					getFirestoreConverter<Family>()
+				)
 			);
 		})
 	);

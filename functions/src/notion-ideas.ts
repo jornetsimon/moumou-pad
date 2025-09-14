@@ -1,37 +1,42 @@
-import * as functions from 'firebase-functions';
 import { Client, isFullPage, LogLevel } from '@notionhq/client';
 import { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
-import { MealIdea } from './model/meal-idea.model';
+import { firestore } from 'firebase-admin';
+import { HttpsError, onCall } from 'firebase-functions/v2/https';
 import { assertIsNotNullOrUndefined } from './helpers/assert';
 import { db } from './init';
+import { MealIdea } from './model/meal-idea.model';
 import { User } from './model/user.model';
-import { firestore } from 'firebase-admin';
 
-const config = functions.config();
-const isEmulated = process.env.FUNCTIONS_EMULATOR === 'true';
-
-export const notionIdeas = functions.region('europe-west1').https.onCall(async (data, context) => {
-	const uid = context.auth?.uid;
+// In v2, use environment variables (dotenv) and/or secrets
+// Docs: https://firebase.google.com/docs/functions/config-env?gen=2nd#migrate-to-dotenv
+export const notionIdeas = onCall(async (request) => {
+	const uid = request.auth?.uid;
 	if (!uid) {
-		throw new functions.https.HttpsError('failed-precondition', 'not_authenticated');
+		throw new HttpsError('failed-precondition', 'not_authenticated');
 	}
 
 	const userDoc = db.doc(`users/${uid}`) as firestore.DocumentReference<User>;
 	const userSnapshot = await userDoc.get();
 	const user = userSnapshot.data();
-	const notionConfig: User['notion'] = isEmulated ? config.notion : user?.notion;
 
-	if (!notionConfig) {
+	// Prefer per-user Notion config, fallback to env/dotenv for emulator/local
+	const integrationSecret =
+		user?.notion?.integration_secret || process.env.NOTION_INTEGRATION_SECRET || '';
+	const databaseId = user?.notion?.database_id || process.env.NOTION_DATABASE_ID || '';
+
+	if (!integrationSecret || !databaseId) {
+		// Nothing to do if config is missing
 		return [];
 	}
 
+	const isEmulated = process.env.FUNCTIONS_EMULATOR === 'true';
 	const notion = new Client({
-		auth: notionConfig?.integration_secret,
+		auth: integrationSecret,
 		logLevel: isEmulated ? LogLevel.DEBUG : LogLevel.WARN,
 	});
 
 	const res = await notion.databases.query({
-		database_id: notionConfig?.database_id,
+		database_id: databaseId,
 		filter: {
 			property: 'Nom',
 			rich_text: {

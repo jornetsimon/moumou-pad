@@ -5,9 +5,9 @@ export interface Recipe {
 	composition: string;
 	slug: string;
 	mainIngredients: Family[];
-	labels: any[];
-	categories: any[];
-	origins: any[];
+	labels: unknown[];
+	categories: unknown[];
+	origins: unknown[];
 	minimumCoversRequired: number;
 	roundedCoversCount: number;
 	requiredTools: RequiredTool[];
@@ -35,7 +35,7 @@ export interface Recipe {
 	isVisible: boolean;
 	availabilityZones: string[];
 	additionalConstituents: AdditionalConstituent[];
-	partners: any[];
+	partners: unknown[];
 	family: Family;
 	origin?: Family;
 	seasons: string[];
@@ -46,7 +46,7 @@ export interface Recipe {
 	normalizedTastesVector: TastesVector;
 	familyAncestors: Family[];
 	notTrivialRequiredToolsIds: string[];
-	tagsEdito: any[];
+	tagsEdito: unknown[];
 	nutritionalFacts: RecipeNutritionalFact[];
 	keywords: string[];
 	likes: number;
@@ -62,11 +62,11 @@ export interface Recipe {
 export interface AdditionalConstituent {
 	isVisible: boolean;
 	_id: string;
-	alternatives: any[];
+	alternatives: unknown[];
 	quantityPerCover: number;
 	unit: Family;
 	ingredient: AdditionalConstituentIngredient;
-	additionalMeasures: any[];
+	additionalMeasures: unknown[];
 	id: string;
 }
 
@@ -103,7 +103,7 @@ export interface Family {
 	id: string;
 	isNatural?: boolean;
 	comments?: string;
-	childrenFamilies?: any[];
+	childrenFamilies?: unknown[];
 }
 
 export interface Abbreviation {
@@ -135,7 +135,7 @@ export interface EatingHabitsCompatibility {
 
 export interface EditorialData {
 	nutritionalFacts: EditorialDataNutritionalFact[];
-	seasonality: any[];
+	seasonality: unknown[];
 }
 
 export interface EditorialDataNutritionalFact {
@@ -161,7 +161,7 @@ export interface Constituent {
 	quantityPerCover: number;
 	unit: Family;
 	ingredient: IngredientElement;
-	additionalMeasures: any[];
+	additionalMeasures: unknown[];
 	id: string;
 }
 
@@ -216,7 +216,7 @@ export interface RequiredTool {
 	imageUrl: string;
 	name: string;
 	isDefaultChecked: boolean;
-	childrenTools: any[];
+	childrenTools: unknown[];
 	isNotTrivial: boolean;
 	__v: number;
 	availabilityZones: string[];

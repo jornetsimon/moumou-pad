@@ -1,5 +1,1 @@
-export interface Family {
-	members: Array<string>;
-	pending: Array<string>;
-	manager: string;
-}
+export * from '@functions/model/family.model';

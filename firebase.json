@@ -13,7 +13,13 @@
     {
       "target": "moumou-pad",
       "public": "dist/moumou-pad",
-      "frameworksBackend": {}
+      "frameworksBackend": {},
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
     }
   ],
   "emulators": {
