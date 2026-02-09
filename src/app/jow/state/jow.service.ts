@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { JowStore } from './jow.store';
-import { from, Observable } from 'rxjs';
-import { Recipe } from '../../model/receipe';
 import { Functions, httpsCallable } from '@angular/fire/functions';
+import { from, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Recipe } from '../../model/receipe';
 import { adaptRecipe } from '../util';
+import { JowStore } from './jow.store';
 
 @Injectable({ providedIn: 'root' })
 export class JowService {
@@ -34,9 +34,12 @@ export class JowService {
 	}
 
 	search(term: string): Observable<Recipe[]> {
-		const callable = httpsCallable<{ term: string }, Recipe[]>(this.fns, 'jowRecipeSearch');
+		const callable = httpsCallable<{ term: string }, { content: Recipe[] }>(
+			this.fns,
+			'jowRecipeSearch'
+		);
 		return from(callable({ term })).pipe(
-			map((res) => res.data),
+			map((res) => res.data.content),
 			map((recipes) => recipes.map(adaptRecipe))
 		);
 	}
