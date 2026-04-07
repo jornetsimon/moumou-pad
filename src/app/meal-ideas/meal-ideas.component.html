@@ -1,12 +1,33 @@
-<div tuiHeader="l" class="mb-6">
+<div tuiHeader="l" class="mb-4">
 	<h3 tuiTitle>Mes recettes</h3>
 </div>
 
-<div class="flex flex-col gap-4 idea-list">
-	@if (isLoading()) {
+<tui-input
+	[formControl]="searchCtrl"
+	[tuiTextfieldCleaner]="true"
+	tuiTextfieldIconLeft="tuiIconSearchLarge"
+	class="mb-4"
+>
+	Rechercher
+	<input placeholder="Nom de recette..." tuiTextfield autocomplete="off" inputmode="search" />
+</tui-input>
+
+@if (isLoading()) {
+<div class="flex flex-col gap-4">
 	<div class="h-[100px] w-full" *tuiRepeatTimes="let index of 3" [tuiSkeleton]="true"></div>
-	} @for (idea of ideas(); track idea.name) {
-	<div tuiSurface="elevated" class="idea-container" (click)="useIdea(idea)">
+</div>
+} @else {
+<cdk-virtual-scroll-viewport
+	[itemSize]="itemSize"
+	[style.height.px]="viewportHeight()"
+	class="idea-list"
+>
+	<div
+		*cdkVirtualFor="let idea of ideas(); trackBy: trackByName"
+		tuiSurface="elevated"
+		class="idea-container"
+		(click)="useIdea(idea)"
+	>
 		@if (idea.image) {
 		<a
 			[href]="idea.notionPageDeeplink"
@@ -85,5 +106,9 @@
 			></button>
 		</div>
 	</div>
+
+	@if (isLoadingMore()) {
+	<div class="h-[100px] w-full" [tuiSkeleton]="true"></div>
 	}
-</div>
+</cdk-virtual-scroll-viewport>
+}

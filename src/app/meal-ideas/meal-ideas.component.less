@@ -1,4 +1,16 @@
-.idea-list {
+cdk-virtual-scroll-viewport.idea-list {
+	overflow-y: auto;
+	background: transparent;
+
+	.cdk-virtual-scroll-spacer,
+	.cdk-virtual-scroll-content-wrapper {
+		background: transparent;
+	}
+
+	.cdk-virtual-scroll-content-wrapper {
+		display: flex;
+		flex-direction: column;
+	}
 }
 
 .idea-container {
@@ -8,6 +20,10 @@
 	padding: 0;
 	gap: 0;
 	border-radius: var(--tui-radius-s);
+	margin-bottom: 1rem;
+	min-height: 100px;
+	box-shadow: none;
+	border: 1px solid var(--tui-base-03);
 
 	img {
 		height: 100px;
