@@ -59,6 +59,7 @@ export const notionIdeas = onCall<NotionIdeasRequest>(
 		const res = await notion.databases.query({
 			database_id: databaseId,
 			filter,
+			sorts: [{ timestamp: 'created_time', direction: 'descending' }],
 			page_size: pageSize,
 			...(startCursor ? { start_cursor: startCursor } : {}),
 		});
