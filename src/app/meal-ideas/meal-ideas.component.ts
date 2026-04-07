@@ -17,6 +17,8 @@ import {
 	TuiButtonModule,
 	TuiDialogContext,
 	TuiGroupModule,
+	TuiLoaderModule,
+	TuiSvgModule,
 	TuiTextfieldControllerModule,
 } from '@taiga-ui/core';
 import {
@@ -58,6 +60,8 @@ export type MealIdeasDialogOutput = MealIdea | null;
 		ReactiveFormsModule,
 		TuiInputModule,
 		TuiTextfieldControllerModule,
+		TuiLoaderModule,
+		TuiSvgModule,
 	],
 	templateUrl: './meal-ideas.component.html',
 	styleUrl: './meal-ideas.component.less',
