@@ -18,7 +18,7 @@ export const notionIdeas = onCall<NotionIdeasRequest>(
 
 		const {
 			start_cursor: startCursor,
-			page_size: pageSize = 20,
+			page_size: pageSize = 10,
 			search_term: searchTerm,
 		} = request.data ?? {};
 

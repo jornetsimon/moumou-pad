@@ -45,7 +45,7 @@ export class MealIdeasService {
 		);
 		const cursor = this._nextCursor();
 		const response = await callable({
-			page_size: 20,
+			page_size: 10,
 			...(cursor ? { start_cursor: cursor } : {}),
 			...(options.search_term ? { search_term: options.search_term } : {}),
 		});
