@@ -9,7 +9,13 @@
 	class="mb-4"
 >
 	Rechercher
-	<input placeholder="Nom de recette..." tuiTextfield autocomplete="off" inputmode="search" />
+	<input
+		placeholder="Nom de recette..."
+		tuiTextfield
+		autocomplete="off"
+		inputmode="search"
+		(keydown.enter)="blurTarget($event)"
+	/>
 </tui-input>
 
 @if (isLoading()) {

@@ -121,6 +121,10 @@ export class MealIdeasComponent implements AfterViewInit {
 		this.context.completeWith(idea);
 	}
 
+	blurTarget(event: Event) {
+		(event.target as HTMLElement).blur();
+	}
+
 	trackByName = (_: number, idea: { name: string }) => idea.name;
 
 	protected readonly constructAssetUrl = constructAssetUrl;
