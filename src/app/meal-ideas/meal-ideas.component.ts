@@ -104,6 +104,7 @@ export class MealIdeasComponent implements AfterViewInit {
 		private readonly context: TuiDialogContext<MealIdeasDialogOutput, void>,
 		private readonly ideasService: MealIdeasService
 	) {
+		this.ideasService.resetAndSearch('');
 		this.setupSearch();
 	}
 

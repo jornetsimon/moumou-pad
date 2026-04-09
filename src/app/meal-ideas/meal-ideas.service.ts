@@ -18,6 +18,9 @@ export class MealIdeasService {
 	private readonly _hasMore = signal(true);
 	readonly hasMore = this._hasMore.asReadonly();
 
+	private readonly _hasLoadedOnce = signal(false);
+	readonly hasLoadedOnce = this._hasLoadedOnce.asReadonly();
+
 	private _nextCursor = signal<string | null>(null);
 	private _currentSearchTerm = '';
 
@@ -55,6 +58,7 @@ export class MealIdeasService {
 		this._hasMore.set(has_more);
 		this._nextCursor.set(next_cursor);
 
+		this._hasLoadedOnce.set(true);
 		this._areIdeasLoading.set(false);
 		this._isLoadingMore.set(false);
 	}

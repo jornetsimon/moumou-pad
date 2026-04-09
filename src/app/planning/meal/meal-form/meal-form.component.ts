@@ -152,9 +152,7 @@ export class MealFormComponent implements OnChanges {
 
 	readonly constructAssetUrl = constructAssetUrl;
 
-	readonly mealIdeasAvailable = computed(
-		() => !this.mealIdeasService.areIdeasLoading() && this.mealIdeasService.ideas().length > 0
-	);
+	readonly mealIdeasAvailable = computed(() => this.mealIdeasService.hasLoadedOnce());
 
 	ngOnChanges(changes: SimpleChanges) {
 		this.initializeForm();
